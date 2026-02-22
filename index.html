@@ -128,21 +128,20 @@
       box-shadow:0 15px 40px rgba(0,0,0,0.4);
     }
 
-    .rank-badge {
-      width:55px;
-      height:55px;
-      border-radius:50%;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      margin:0 auto 15px;
-      font-weight:800;
-      font-size:1.2rem;
-      background: linear-gradient(135deg, var(--copper-light), var(--copper));
-      box-shadow:0 0 20px rgba(195,86,39,0.7);
+    
+    /* Podium medal badge (force size; overrides any accidental duplicates) */
+    .podium-card .rank-badge {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 14px;
+      font-size: 2.5rem !important; /* 1/4 of previous 10rem */
+      line-height: 1 !important;
+      background: transparent !important;
+      box-shadow: none !important;
+      filter: drop-shadow(0 6px 14px rgba(0,0,0,0.25));
     }
-
-    .podium-name {
+.podium-name {
       font-size:1.2rem;
       font-weight:700;
       margin-bottom:8px;
@@ -281,18 +280,19 @@
         gap: 8px;
         padding: 0 6px 6px;
       }
-      .podium-card{
+     
+      .podium-card .rank-badge{
+        font-size: 1.6rem !important; /* 1/4 of previous mobile size */
+        margin: 0 auto 10px;
+        line-height: 1 !important;
+      }
+}
+.podium-card{
         flex: 0 0 calc((100% - 16px) / 3); /* 2 gaps x 8px */
         width: calc((100% - 16px) / 3);
         min-width: 0;
         padding: 12px 10px;
         border-radius: 16px;
-      }
-      .rank-badge{
-        width: 40px;
-        height: 40px;
-        font-size: 0.95rem;
-        margin: 0 auto 8px;
       }
       .podium-name{ font-size: 0.85rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
       .podium-points{ font-size: 1.15rem; }
@@ -308,12 +308,6 @@
         width: auto;
         min-width: 0;
         padding: 14px 12px;
-      }
-      .rank-badge {
-        width: 44px;
-        height: 44px;
-        font-size: 1rem;
-        margin: 0 auto 10px;
       }
       .podium-name { font-size: 0.95rem; }
       .podium-points { font-size: 1.35rem; }
@@ -586,8 +580,8 @@ const API_URL = 'https://script.google.com/macros/s/AKfycbxA2g2ef2GsCNdwiZsfxBmp
       const medals = ['🥇','🥈','🥉'];
       managers.slice(0,3).forEach((m,i)=>{
         html += '<div class="podium-card">';
-        html += '<div class="rank-badge">'+(i+1)+'</div>';
-        html += '<div class="podium-name">' + (medals[i] ? (medals[i] + ' ') : '') + m.name + '</div>';
+        html += '<div class="rank-badge">' + (medals[i] || (i+1)) + '</div>';
+        html += '<div class="podium-name">' + m.name + '</div>';
         html += '<div class="podium-points">'+m.totalPoints+'</div>';
         html += '</div>';
       });
