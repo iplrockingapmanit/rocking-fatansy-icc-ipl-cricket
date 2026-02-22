@@ -221,6 +221,18 @@
       color:#6ecf8e;
     }
 
+    .player-name {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .player-flag {
+      font-size: 1.05rem;
+      line-height: 1;
+      filter: drop-shadow(0 2px 6px rgba(0,0,0,0.25));
+    }
+
+
     .loading {
       text-align:center;
       padding:80px 20px;
@@ -228,9 +240,26 @@
     }
 
     @media(max-width:640px){
-      .podium { flex-direction:column; align-items:center; }
-      .podium-card { width:90%; }
+      /* Keep podium side-by-side on mobile (horizontal scroll) */
+      .podium {
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        gap: 14px;
+        padding: 0 6px 10px;
+        scroll-snap-type: x mandatory;
+      }
+      .podium-card {
+        flex: 0 0 260px;
+        width: 260px;
+        scroll-snap-align: start;
+      }
+
+      /* Manager list can remain as-is (single column) */
+      .manager-grid { grid-template-columns: 1fr; }
     }
+
   </style>
 </head>
 <body>
@@ -250,7 +279,115 @@
 
   <!-- KEEPING YOUR ORIGINAL JS LOGIC INTACT -->
   <script>
-    const API_URL = 'https://script.google.com/macros/s/AKfycbxA2g2ef2GsCNdwiZsfxBmp2jEgyhMqmQnDq7YH9U_sLihd_Wm5GeTcY42Ngfnq8WaD/exec';
+
+    // Country flag mapping for cricket players (emoji flags)
+    const PLAYER_FLAGS = {
+      // India
+      'suryakumar yadav': '🇮🇳', 'hardik pandya': '🇮🇳', 'ishan kishan': '🇮🇳',
+      'arshdeep singh': '🇮🇳', 'jasprit bumrah': '🇮🇳', 'virat kohli': '🇮🇳',
+      'rohit sharma': '🇮🇳', 'shubman gill': '🇮🇳', 'rishabh pant': '🇮🇳',
+      'ravindra jadeja': '🇮🇳', 'kuldeep yadav': '🇮🇳', 'mohammed siraj': '🇮🇳',
+      'yashasvi jaiswal': '🇮🇳', 'axar patel': '🇮🇳', 'shreyas iyer': '🇮🇳',
+      'sanju samson': '🇮🇳', 'mohammed shami': '🇮🇳', 'yuzvendra chahal': '🇮🇳',
+      'tilak varma': '🇮🇳', 'rinku singh': '🇮🇳', 'varun chakaravarthy': '🇮🇳',
+      'ravi bishnoi': '🇮🇳', 'abhishek sharma': '🇮🇳', 'dhruv jurel': '🇮🇳',
+      'nitish kumar reddy': '🇮🇳', 'shivam dube': '🇮🇳',
+      // Australia
+      'travis head': '🇦🇺', 'mitchell starc': '🇦🇺', 'pat cummins': '🇦🇺',
+      'steve smith': '🇦🇺', 'david warner': '🇦🇺', 'glenn maxwell': '🇦🇺',
+      'josh hazlewood': '🇦🇺', 'adam zampa': '🇦🇺', 'marcus stoinis': '🇦🇺',
+      'mitchell marsh': '🇦🇺', 'cameron green': '🇦🇺', 'alex carey': '🇦🇺',
+      'nathan lyon': '🇦🇺', 'marnus labuschagne': '🇦🇺', 'josh inglis': '🇦🇺',
+      'jake fraser-mcgurk': '🇦🇺', 'spencer johnson': '🇦🇺',
+      // England (use UK flag as a simple, consistent option)
+      'jos buttler': '🇬🇧', 'harry brook': '🇬🇧', 'ben stokes': '🇬🇧',
+      'jofra archer': '🇬🇧', 'mark wood': '🇬🇧', 'adil rashid': '🇬🇧',
+      'liam livingstone': '🇬🇧', 'phil salt': '🇬🇧', 'moeen ali': '🇬🇧',
+      'jamie overton': '🇬🇧', 'sam curran': '🇬🇧', 'reece topley': '🇬🇧',
+      'jonny bairstow': '🇬🇧', 'jacob bethell': '🇬🇧', 'jamie smith': '🇬🇧',
+      'brydon carse': '🇬🇧',
+      // South Africa
+      'ryan rickelton': '🇿🇦', 'dewald brevis': '🇿🇦', 'quinton de kock': '🇿🇦',
+      'kagiso rabada': '🇿🇦', 'anrich nortje': '🇿🇦', 'aiden markram': '🇿🇦',
+      'david miller': '🇿🇦', 'heinrich klaasen': '🇿🇦', 'rassie van der dussen': '🇿🇦',
+      'marco jansen': '🇿🇦', 'lungi ngidi': '🇿🇦', 'tabraiz shamsi': '🇿🇦',
+      'keshav maharaj': '🇿🇦', 'tristan stubbs': '🇿🇦',
+      // New Zealand
+      'matt henry': '🇳🇿', 'kane williamson': '🇳🇿', 'trent boult': '🇳🇿',
+      'devon conway': '🇳🇿', 'tim southee': '🇳🇿', 'daryl mitchell': '🇳🇿',
+      'glenn phillips': '🇳🇿', 'mitchell santner': '🇳🇿', 'lockie ferguson': '🇳🇿',
+      'rachin ravindra': '🇳🇿', 'michael bracewell': '🇳🇿', 'mark chapman': '🇳🇿',
+      'tom latham': '🇳🇿', 'will young': '🇳🇿',
+      // West Indies
+      'shai hope': '🇯🇲', 'nicholas pooran': '🇹🇹', 'andre russell': '🇯🇲',
+      'shimron hetmyer': '🇬🇾', 'roston chase': '🇧🇧', 'jason holder': '🇧🇧',
+      'alzarri joseph': '🇱🇨', 'brandon king': '🇯🇲', 'romario shepherd': '🇬🇾',
+      'gudakesh motie': '🇬🇾', 'akeal hosein': '🇹🇹', 'evin lewis': '🇹🇹',
+      'kyle mayers': '🇧🇧', 'shamar joseph': '🇬🇾', 'sherfane rutherford': '🇬🇾',
+      // Pakistan
+      'babar azam': '🇵🇰', 'shaheen afridi': '🇵🇰', 'mohammad rizwan': '🇵🇰',
+      'fakhar zaman': '🇵🇰', 'haris rauf': '🇵🇰', 'shadab khan': '🇵🇰',
+      'iftikhar ahmed': '🇵🇰', 'naseem shah': '🇵🇰', 'saim ayub': '🇵🇰',
+      'mohammad amir': '🇵🇰', 'imad wasim': '🇵🇰', 'usama mir': '🇵🇰',
+      'sahibzada farhan': '🇵🇰', 'salman ali agha': '🇵🇰', 'abrar ahmed': '🇵🇰',
+      // Sri Lanka
+      'wanindu hasaranga': '🇱🇰', 'pathum nissanka': '🇱🇰', 'kusal mendis': '🇱🇰',
+      'charith asalanka': '🇱🇰', 'maheesh theekshana': '🇱🇰', 'dasun shanaka': '🇱🇰',
+      'dhananjaya de silva': '🇱🇰', 'matheesha pathirana': '🇱🇰', 'kusal perera': '🇱🇰',
+      'dunith wellalage': '🇱🇰',
+      // Bangladesh
+      'shakib al hasan': '🇧🇩', 'mustafizur rahman': '🇧🇩', 'litton das': '🇧🇩',
+      'tanzid hasan': '🇧🇩', 'taskin ahmed': '🇧🇩', 'towhid hridoy': '🇧🇩',
+      'mehidy hasan miraz': '🇧🇩', 'rishad hossain': '🇧🇩', 'tanzim hasan sakib': '🇧🇩',
+      // Afghanistan
+      'rashid khan': '🇦🇫', 'azmatullah omarzai': '🇦🇫', 'rahmanullah gurbaz': '🇦🇫',
+      'fazalhaq farooqi': '🇦🇫', 'naveen-ul-haq': '🇦🇫', 'mohammad nabi': '🇦🇫',
+      'najibullah zadran': '🇦🇫', 'mujeeb ur rahman': '🇦🇫', 'gulbadin naib': '🇦🇫',
+      'ibrahim zadran': '🇦🇫',
+      // Netherlands
+      'bas de leede': '🇳🇱', 'scott edwards': '🇳🇱', 'ryan klein': '🇳🇱',
+      "max o'dowd": '🇳🇱', 'logan van beek': '🇳🇱', 'paul van meekeren': '🇳🇱',
+      'teja nidamanuru': '🇳🇱', 'vikramjit singh': '🇳🇱',
+      // Zimbabwe
+      'sikandar raza': '🇿🇼', 'sean williams': '🇿🇼', 'blessing muzarabani': '🇿🇼',
+      'craig ervine': '🇿🇼', 'regis chakabva': '🇿🇼', 'richard ngarava': '🇿🇼',
+      'luke jongwe': '🇿🇼',
+      // Ireland
+      'paul stirling': '🇮🇪', 'andrew balbirnie': '🇮🇪', 'josh little': '🇮🇪',
+      'lorcan tucker': '🇮🇪', 'mark adair': '🇮🇪', 'barry mccarthy': '🇮🇪',
+      'harry tector': '🇮🇪', 'gareth delany': '🇮🇪', 'george dockrell': '🇮🇪',
+      // Scotland
+      'richie berrington': '🏴', 'michael leask': '🏴', 'brad wheal': '🏴',
+      'brandon mcmullen': '🏴', 'george munsey': '🏴', 'mark watt': '🏴',
+      // Namibia
+      'gerhard erasmus': '🇳🇦', 'david wiese': '🇳🇦', 'jj smit': '🇳🇦',
+      'bernard scholtz': '🇳🇦', 'jan frylinck': '🇳🇦', 'ruben trumpelmann': '🇳🇦',
+      // Nepal
+      'sandeep lamichhane': '🇳🇵', 'kushal bhurtel': '🇳🇵', 'dipendra singh airee': '🇳🇵',
+      'rohit paudel': '🇳🇵', 'sompal kami': '🇳🇵',
+      // Oman
+      'aqib ilyas': '🇴🇲', 'zeeshan maqsood': '🇴🇲', 'ayaan khan': '🇴🇲',
+      // USA
+      'aaron jones': '🇺🇸', 'saurabh netravalkar': '🇺🇸', 'steven taylor': '🇺🇸',
+      'andries gous': '🇺🇸', 'monank patel': '🇺🇸', 'ali khan': '🇺🇸',
+      'corey anderson': '🇺🇸', 'nosthush kenjige': '🇺🇸',
+      // Canada
+      'navneet dhaliwal': '🇨🇦', 'aaron johnson': '🇨🇦', 'saad bin zafar': '🇨🇦',
+      'dilpreet bajwa': '🇨🇦', 'nicholas kirton': '🇨🇦',
+      // Uganda
+      'brian masaba': '🇺🇬', 'riazat ali shah': '🇺🇬', 'dinesh nakrani': '🇺🇬',
+      'simon ssesazi': '🇺🇬', 'henry ssenyondo': '🇺🇬',
+      // Papua New Guinea
+      'assad vala': '🇵🇬', 'lega siaka': '🇵🇬', 'sese bau': '🇵🇬',
+      'chad soper': '🇵🇬', 'norman vanua': '🇵🇬',
+    };
+
+    function getFlag(playerName) {
+      const key = (playerName || '').toLowerCase().trim();
+      return PLAYER_FLAGS[key] || '';
+    }
+
+const API_URL = 'https://script.google.com/macros/s/AKfycbxA2g2ef2GsCNdwiZsfxBmp2jEgyhMqmQnDq7YH9U_sLihd_Wm5GeTcY42Ngfnq8WaD/exec';
     let DATA = null;
     let currentWeek = null;
 
@@ -325,7 +462,8 @@
 
         m.players.forEach(p=>{
           html += '<div class="player-row">';
-          html += '<span>'+p.name+'</span>';
+          const flag = getFlag(p.name);
+          html += '<span class="player-name">' + (flag ? '<span class="player-flag">' + flag + '</span>' : '') + p.name + '</span>';
           html += '<span class="player-pts">'+p.points+' pts</span>';
           html += '</div>';
         });
