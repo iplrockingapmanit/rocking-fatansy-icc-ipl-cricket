@@ -230,10 +230,9 @@
     </div>
   </div>
   <script>
-    const API_URL = 'https://script.googleusercontent.com/macros/echo?user_content_key=AY5xjrQe8dsZLjKTQvOgXrX6-BPMXwD4J1MHW4C0ytQpE7jKsuvYUzuyASGek06FpJawZvPCRVi_DYqZxtPcBjgb_m2t4tcFxplL1u_0NqNdHOPsdpghwhGi0HUmLHPR3IL6cNCTI2bOZFnf3slj7uswfvzaCRfL1lfaYyF2L5cXC_WhyH4Tf8jMlucJNq5eVceTjy47vqpTuOirmvpHDfA2AdFwCzwlXONxRvgQkng0inGvRtZ7noQ8MhEgAF7SQyTAf6sTr6KEYau3zTjuc33cPyDepPPjaA&lib=MyvOQJQvT0SoKUTekqbCIGugnXuxWEsqY';
+    const API_URL = 'https://script.google.com/macros/s/AKfycbxA2g2ef2GsCNdwiZsfxBmp2jEgyhMqmQnDq7YH9U_sLihd_Wm5GeTcY42Ngfnq8WaD/exec';
     let DATA = null;
     let currentWeek = null;
-
     async function fetchData() {
       try {
         const res = await fetch(API_URL);
@@ -248,7 +247,6 @@
         document.getElementById('content').innerHTML = '<div class="loading">Failed to load data. Please try again later.</div>';
       }
     }
-
     function buildTabs() {
       const container = document.getElementById('tabsContainer');
       container.innerHTML = '';
@@ -266,7 +264,6 @@
         container.appendChild(btn);
       });
     }
-
     function renderWeek(weekKey) {
       document.querySelectorAll('.tab-btn').forEach(b => {
         b.classList.toggle('active', b.dataset.week === weekKey);
@@ -312,7 +309,6 @@
       html += '</div>';
       document.getElementById('content').innerHTML = html;
     }
-
     fetchData();
   </script>
 </body>
