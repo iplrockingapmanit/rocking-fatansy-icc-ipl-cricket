@@ -7,16 +7,20 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
-      --primary: #1a1a2e;
-      --secondary: #16213e;
-      --accent: #e94560;
-      --gold: #ffd700;
+      --primary: #1a1207;
+      --secondary: #2a1f10;
+      --accent: #da7756;
+      --accent-glow: rgba(218, 119, 86, 0.4);
+      --gold: #f5c542;
       --silver: #c0c0c0;
       --bronze: #cd7f32;
-      --text: #eee;
-      --card-bg: #16213e;
-      --tab-active: #e94560;
-      --tab-inactive: #0f3460;
+      --text: #f0e6d6;
+      --card-bg: #2a1f10;
+      --card-bg-alt: #332615;
+      --tab-active: #da7756;
+      --tab-inactive: #3d2e1a;
+      --border-subtle: rgba(218, 119, 86, 0.15);
+      --green: #6ecf8e;
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
@@ -25,16 +29,28 @@
       color: var(--text);
       min-height: 100vh;
     }
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background:
+        radial-gradient(ellipse at 20% 0%, rgba(218, 119, 86, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 100%, rgba(245, 197, 66, 0.05) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 0;
+    }
     .header {
-      background: linear-gradient(135deg, #0f3460, #1a1a2e);
+      background: linear-gradient(135deg, #2a1f10, #1a1207);
       padding: 20px;
       text-align: center;
       border-bottom: 3px solid var(--accent);
+      position: relative;
+      z-index: 1;
     }
     .header h1 {
       font-size: 2rem;
       font-weight: 800;
-      background: linear-gradient(90deg, #ffd700, #e94560);
+      background: linear-gradient(90deg, #f5c542, #da7756);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -57,6 +73,8 @@
       padding: 16px 20px;
       background: var(--secondary);
       flex-wrap: wrap;
+      position: relative;
+      z-index: 1;
     }
     .tab-btn {
       padding: 10px 28px;
@@ -68,18 +86,18 @@
       cursor: pointer;
       transition: all 0.3s ease;
       background: var(--tab-inactive);
-      color: #aaa;
+      color: #9a8a74;
     }
     .tab-btn.active {
       background: var(--accent);
       color: white;
-      box-shadow: 0 4px 15px rgba(233, 69, 96, 0.4);
+      box-shadow: 0 4px 15px var(--accent-glow);
     }
     .tab-btn:hover:not(.active) {
-      background: #1a4a8a;
-      color: white;
+      background: #4d3a22;
+      color: #d4c4a8;
     }
-    .container { max-width: 1100px; margin: 0 auto; padding: 20px; }
+    .container { max-width: 1100px; margin: 0 auto; padding: 20px; position: relative; z-index: 1; }
     .leaderboard-title {
       text-align: center;
       font-size: 1.4rem;
@@ -126,7 +144,7 @@
       display: flex; align-items: center; justify-content: center;
       font-weight: 800; font-size: 1.1rem;
       margin: 0 auto 10px;
-      color: #1a1a2e;
+      color: #1a1207;
     }
     .rank-1 .rank-badge { background: var(--gold); }
     .rank-2 .rank-badge { background: var(--silver); }
@@ -135,18 +153,18 @@
     .podium-points {
       font-size: 1.8rem;
       font-weight: 800;
-      background: linear-gradient(90deg, #ffd700, #e94560);
+      background: linear-gradient(90deg, #f5c542, #da7756);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
     }
-    .podium-players { font-size: 0.7rem; color: #888; margin-top: 6px; }
+    .podium-players { font-size: 0.7rem; color: #9a8a74; margin-top: 6px; }
     .managers-title {
       text-align: center;
       font-size: 1.2rem;
       font-weight: 600;
       margin-bottom: 16px;
-      color: #aaa;
+      color: #9a8a74;
     }
     .manager-grid {
       display: grid;
@@ -183,32 +201,46 @@
       justify-content: space-between;
       align-items: center;
       padding: 6px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.05);
+      border-bottom: 1px solid var(--border-subtle);
       font-size: 0.85rem;
     }
     .player-row:last-child { border-bottom: none; }
-    .player-name { color: #ccc; }
-    .player-pts { font-weight: 700; color: #4ecca3; }
-    .slots-info { font-size: 0.7rem; color: #666; margin-left: 8px; }
+    .player-name { color: #d4c4a8; }
+    .player-flag { margin-right: 5px; font-size: 0.95rem; }
+    .player-pts { font-weight: 700; color: var(--green); }
+    .slots-info { font-size: 0.7rem; color: #6b5c46; margin-left: 8px; }
     .loading {
       text-align: center;
       padding: 80px 20px;
       font-size: 1.2rem;
-      color: #666;
+      color: #6b5c46;
     }
     .spinner {
       width: 40px; height: 40px;
-      border: 4px solid #333;
+      border: 4px solid #3d2e1a;
       border-top: 4px solid var(--accent);
       border-radius: 50%;
       animation: spin 1s linear infinite;
       margin: 0 auto 20px;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Mobile: Straight 1-2-3 order */
     @media (max-width: 640px) {
       .header h1 { font-size: 1.4rem; }
-      .podium { gap: 10px; }
-      .podium-card { min-width: 140px; padding: 14px 16px; }
+      .podium {
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+      }
+      .podium-card {
+        min-width: 90%;
+        padding: 14px 16px;
+        min-height: auto !important;
+      }
+      .podium-card.rank-1 { order: 1; }
+      .podium-card.rank-2 { order: 2; }
+      .podium-card.rank-3 { order: 3; }
       .podium-points { font-size: 1.4rem; }
       .manager-grid { grid-template-columns: 1fr; }
       .tab-btn { padding: 8px 18px; font-size: 0.8rem; }
@@ -230,9 +262,117 @@
     </div>
   </div>
   <script>
+    // Country flag mapping for cricket players (emoji flags)
+    const PLAYER_FLAGS = {
+      // India
+      'suryakumar yadav': '🇮🇳', 'hardik pandya': '🇮🇳', 'ishan kishan': '🇮🇳',
+      'arshdeep singh': '🇮🇳', 'jasprit bumrah': '🇮🇳', 'virat kohli': '🇮🇳',
+      'rohit sharma': '🇮🇳', 'shubman gill': '🇮🇳', 'rishabh pant': '🇮🇳',
+      'ravindra jadeja': '🇮🇳', 'kuldeep yadav': '🇮🇳', 'mohammed siraj': '🇮🇳',
+      'yashasvi jaiswal': '🇮🇳', 'axar patel': '🇮🇳', 'shreyas iyer': '🇮🇳',
+      'sanju samson': '🇮🇳', 'mohammed shami': '🇮🇳', 'yuzvendra chahal': '🇮🇳',
+      'tilak varma': '🇮🇳', 'rinku singh': '🇮🇳', 'varun chakaravarthy': '🇮🇳',
+      'ravi bishnoi': '🇮🇳', 'abhishek sharma': '🇮🇳', 'dhruv jurel': '🇮🇳',
+      'nitish kumar reddy': '🇮🇳',
+      // Australia
+      'travis head': '🇦🇺', 'mitchell starc': '🇦🇺', 'pat cummins': '🇦🇺',
+      'steve smith': '🇦🇺', 'david warner': '🇦🇺', 'glenn maxwell': '🇦🇺',
+      'josh hazlewood': '🇦🇺', 'adam zampa': '🇦🇺', 'marcus stoinis': '🇦🇺',
+      'mitchell marsh': '🇦🇺', 'cameron green': '🇦🇺', 'alex carey': '🇦🇺',
+      'nathan lyon': '🇦🇺', 'marnus labuschagne': '🇦🇺', 'josh inglis': '🇦🇺',
+      'jake fraser-mcgurk': '🇦🇺', 'spencer johnson': '🇦🇺',
+      // England
+      'jos buttler': '🏴󠁧󠁢󠁥󠁮󠁧󠁿', 'harry brook': '🏴󠁧󠁢󠁥󠁮󠁧󠁿', 'ben stokes': '🏴󠁧󠁢󠁥󠁮󠁧󠁿',
+      'jofra archer': '🏴󠁧󠁢󠁥󠁮󠁧󠁿', 'mark wood': '🏴󠁧󠁢󠁥󠁮󠁧󠁿', 'adil rashid': '🏴󠁧󠁢󠁥󠁮󠁧󠁿',
+      'liam livingstone': '🏴󠁧󠁢󠁥󠁮󠁧󠁿', 'phil salt': '🏴󠁧󠁢󠁥󠁮󠁧󠁿', 'moeen ali': '🏴󠁧󠁢󠁥󠁮󠁧󠁿',
+      'jamie overton': '🏴󠁧󠁢󠁥󠁮󠁧󠁿', 'sam curran': '🏴󠁧󠁢󠁥󠁮󠁧󠁿', 'reece topley': '🏴󠁧󠁢󠁥󠁮󠁧󠁿',
+      'jonny bairstow': '🏴󠁧󠁢󠁥󠁮󠁧󠁿', 'jacob bethell': '🏴󠁧󠁢󠁥󠁮󠁧󠁿',
+      'jamie smith': '🏴󠁧󠁢󠁥󠁮󠁧󠁿', 'brydon carse': '🏴󠁧󠁢󠁥󠁮󠁧󠁿',
+      // South Africa
+      'ryan rickelton': '🇿🇦', 'dewald brevis': '🇿🇦', 'quinton de kock': '🇿🇦',
+      'kagiso rabada': '🇿🇦', 'anrich nortje': '🇿🇦', 'aiden markram': '🇿🇦',
+      'david miller': '🇿🇦', 'heinrich klaasen': '🇿🇦', 'rassie van der dussen': '🇿🇦',
+      'marco jansen': '🇿🇦', 'lungi ngidi': '🇿🇦', 'tabraiz shamsi': '🇿🇦',
+      'keshav maharaj': '🇿🇦', 'tristan stubbs': '🇿🇦',
+      // New Zealand
+      'matt henry': '🇳🇿', 'kane williamson': '🇳🇿', 'trent boult': '🇳🇿',
+      'devon conway': '🇳🇿', 'tim southee': '🇳🇿', 'daryl mitchell': '🇳🇿',
+      'glenn phillips': '🇳🇿', 'mitchell santner': '🇳🇿', 'lockie ferguson': '🇳🇿',
+      'rachin ravindra': '🇳🇿', 'michael bracewell': '🇳🇿', 'mark chapman': '🇳🇿',
+      'tom latham': '🇳🇿', 'will young': '🇳🇿',
+      // West Indies
+      'shai hope': '🌴', 'nicholas pooran': '🌴', 'andre russell': '🌴',
+      'shimron hetmyer': '🌴', 'roston chase': '🌴', 'jason holder': '🌴',
+      'alzarri joseph': '🌴', 'brandon king': '🌴', 'romario shepherd': '🌴',
+      'gudakesh motie': '🌴', 'akeal hosein': '🌴', 'evin lewis': '🌴',
+      'kyle mayers': '🌴', 'shamar joseph': '🌴', 'sherfane rutherford': '🌴',
+      // Pakistan
+      'babar azam': '🇵🇰', 'shaheen afridi': '🇵🇰', 'mohammad rizwan': '🇵🇰',
+      'fakhar zaman': '🇵🇰', 'haris rauf': '🇵🇰', 'shadab khan': '🇵🇰',
+      'iftikhar ahmed': '🇵🇰', 'naseem shah': '🇵🇰', 'saim ayub': '🇵🇰',
+      'mohammad amir': '🇵🇰', 'imad wasim': '🇵🇰', 'usama mir': '🇵🇰',
+      'sahibzada farhan': '🇵🇰', 'salman ali agha': '🇵🇰', 'abrar ahmed': '🇵🇰',
+      // Sri Lanka
+      'wanindu hasaranga': '🇱🇰', 'pathum nissanka': '🇱🇰', 'kusal mendis': '🇱🇰',
+      'charith asalanka': '🇱🇰', 'maheesh theekshana': '🇱🇰', 'dasun shanaka': '🇱🇰',
+      'dhananjaya de silva': '🇱🇰', 'matheesha pathirana': '🇱🇰', 'kusal perera': '🇱🇰',
+      'dunith wellalage': '🇱🇰',
+      // Bangladesh
+      'shakib al hasan': '🇧🇩', 'mustafizur rahman': '🇧🇩', 'litton das': '🇧🇩',
+      'tanzid hasan': '🇧🇩', 'taskin ahmed': '🇧🇩', 'towhid hridoy': '🇧🇩',
+      'mehidy hasan miraz': '🇧🇩', 'rishad hossain': '🇧🇩', 'tanzim hasan sakib': '🇧🇩',
+      // Afghanistan
+      'rashid khan': '🇦🇫', 'azmatullah omarzai': '🇦🇫', 'rahmanullah gurbaz': '🇦🇫',
+      'fazalhaq farooqi': '🇦🇫', 'naveen-ul-haq': '🇦🇫', 'mohammad nabi': '🇦🇫',
+      'najibullah zadran': '🇦🇫', 'mujeeb ur rahman': '🇦🇫', 'gulbadin naib': '🇦🇫',
+      'ibrahim zadran': '🇦🇫',
+      // Netherlands
+      'bas de leede': '🇳🇱', 'scott edwards': '🇳🇱', 'ryan klein': '🇳🇱',
+      'max o\'dowd': '🇳🇱', 'logan van beek': '🇳🇱', 'paul van meekeren': '🇳🇱',
+      'teja nidamanuru': '🇳🇱', 'vikramjit singh': '🇳🇱',
+      // Zimbabwe
+      'sikandar raza': '🇿🇼', 'sean williams': '🇿🇼', 'blessing muzarabani': '🇿🇼',
+      'craig ervine': '🇿🇼', 'regis chakabva': '🇿🇼', 'richard ngarava': '🇿🇼',
+      'luke jongwe': '🇿🇼',
+      // Ireland
+      'paul stirling': '🇮🇪', 'andrew balbirnie': '🇮🇪', 'josh little': '🇮🇪',
+      'lorcan tucker': '🇮🇪', 'mark adair': '🇮🇪', 'barry mccarthy': '🇮🇪',
+      'harry tector': '🇮🇪', 'gareth delany': '🇮🇪', 'george dockrell': '🇮🇪',
+      // Scotland
+      'richie berrington': '🏴󠁧󠁢󠁳󠁣󠁴󠁿', 'michael leask': '🏴󠁧󠁢󠁳󠁣󠁴󠁿', 'brad wheal': '🏴󠁧󠁢󠁳󠁣󠁴󠁿',
+      'brandon mcmullen': '🏴󠁧󠁢󠁳󠁣󠁴󠁿', 'george munsey': '🏴󠁧󠁢󠁳󠁣󠁴󠁿', 'mark watt': '🏴󠁧󠁢󠁳󠁣󠁴󠁿',
+      // Namibia
+      'gerhard erasmus': '🇳🇦', 'david wiese': '🇳🇦', 'jj smit': '🇳🇦',
+      'bernard scholtz': '🇳🇦', 'jan frylinck': '🇳🇦', 'ruben trumpelmann': '🇳🇦',
+      // Nepal
+      'sandeep lamichhane': '🇳🇵', 'kushal bhurtel': '🇳🇵', 'dipendra singh airee': '🇳🇵',
+      'rohit paudel': '🇳🇵', 'sompal kami': '🇳🇵',
+      // Oman
+      'aqib ilyas': '🇴🇲', 'zeeshan maqsood': '🇴🇲', 'ayaan khan': '🇴🇲',
+      // USA
+      'aaron jones': '🇺🇸', 'saurabh netravalkar': '🇺🇸', 'steven taylor': '🇺🇸',
+      'andries gous': '🇺🇸', 'monank patel': '🇺🇸', 'ali khan': '🇺🇸',
+      'corey anderson': '🇺🇸', 'nosthush kenjige': '🇺🇸',
+      // Canada
+      'navneet dhaliwal': '🇨🇦', 'aaron johnson': '🇨🇦', 'saad bin zafar': '🇨🇦',
+      'dilpreet bajwa': '🇨🇦', 'nicholas kirton': '🇨🇦',
+      // Uganda
+      'brian masaba': '🇺🇬', 'riazat ali shah': '🇺🇬', 'dinesh nakrani': '🇺🇬',
+      'simon ssesazi': '🇺🇬', 'henry ssenyondo': '🇺🇬',
+      // Papua New Guinea
+      'assad vala': '🇵🇬', 'lega siaka': '🇵🇬', 'sese bau': '🇵🇬',
+      'chad soper': '🇵🇬', 'norman vanua': '🇵🇬',
+    };
+
+    function getFlag(playerName) {
+      const key = playerName.toLowerCase().trim();
+      return PLAYER_FLAGS[key] || '';
+    }
+
     const API_URL = 'https://script.google.com/macros/s/AKfycbxA2g2ef2GsCNdwiZsfxBmp2jEgyhMqmQnDq7YH9U_sLihd_Wm5GeTcY42Ngfnq8WaD/exec';
     let DATA = null;
     let currentWeek = null;
+
     async function fetchData() {
       try {
         const res = await fetch(API_URL);
@@ -247,6 +387,7 @@
         document.getElementById('content').innerHTML = '<div class="loading">Failed to load data. Please try again later.</div>';
       }
     }
+
     function buildTabs() {
       const container = document.getElementById('tabsContainer');
       container.innerHTML = '';
@@ -264,6 +405,7 @@
         container.appendChild(btn);
       });
     }
+
     function renderWeek(weekKey) {
       document.querySelectorAll('.tab-btn').forEach(b => {
         b.classList.toggle('active', b.dataset.week === weekKey);
@@ -279,7 +421,7 @@
       html += '<div class="podium">';
       managers.slice(0, 3).forEach((m, i) => {
         const rank = i + 1;
-        const playerNames = m.players.map(p => p.name).join(', ');
+        const playerNames = m.players.map(p => getFlag(p.name) + ' ' + p.name).join(', ');
         html += '<div class="podium-card rank-' + rank + '">';
         html += '<div class="rank-badge">' + rank + '</div>';
         html += '<div class="podium-name">' + m.name + '</div>';
@@ -298,8 +440,9 @@
         html += '<div class="manager-total">' + m.totalPoints + ' pts</div>';
         html += '</div>';
         m.players.forEach(p => {
+          const flag = getFlag(p.name);
           html += '<div class="player-row">';
-          html += '<span class="player-name">' + p.name + '</span>';
+          html += '<span class="player-name">' + (flag ? '<span class="player-flag">' + flag + '</span>' : '') + p.name + '</span>';
           html += '<span><span class="player-pts">' + p.points + ' pts</span>';
           html += '<span class="slots-info">(' + p.slots + '/' + p.maxSlots + ' slots)</span></span>';
           html += '</div>';
@@ -309,6 +452,7 @@
       html += '</div>';
       document.getElementById('content').innerHTML = html;
     }
+
     fetchData();
   </script>
 </body>
