@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rocking Fantasy - WCT20 2026</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #1a1a2e;
+      --secondary: #16213e;
+      --accent: #e94560;
+      --gold: #ffd700;
+      --silver: #c0c0c0;
+      --bronze: #cd7f32;
+      --text: #eee;
+      --card-bg: #16213e;
+      --tab-active: #e94560;
+      --tab-inactive: #0f3460;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--primary);
+      color: var(--text);
+      min-height: 100vh;
+    }
+    .header {
+      background: linear-gradient(135deg, #0f3460, #1a1a2e);
+      padding: 20px;
+      text-align: center;
+      border-bottom: 3px solid var(--accent);
+    }
+    .header h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      background: linear-gradient(90deg, #ffd700, #e94560);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .badge {
+      display: inline-block;
+      background: var(--accent);
+      color: white;
+      padding: 4px 14px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      margin-top: 6px;
+      letter-spacing: 1px;
+    }
+    .tabs {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      padding: 16px 20px;
+      background: var(--secondary);
+      flex-wrap: wrap;
+    }
+    .tab-btn {
+      padding: 10px 28px;
+      border: none;
+      border-radius: 25px;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      background: var(--tab-inactive);
+      color: #aaa;
+    }
+    .tab-btn.active {
+      background: var(--accent);
+      color: white;
+      box-shadow: 0 4px 15px rgba(233, 69, 96, 0.4);
+    }
+    .tab-btn:hover:not(.active) {
+      background: #1a4a8a;
+      color: white;
+    }
+    .container { max-width: 1100px; margin: 0 auto; padding: 20px; }
+    .leaderboard-title {
+      text-align: center;
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      color: var(--gold);
+    }
+    .podium {
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      gap: 16px;
+      margin-bottom: 40px;
+      flex-wrap: wrap;
+    }
+    .podium-card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 20px 24px;
+      text-align: center;
+      position: relative;
+      transition: transform 0.3s;
+      min-width: 180px;
+    }
+    .podium-card:hover { transform: translateY(-5px); }
+    .podium-card.rank-1 {
+      border: 2px solid var(--gold);
+      order: 2;
+      min-height: 200px;
+    }
+    .podium-card.rank-2 {
+      border: 2px solid var(--silver);
+      order: 1;
+      min-height: 170px;
+    }
+    .podium-card.rank-3 {
+      border: 2px solid var(--bronze);
+      order: 3;
+      min-height: 150px;
+    }
+    .rank-badge {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 1.1rem;
+      margin: 0 auto 10px;
+      color: #1a1a2e;
+    }
+    .rank-1 .rank-badge { background: var(--gold); }
+    .rank-2 .rank-badge { background: var(--silver); }
+    .rank-3 .rank-badge { background: var(--bronze); }
+    .podium-name { font-size: 1.2rem; font-weight: 700; margin-bottom: 4px; }
+    .podium-points {
+      font-size: 1.8rem;
+      font-weight: 800;
+      background: linear-gradient(90deg, #ffd700, #e94560);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .podium-players { font-size: 0.7rem; color: #888; margin-top: 6px; }
+    .managers-title {
+      text-align: center;
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 16px;
+      color: #aaa;
+    }
+    .manager-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 16px;
+    }
+    .manager-card {
+      background: var(--card-bg);
+      border-radius: 14px;
+      padding: 18px;
+      border-left: 4px solid var(--accent);
+      transition: transform 0.2s;
+    }
+    .manager-card:hover { transform: translateY(-3px); }
+    .manager-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .manager-rank {
+      background: var(--accent);
+      color: white;
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700;
+      font-size: 0.8rem;
+    }
+    .manager-name { font-size: 1.1rem; font-weight: 700; flex: 1; margin-left: 10px; }
+    .manager-total { font-size: 1.3rem; font-weight: 800; color: var(--gold); }
+    .player-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 6px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      font-size: 0.85rem;
+    }
+    .player-row:last-child { border-bottom: none; }
+    .player-name { color: #ccc; }
+    .player-pts { font-weight: 700; color: #4ecca3; }
+    .slots-info { font-size: 0.7rem; color: #666; margin-left: 8px; }
+    .loading {
+      text-align: center;
+      padding: 80px 20px;
+      font-size: 1.2rem;
+      color: #666;
+    }
+    .spinner {
+      width: 40px; height: 40px;
+      border: 4px solid #333;
+      border-top: 4px solid var(--accent);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 20px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @media (max-width: 640px) {
+      .header h1 { font-size: 1.4rem; }
+      .podium { gap: 10px; }
+      .podium-card { min-width: 140px; padding: 14px 16px; }
+      .podium-points { font-size: 1.4rem; }
+      .manager-grid { grid-template-columns: 1fr; }
+      .tab-btn { padding: 8px 18px; font-size: 0.8rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1 id="tournamentName">Rocking Fantasy</h1>
+    <div class="badge" id="badgeText">Loading...</div>
+  </div>
+  <div class="tabs" id="tabsContainer"></div>
+  <div class="container">
+    <div id="content">
+      <div class="loading">
+        <div class="spinner"></div>
+        Loading scores...
+      </div>
+    </div>
+  </div>
+  <script>
+    const API_URL = 'https://script.googleusercontent.com/macros/echo?user_content_key=AY5xjrQe8dsZLjKTQvOgXrX6-BPMXwD4J1MHW4C0ytQpE7jKsuvYUzuyASGek06FpJawZvPCRVi_DYqZxtPcBjgb_m2t4tcFxplL1u_0NqNdHOPsdpghwhGi0HUmLHPR3IL6cNCTI2bOZFnf3slj7uswfvzaCRfL1lfaYyF2L5cXC_WhyH4Tf8jMlucJNq5eVceTjy47vqpTuOirmvpHDfA2AdFwCzwlXONxRvgQkng0inGvRtZ7noQ8MhEgAF7SQyTAf6sTr6KEYau3zTjuc33cPyDepPPjaA&lib=MyvOQJQvT0SoKUTekqbCIGugnXuxWEsqY';
+    let DATA = null;
+    let currentWeek = null;
+
+    async function fetchData() {
+      try {
+        const res = await fetch(API_URL);
+        DATA = await res.json();
+        document.getElementById('tournamentName').textContent = DATA.tournamentName || 'Rocking Fantasy';
+        document.getElementById('badgeText').textContent = DATA.badgeText || '';
+        buildTabs();
+        const weekKeys = Object.keys(DATA.weeks);
+        currentWeek = DATA.currentWeek && DATA.weeks[DATA.currentWeek] ? DATA.currentWeek : weekKeys[0];
+        renderWeek(currentWeek);
+      } catch (err) {
+        document.getElementById('content').innerHTML = '<div class="loading">Failed to load data. Please try again later.</div>';
+      }
+    }
+
+    function buildTabs() {
+      const container = document.getElementById('tabsContainer');
+      container.innerHTML = '';
+      Object.keys(DATA.weeks).forEach(key => {
+        const btn = document.createElement('button');
+        btn.className = 'tab-btn';
+        btn.textContent = DATA.weeks[key].label || key;
+        btn.dataset.week = key;
+        btn.onclick = () => {
+          currentWeek = key;
+          renderWeek(key);
+          document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+        };
+        container.appendChild(btn);
+      });
+    }
+
+    function renderWeek(weekKey) {
+      document.querySelectorAll('.tab-btn').forEach(b => {
+        b.classList.toggle('active', b.dataset.week === weekKey);
+      });
+      const weekData = DATA.weeks[weekKey];
+      if (!weekData || !weekData.managers) {
+        document.getElementById('content').innerHTML = '<div class="loading">No data for this week.</div>';
+        return;
+      }
+      const managers = weekData.managers;
+      let html = '';
+      html += '<div class="leaderboard-title">&#127942; Leaderboard</div>';
+      html += '<div class="podium">';
+      managers.slice(0, 3).forEach((m, i) => {
+        const rank = i + 1;
+        const playerNames = m.players.map(p => p.name).join(', ');
+        html += '<div class="podium-card rank-' + rank + '">';
+        html += '<div class="rank-badge">' + rank + '</div>';
+        html += '<div class="podium-name">' + m.name + '</div>';
+        html += '<div class="podium-points">' + m.totalPoints + '</div>';
+        html += '<div class="podium-players">' + playerNames + '</div>';
+        html += '</div>';
+      });
+      html += '</div>';
+      html += '<div class="managers-title">All Managers</div>';
+      html += '<div class="manager-grid">';
+      managers.forEach((m, i) => {
+        html += '<div class="manager-card">';
+        html += '<div class="manager-header">';
+        html += '<div class="manager-rank">' + (m.rank || i + 1) + '</div>';
+        html += '<div class="manager-name">' + m.name + '</div>';
+        html += '<div class="manager-total">' + m.totalPoints + ' pts</div>';
+        html += '</div>';
+        m.players.forEach(p => {
+          html += '<div class="player-row">';
+          html += '<span class="player-name">' + p.name + '</span>';
+          html += '<span><span class="player-pts">' + p.points + ' pts</span>';
+          html += '<span class="slots-info">(' + p.slots + '/' + p.maxSlots + ' slots)</span></span>';
+          html += '</div>';
+        });
+        html += '</div>';
+      });
+      html += '</div>';
+      document.getElementById('content').innerHTML = html;
+    }
+
+    fetchData();
+  </script>
+</body>
+</html>
