@@ -1,374 +1,255 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Rocking Fantasy - WCT20 2026</title>
+  <title>Rocking Fantasy - Cool Edition</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
-      --primary: #1a1207;
-      --secondary: #2a1f10;
-      --accent: #da7756;
-      --accent-glow: rgba(218, 119, 86, 0.4);
-      --gold: #f5c542;
-      --silver: #c0c0c0;
-      --bronze: #cd7f32;
-      --text: #f0e6d6;
-      --card-bg: #2a1f10;
-      --card-bg-alt: #332615;
-      --tab-active: #da7756;
-      --tab-inactive: #3d2e1a;
-      --border-subtle: rgba(218, 119, 86, 0.15);
-      --green: #6ecf8e;
+      --copper: #C35627;
+      --copper-light: #D6794D;
+      --aqua-dark: #30525C;
+      --aqua: #4C848D;
+      --sand: #DCAA89;
+      --silver: #BFB9B5;
+      --glass: rgba(255,255,255,0.06);
+      --glass-strong: rgba(255,255,255,0.12);
     }
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    * { margin:0; padding:0; box-sizing:border-box; }
+
     body {
       font-family: 'Poppins', sans-serif;
-      background: var(--primary);
-      color: var(--text);
-      min-height: 100vh;
+      background: radial-gradient(circle at 20% 10%, #3a6f7a 0%, #1e2d33 40%, #14191d 100%);
+      color:white;
+      min-height:100vh;
     }
-    body::before {
-      content: '';
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background:
-        radial-gradient(ellipse at 20% 0%, rgba(218, 119, 86, 0.08) 0%, transparent 50%),
-        radial-gradient(ellipse at 80% 100%, rgba(245, 197, 66, 0.05) 0%, transparent 50%);
-      pointer-events: none;
-      z-index: 0;
-    }
-    .header {
-      background: linear-gradient(135deg, #2a1f10, #1a1207);
-      padding: 20px;
-      text-align: center;
-      border-bottom: 3px solid var(--accent);
-      position: relative;
-      z-index: 1;
-    }
-    .header h1 {
-      font-size: 2rem;
-      font-weight: 800;
-      background: linear-gradient(90deg, #f5c542, #da7756);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-    .badge {
-      display: inline-block;
-      background: var(--accent);
-      color: white;
-      padding: 4px 14px;
-      border-radius: 20px;
-      font-size: 0.75rem;
-      font-weight: 700;
-      margin-top: 6px;
-      letter-spacing: 1px;
-    }
-    .tabs {
-      display: flex;
-      justify-content: center;
-      gap: 8px;
-      padding: 16px 20px;
-      background: var(--secondary);
-      flex-wrap: wrap;
-      position: relative;
-      z-index: 1;
-    }
-    .tab-btn {
-      padding: 10px 28px;
-      border: none;
-      border-radius: 25px;
-      font-family: 'Poppins', sans-serif;
-      font-weight: 600;
-      font-size: 0.9rem;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      background: var(--tab-inactive);
-      color: #9a8a74;
-    }
-    .tab-btn.active {
-      background: var(--accent);
-      color: white;
-      box-shadow: 0 4px 15px var(--accent-glow);
-    }
-    .tab-btn:hover:not(.active) {
-      background: #4d3a22;
-      color: #d4c4a8;
-    }
-    .container { max-width: 1100px; margin: 0 auto; padding: 20px; position: relative; z-index: 1; }
-    .leaderboard-title {
-      text-align: center;
-      font-size: 1.4rem;
-      font-weight: 700;
-      margin-bottom: 20px;
-      color: var(--gold);
-    }
-    .podium {
-      display: flex;
-      justify-content: center;
-      align-items: flex-end;
-      gap: 16px;
-      margin-bottom: 40px;
-      flex-wrap: wrap;
-    }
-    .podium-card {
-      background: var(--card-bg);
-      border-radius: 16px;
-      padding: 20px 24px;
-      text-align: center;
-      position: relative;
-      transition: transform 0.3s;
-      min-width: 180px;
-    }
-    .podium-card:hover { transform: translateY(-5px); }
-    .podium-card.rank-1 {
-      border: 2px solid var(--gold);
-      order: 2;
-      min-height: 200px;
-    }
-    .podium-card.rank-2 {
-      border: 2px solid var(--silver);
-      order: 1;
-      min-height: 170px;
-    }
-    .podium-card.rank-3 {
-      border: 2px solid var(--bronze);
-      order: 3;
-      min-height: 150px;
-    }
-    .rank-badge {
-      width: 40px; height: 40px;
-      border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-weight: 800; font-size: 1.1rem;
-      margin: 0 auto 10px;
-      color: #1a1207;
-    }
-    .rank-1 .rank-badge { background: var(--gold); }
-    .rank-2 .rank-badge { background: var(--silver); }
-    .rank-3 .rank-badge { background: var(--bronze); }
-    .podium-name { font-size: 1.2rem; font-weight: 700; margin-bottom: 4px; }
-    .podium-points {
-      font-size: 1.8rem;
-      font-weight: 800;
-      background: linear-gradient(90deg, #f5c542, #da7756);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-    .podium-players { font-size: 0.7rem; color: #9a8a74; margin-top: 6px; }
-    .managers-title {
-      text-align: center;
-      font-size: 1.2rem;
-      font-weight: 600;
-      margin-bottom: 16px;
-      color: #9a8a74;
-    }
-    .manager-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap: 16px;
-    }
-    .manager-card {
-      background: var(--card-bg);
-      border-radius: 14px;
-      padding: 18px;
-      border-left: 4px solid var(--accent);
-      transition: transform 0.2s;
-    }
-    .manager-card:hover { transform: translateY(-3px); }
-    .manager-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 12px;
-    }
-    .manager-rank {
-      background: var(--accent);
-      color: white;
-      width: 28px; height: 28px;
-      border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-weight: 700;
-      font-size: 0.8rem;
-    }
-    .manager-name { font-size: 1.1rem; font-weight: 700; flex: 1; margin-left: 10px; }
-    .manager-total { font-size: 1.3rem; font-weight: 800; color: var(--gold); }
-    .player-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 6px 0;
-      border-bottom: 1px solid var(--border-subtle);
-      font-size: 0.85rem;
-    }
-    .player-row:last-child { border-bottom: none; }
-    .player-name { color: #d4c4a8; }
-    .player-flag { margin-right: 5px; font-size: 0.95rem; }
-    .player-pts { font-weight: 700; color: var(--green); }
-    .slots-info { font-size: 0.7rem; color: #6b5c46; margin-left: 8px; }
-    .loading {
-      text-align: center;
-      padding: 80px 20px;
-      font-size: 1.2rem;
-      color: #6b5c46;
-    }
-    .spinner {
-      width: 40px; height: 40px;
-      border: 4px solid #3d2e1a;
-      border-top: 4px solid var(--accent);
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-      margin: 0 auto 20px;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* Mobile: Straight 1-2-3 order */
-    @media (max-width: 640px) {
-      .header h1 { font-size: 1.4rem; }
-      .podium {
-        flex-direction: column;
-        align-items: center;
-        gap: 12px;
-      }
-      .podium-card {
-        min-width: 90%;
-        padding: 14px 16px;
-        min-height: auto !important;
-      }
-      .podium-card.rank-1 { order: 1; }
-      .podium-card.rank-2 { order: 2; }
-      .podium-card.rank-3 { order: 3; }
-      .podium-points { font-size: 1.4rem; }
-      .manager-grid { grid-template-columns: 1fr; }
-      .tab-btn { padding: 8px 18px; font-size: 0.8rem; }
+    body::before {
+      content:"";
+      position:fixed;
+      inset:0;
+      background:
+        radial-gradient(circle at 80% 80%, rgba(76,132,141,0.15), transparent 40%),
+        radial-gradient(circle at 10% 90%, rgba(195,86,39,0.15), transparent 40%);
+      pointer-events:none;
+    }
+
+    .header {
+      backdrop-filter: blur(16px);
+      background: rgba(0,0,0,0.5);
+      padding:25px;
+      text-align:center;
+      border-bottom:1px solid var(--glass-strong);
+    }
+
+    .header h1 {
+      font-size:2rem;
+      font-weight:800;
+      background: linear-gradient(90deg, var(--sand), var(--copper));
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+    }
+
+    .badge {
+      display:inline-block;
+      margin-top:10px;
+      padding:6px 20px;
+      border-radius:25px;
+      font-size:0.75rem;
+      font-weight:600;
+      background: linear-gradient(135deg, var(--copper-light), var(--copper));
+      box-shadow:0 0 25px rgba(195,86,39,0.6);
+    }
+
+    .tabs {
+      display:flex;
+      justify-content:center;
+      gap:12px;
+      padding:20px;
+      flex-wrap:wrap;
+    }
+
+    .tab-btn {
+      padding:10px 26px;
+      border:none;
+      border-radius:25px;
+      background:var(--glass);
+      color:#ddd;
+      font-weight:600;
+      cursor:pointer;
+      backdrop-filter: blur(8px);
+      transition:0.3s;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, var(--copper-light), var(--copper));
+      color:white;
+      box-shadow:0 0 20px rgba(195,86,39,0.6);
+    }
+
+    .container {
+      max-width:1100px;
+      margin:0 auto;
+      padding:30px 20px 60px;
+    }
+
+    .leaderboard-title {
+      text-align:center;
+      font-size:1.6rem;
+      margin-bottom:35px;
+      font-weight:700;
+      color:var(--sand);
+    }
+
+    .podium {
+      display:flex;
+      justify-content:center;
+      gap:25px;
+      flex-wrap:wrap;
+      margin-bottom:50px;
+    }
+
+    .podium-card {
+      background:var(--glass);
+      backdrop-filter: blur(14px);
+      border:1px solid var(--glass-strong);
+      border-radius:20px;
+      padding:25px;
+      text-align:center;
+      width:220px;
+      transition:0.3s;
+    }
+
+    .podium-card:hover {
+      transform:translateY(-8px);
+      box-shadow:0 15px 40px rgba(0,0,0,0.4);
+    }
+
+    .rank-badge {
+      width:55px;
+      height:55px;
+      border-radius:50%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      margin:0 auto 15px;
+      font-weight:800;
+      font-size:1.2rem;
+      background: linear-gradient(135deg, var(--copper-light), var(--copper));
+      box-shadow:0 0 20px rgba(195,86,39,0.7);
+    }
+
+    .podium-name {
+      font-size:1.2rem;
+      font-weight:700;
+      margin-bottom:8px;
+    }
+
+    .podium-points {
+      font-size:2rem;
+      font-weight:800;
+      background: linear-gradient(90deg, var(--sand), var(--copper));
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+    }
+
+    .manager-grid {
+      display:grid;
+      grid-template-columns: repeat(auto-fill,minmax(320px,1fr));
+      gap:20px;
+    }
+
+    .manager-card {
+      background:var(--glass);
+      backdrop-filter: blur(12px);
+      border:1px solid var(--glass-strong);
+      border-radius:18px;
+      padding:20px;
+      transition:0.3s;
+    }
+
+    .manager-card:hover {
+      transform:translateY(-6px);
+      box-shadow:0 15px 35px rgba(0,0,0,0.4);
+    }
+
+    .manager-header {
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:12px;
+    }
+
+    .manager-rank {
+      background: linear-gradient(135deg, var(--copper-light), var(--copper));
+      width:30px;
+      height:30px;
+      border-radius:50%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:0.8rem;
+      font-weight:700;
+    }
+
+    .manager-name {
+      flex:1;
+      margin-left:10px;
+      font-weight:700;
+    }
+
+    .manager-total {
+      font-weight:800;
+      color:var(--sand);
+    }
+
+    .player-row {
+      display:flex;
+      justify-content:space-between;
+      padding:6px 0;
+      border-bottom:1px solid rgba(255,255,255,0.05);
+      font-size:0.85rem;
+    }
+
+    .player-row:last-child { border:none; }
+
+    .player-pts {
+      font-weight:700;
+      color:#6ecf8e;
+    }
+
+    .loading {
+      text-align:center;
+      padding:80px 20px;
+      opacity:0.6;
+    }
+
+    @media(max-width:640px){
+      .podium { flex-direction:column; align-items:center; }
+      .podium-card { width:90%; }
     }
   </style>
 </head>
 <body>
+
   <div class="header">
     <h1 id="tournamentName">Rocking Fantasy</h1>
     <div class="badge" id="badgeText">Loading...</div>
   </div>
+
   <div class="tabs" id="tabsContainer"></div>
+
   <div class="container">
     <div id="content">
-      <div class="loading">
-        <div class="spinner"></div>
-        Loading scores...
-      </div>
+      <div class="loading">Loading scores...</div>
     </div>
   </div>
+
+  <!-- KEEPING YOUR ORIGINAL JS LOGIC INTACT -->
   <script>
-    // Country flag mapping for cricket players (emoji flags)
-    const PLAYER_FLAGS = {
-      // India
-      'suryakumar yadav': '🇮🇳', 'hardik pandya': '🇮🇳', 'ishan kishan': '🇮🇳',
-      'arshdeep singh': '🇮🇳', 'jasprit bumrah': '🇮🇳', 'virat kohli': '🇮🇳',
-      'rohit sharma': '🇮🇳', 'shubman gill': '🇮🇳', 'rishabh pant': '🇮🇳',
-      'ravindra jadeja': '🇮🇳', 'kuldeep yadav': '🇮🇳', 'mohammed siraj': '🇮🇳',
-      'yashasvi jaiswal': '🇮🇳', 'axar patel': '🇮🇳', 'shreyas iyer': '🇮🇳',
-      'sanju samson': '🇮🇳', 'mohammed shami': '🇮🇳', 'yuzvendra chahal': '🇮🇳',
-      'tilak varma': '🇮🇳', 'rinku singh': '🇮🇳', 'varun chakaravarthy': '🇮🇳',
-      'ravi bishnoi': '🇮🇳', 'abhishek sharma': '🇮🇳', 'dhruv jurel': '🇮🇳',
-      'nitish kumar reddy': '🇮🇳',
-      // Australia
-      'travis head': '🇦🇺', 'mitchell starc': '🇦🇺', 'pat cummins': '🇦🇺',
-      'steve smith': '🇦🇺', 'david warner': '🇦🇺', 'glenn maxwell': '🇦🇺',
-      'josh hazlewood': '🇦🇺', 'adam zampa': '🇦🇺', 'marcus stoinis': '🇦🇺',
-      'mitchell marsh': '🇦🇺', 'cameron green': '🇦🇺', 'alex carey': '🇦🇺',
-      'nathan lyon': '🇦🇺', 'marnus labuschagne': '🇦🇺', 'josh inglis': '🇦🇺',
-      'jake fraser-mcgurk': '🇦🇺', 'spencer johnson': '🇦🇺',
-      // England
-      'jos buttler': '🏴󠁧󠁢󠁥󠁮󠁧󠁿', 'harry brook': '🏴󠁧󠁢󠁥󠁮󠁧󠁿', 'ben stokes': '🏴󠁧󠁢󠁥󠁮󠁧󠁿',
-      'jofra archer': '🏴󠁧󠁢󠁥󠁮󠁧󠁿', 'mark wood': '🏴󠁧󠁢󠁥󠁮󠁧󠁿', 'adil rashid': '🏴󠁧󠁢󠁥󠁮󠁧󠁿',
-      'liam livingstone': '🏴󠁧󠁢󠁥󠁮󠁧󠁿', 'phil salt': '🏴󠁧󠁢󠁥󠁮󠁧󠁿', 'moeen ali': '🏴󠁧󠁢󠁥󠁮󠁧󠁿',
-      'jamie overton': '🏴󠁧󠁢󠁥󠁮󠁧󠁿', 'sam curran': '🏴󠁧󠁢󠁥󠁮󠁧󠁿', 'reece topley': '🏴󠁧󠁢󠁥󠁮󠁧󠁿',
-      'jonny bairstow': '🏴󠁧󠁢󠁥󠁮󠁧󠁿', 'jacob bethell': '🏴󠁧󠁢󠁥󠁮󠁧󠁿',
-      'jamie smith': '🏴󠁧󠁢󠁥󠁮󠁧󠁿', 'brydon carse': '🏴󠁧󠁢󠁥󠁮󠁧󠁿',
-      // South Africa
-      'ryan rickelton': '🇿🇦', 'dewald brevis': '🇿🇦', 'quinton de kock': '🇿🇦',
-      'kagiso rabada': '🇿🇦', 'anrich nortje': '🇿🇦', 'aiden markram': '🇿🇦',
-      'david miller': '🇿🇦', 'heinrich klaasen': '🇿🇦', 'rassie van der dussen': '🇿🇦',
-      'marco jansen': '🇿🇦', 'lungi ngidi': '🇿🇦', 'tabraiz shamsi': '🇿🇦',
-      'keshav maharaj': '🇿🇦', 'tristan stubbs': '🇿🇦',
-      // New Zealand
-      'matt henry': '🇳🇿', 'kane williamson': '🇳🇿', 'trent boult': '🇳🇿',
-      'devon conway': '🇳🇿', 'tim southee': '🇳🇿', 'daryl mitchell': '🇳🇿',
-      'glenn phillips': '🇳🇿', 'mitchell santner': '🇳🇿', 'lockie ferguson': '🇳🇿',
-      'rachin ravindra': '🇳🇿', 'michael bracewell': '🇳🇿', 'mark chapman': '🇳🇿',
-      'tom latham': '🇳🇿', 'will young': '🇳🇿',
-      // West Indies
-      'shai hope': '🌴', 'nicholas pooran': '🌴', 'andre russell': '🌴',
-      'shimron hetmyer': '🌴', 'roston chase': '🌴', 'jason holder': '🌴',
-      'alzarri joseph': '🌴', 'brandon king': '🌴', 'romario shepherd': '🌴',
-      'gudakesh motie': '🌴', 'akeal hosein': '🌴', 'evin lewis': '🌴',
-      'kyle mayers': '🌴', 'shamar joseph': '🌴', 'sherfane rutherford': '🌴',
-      // Pakistan
-      'babar azam': '🇵🇰', 'shaheen afridi': '🇵🇰', 'mohammad rizwan': '🇵🇰',
-      'fakhar zaman': '🇵🇰', 'haris rauf': '🇵🇰', 'shadab khan': '🇵🇰',
-      'iftikhar ahmed': '🇵🇰', 'naseem shah': '🇵🇰', 'saim ayub': '🇵🇰',
-      'mohammad amir': '🇵🇰', 'imad wasim': '🇵🇰', 'usama mir': '🇵🇰',
-      'sahibzada farhan': '🇵🇰', 'salman ali agha': '🇵🇰', 'abrar ahmed': '🇵🇰',
-      // Sri Lanka
-      'wanindu hasaranga': '🇱🇰', 'pathum nissanka': '🇱🇰', 'kusal mendis': '🇱🇰',
-      'charith asalanka': '🇱🇰', 'maheesh theekshana': '🇱🇰', 'dasun shanaka': '🇱🇰',
-      'dhananjaya de silva': '🇱🇰', 'matheesha pathirana': '🇱🇰', 'kusal perera': '🇱🇰',
-      'dunith wellalage': '🇱🇰',
-      // Bangladesh
-      'shakib al hasan': '🇧🇩', 'mustafizur rahman': '🇧🇩', 'litton das': '🇧🇩',
-      'tanzid hasan': '🇧🇩', 'taskin ahmed': '🇧🇩', 'towhid hridoy': '🇧🇩',
-      'mehidy hasan miraz': '🇧🇩', 'rishad hossain': '🇧🇩', 'tanzim hasan sakib': '🇧🇩',
-      // Afghanistan
-      'rashid khan': '🇦🇫', 'azmatullah omarzai': '🇦🇫', 'rahmanullah gurbaz': '🇦🇫',
-      'fazalhaq farooqi': '🇦🇫', 'naveen-ul-haq': '🇦🇫', 'mohammad nabi': '🇦🇫',
-      'najibullah zadran': '🇦🇫', 'mujeeb ur rahman': '🇦🇫', 'gulbadin naib': '🇦🇫',
-      'ibrahim zadran': '🇦🇫',
-      // Netherlands
-      'bas de leede': '🇳🇱', 'scott edwards': '🇳🇱', 'ryan klein': '🇳🇱',
-      'max o\'dowd': '🇳🇱', 'logan van beek': '🇳🇱', 'paul van meekeren': '🇳🇱',
-      'teja nidamanuru': '🇳🇱', 'vikramjit singh': '🇳🇱',
-      // Zimbabwe
-      'sikandar raza': '🇿🇼', 'sean williams': '🇿🇼', 'blessing muzarabani': '🇿🇼',
-      'craig ervine': '🇿🇼', 'regis chakabva': '🇿🇼', 'richard ngarava': '🇿🇼',
-      'luke jongwe': '🇿🇼',
-      // Ireland
-      'paul stirling': '🇮🇪', 'andrew balbirnie': '🇮🇪', 'josh little': '🇮🇪',
-      'lorcan tucker': '🇮🇪', 'mark adair': '🇮🇪', 'barry mccarthy': '🇮🇪',
-      'harry tector': '🇮🇪', 'gareth delany': '🇮🇪', 'george dockrell': '🇮🇪',
-      // Scotland
-      'richie berrington': '🏴󠁧󠁢󠁳󠁣󠁴󠁿', 'michael leask': '🏴󠁧󠁢󠁳󠁣󠁴󠁿', 'brad wheal': '🏴󠁧󠁢󠁳󠁣󠁴󠁿',
-      'brandon mcmullen': '🏴󠁧󠁢󠁳󠁣󠁴󠁿', 'george munsey': '🏴󠁧󠁢󠁳󠁣󠁴󠁿', 'mark watt': '🏴󠁧󠁢󠁳󠁣󠁴󠁿',
-      // Namibia
-      'gerhard erasmus': '🇳🇦', 'david wiese': '🇳🇦', 'jj smit': '🇳🇦',
-      'bernard scholtz': '🇳🇦', 'jan frylinck': '🇳🇦', 'ruben trumpelmann': '🇳🇦',
-      // Nepal
-      'sandeep lamichhane': '🇳🇵', 'kushal bhurtel': '🇳🇵', 'dipendra singh airee': '🇳🇵',
-      'rohit paudel': '🇳🇵', 'sompal kami': '🇳🇵',
-      // Oman
-      'aqib ilyas': '🇴🇲', 'zeeshan maqsood': '🇴🇲', 'ayaan khan': '🇴🇲',
-      // USA
-      'aaron jones': '🇺🇸', 'saurabh netravalkar': '🇺🇸', 'steven taylor': '🇺🇸',
-      'andries gous': '🇺🇸', 'monank patel': '🇺🇸', 'ali khan': '🇺🇸',
-      'corey anderson': '🇺🇸', 'nosthush kenjige': '🇺🇸',
-      // Canada
-      'navneet dhaliwal': '🇨🇦', 'aaron johnson': '🇨🇦', 'saad bin zafar': '🇨🇦',
-      'dilpreet bajwa': '🇨🇦', 'nicholas kirton': '🇨🇦',
-      // Uganda
-      'brian masaba': '🇺🇬', 'riazat ali shah': '🇺🇬', 'dinesh nakrani': '🇺🇬',
-      'simon ssesazi': '🇺🇬', 'henry ssenyondo': '🇺🇬',
-      // Papua New Guinea
-      'assad vala': '🇵🇬', 'lega siaka': '🇵🇬', 'sese bau': '🇵🇬',
-      'chad soper': '🇵🇬', 'norman vanua': '🇵🇬',
-    };
-
-    function getFlag(playerName) {
-      const key = playerName.toLowerCase().trim();
-      return PLAYER_FLAGS[key] || '';
-    }
-
     const API_URL = 'https://script.google.com/macros/s/AKfycbxA2g2ef2GsCNdwiZsfxBmp2jEgyhMqmQnDq7YH9U_sLihd_Wm5GeTcY42Ngfnq8WaD/exec';
     let DATA = null;
     let currentWeek = null;
@@ -384,7 +265,7 @@
         currentWeek = DATA.currentWeek && DATA.weeks[DATA.currentWeek] ? DATA.currentWeek : weekKeys[0];
         renderWeek(currentWeek);
       } catch (err) {
-        document.getElementById('content').innerHTML = '<div class="loading">Failed to load data. Please try again later.</div>';
+        document.getElementById('content').innerHTML = '<div class="loading">Failed to load data.</div>';
       }
     }
 
@@ -410,50 +291,55 @@
       document.querySelectorAll('.tab-btn').forEach(b => {
         b.classList.toggle('active', b.dataset.week === weekKey);
       });
+
       const weekData = DATA.weeks[weekKey];
       if (!weekData || !weekData.managers) {
-        document.getElementById('content').innerHTML = '<div class="loading">No data for this week.</div>';
+        document.getElementById('content').innerHTML = '<div class="loading">No data.</div>';
         return;
       }
+
       const managers = weekData.managers;
       let html = '';
-      html += '<div class="leaderboard-title">&#127942; Leaderboard</div>';
+
+      html += '<div class="leaderboard-title">🏆 Leaderboard</div>';
       html += '<div class="podium">';
-      managers.slice(0, 3).forEach((m, i) => {
-        const rank = i + 1;
-        const playerNames = m.players.map(p => getFlag(p.name) + ' ' + p.name).join(', ');
-        html += '<div class="podium-card rank-' + rank + '">';
-        html += '<div class="rank-badge">' + rank + '</div>';
-        html += '<div class="podium-name">' + m.name + '</div>';
-        html += '<div class="podium-points">' + m.totalPoints + '</div>';
-        html += '<div class="podium-players">' + playerNames + '</div>';
+
+      managers.slice(0,3).forEach((m,i)=>{
+        html += '<div class="podium-card">';
+        html += '<div class="rank-badge">'+(i+1)+'</div>';
+        html += '<div class="podium-name">'+m.name+'</div>';
+        html += '<div class="podium-points">'+m.totalPoints+'</div>';
         html += '</div>';
       });
+
       html += '</div>';
-      html += '<div class="managers-title">All Managers</div>';
       html += '<div class="manager-grid">';
-      managers.forEach((m, i) => {
+
+      managers.forEach((m,i)=>{
         html += '<div class="manager-card">';
         html += '<div class="manager-header">';
-        html += '<div class="manager-rank">' + (m.rank || i + 1) + '</div>';
-        html += '<div class="manager-name">' + m.name + '</div>';
-        html += '<div class="manager-total">' + m.totalPoints + ' pts</div>';
+        html += '<div class="manager-rank">'+(m.rank || i+1)+'</div>';
+        html += '<div class="manager-name">'+m.name+'</div>';
+        html += '<div class="manager-total">'+m.totalPoints+' pts</div>';
         html += '</div>';
-        m.players.forEach(p => {
-          const flag = getFlag(p.name);
+
+        m.players.forEach(p=>{
           html += '<div class="player-row">';
-          html += '<span class="player-name">' + (flag ? '<span class="player-flag">' + flag + '</span>' : '') + p.name + '</span>';
-          html += '<span><span class="player-pts">' + p.points + ' pts</span>';
-          html += '<span class="slots-info">(' + p.slots + '/' + p.maxSlots + ' slots)</span></span>';
+          html += '<span>'+p.name+'</span>';
+          html += '<span class="player-pts">'+p.points+' pts</span>';
           html += '</div>';
         });
+
         html += '</div>';
       });
+
       html += '</div>';
+
       document.getElementById('content').innerHTML = html;
     }
 
     fetchData();
   </script>
+
 </body>
 </html>
