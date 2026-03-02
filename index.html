@@ -68,6 +68,22 @@
       box-shadow:0 0 25px rgba(195,86,39,0.6);
     }
 
+
+    /* ═══ Header band for top-level view tabs (to separate from Week tabs) ═══ */
+    .view-tabs-band{
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      padding: 14px 12px 6px;
+      backdrop-filter: blur(18px);
+      background: rgba(0,0,0,0.42);
+      border-bottom: 1px solid var(--glass-strong);
+    }
+
+    /* ICC logo in auth header */
+    .sf-hdr{ display:flex; align-items:center; justify-content:center; gap:10px; }
+    .icc-logo{ width: 28px; height: 28px; object-fit: contain; filter: drop-shadow(0 6px 14px rgba(0,0,0,0.35)); }
+    .team-flag{ font-size: 1.05rem; margin-right: 6px; line-height: 1; }
     /* ═══ Top-level view tabs (Super8s / SF Entries / SF Leaderboard) ═══ */
     .view-tabs {
       display:flex;
@@ -247,7 +263,7 @@
       display: block; font-size: 0.8rem; opacity: 0.75; margin-bottom: 5px; font-weight: 500;
     }
     .sf-group select, .sf-group input {
-      width: 100%; padding: 12px 14px;
+      width: 100%; padding: 14px 14px; min-height: 52px;
       background: rgba(0,0,0,0.35); border: 1px solid var(--glass-strong);
       border-radius: 14px; color: #fff; font-size: 0.9rem;
       font-family: 'Poppins', sans-serif; outline: none; transition: 0.3s;
@@ -270,7 +286,8 @@
     .team-badge.IND { background: var(--ind); }
     .team-badge.SA  { background: var(--sa); }
     .team-badge.NZ  { background: var(--nz); border-color: rgba(255,255,255,0.25); }
-    .team-pick select { flex: 1; }
+    .team-pick { justify-content: center; }
+    .team-pick select { flex: 0 1 520px; min-height: 54px; }
 
     .sf-btn {
       display: flex; align-items: center; justify-content: center; gap: 8px;
@@ -397,16 +414,18 @@
   </div>
 
   <!-- ═══ Top-level view tabs ═══ -->
-  <div class="view-tabs">
-    <button class="view-btn active" data-view="super8s">📊 Leaderboard</button>
-    <button class="view-btn" data-view="sf-entries">🏏 SF Entries</button>
-    <button class="view-btn" data-view="sf-lb">🏆 SF Leaderboard</button>
+  <div class="view-tabs-band">
+    <div class="view-tabs">
+    <button class="view-btn" data-view="super8s">📊 Archived Leaderboard</button>
+    <button class="view-btn active" data-view="sf-entries">🏏 Playoff Entries</button>
+    <button class="view-btn" data-view="sf-lb">🏆 Playoff Leaderboard</button>
+    </div>
   </div>
 
   <!-- ════════════════════════════════════════════════════════
        VIEW 1: Super 8s (EXISTING — Week1, Week2, Super8s)
        ════════════════════════════════════════════════════════ -->
-  <div class="view-panel active" id="vp-super8s">
+  <div class="view-panel" id="vp-super8s">
     <div class="tabs" id="tabsContainer"></div>
     <div class="container">
       <div id="content">
@@ -418,7 +437,7 @@
   <!-- ════════════════════════════════════════════════════════
        VIEW 2: SF Entries
        ════════════════════════════════════════════════════════ -->
-  <div class="view-panel" id="vp-sf-entries">
+  <div class="view-panel active" id="vp-sf-entries">
     <div class="container">
 
       <div class="sf-countdown" id="cdBar">
@@ -428,16 +447,16 @@
 
       <!-- Auth -->
       <div class="sf-section" id="authBox">
-        <h3>🔐 Your Identity</h3>
+        <h3 class="sf-hdr"><img src="icc_logo.png" alt="ICC T20 WC" class="icc-logo">Pick your players</h3>
         <div class="sf-group">
           <label>Select your name</label>
           <select id="mgrSel"><option value="">Loading…</option></select>
         </div>
-        <div class="sf-group">
-          <label>Your secret code</label>
+        <div class="sf-group" id="codeGroup">
+          <label>Enter your passcode</label>
           <input type="password" id="codeIn" placeholder="Min 4 characters" maxlength="20">
         </div>
-        <button class="sf-btn sf-btn-outline" onclick="doAuth()">Verify & Continue</button>
+        <button class="sf-btn sf-btn-outline" id="authBtn" onclick="doAuth()">Verify & Continue</button>
         <div class="sf-msg" id="authMsg"></div>
       </div>
 
@@ -447,10 +466,10 @@
         <p style="opacity:0.6;font-size:0.8rem;margin-bottom:16px">
           1 player from each team. Update anytime — only last entry before deadline counts.
         </p>
-        <div class="team-pick"><div class="team-badge ENG">ENG</div><select id="pk-ENG" class="sf-group"><option value="">Select ENG player</option></select></div>
-        <div class="team-pick"><div class="team-badge IND">IND</div><select id="pk-IND" class="sf-group"><option value="">Select IND player</option></select></div>
-        <div class="team-pick"><div class="team-badge SA">SA</div><select id="pk-SA" class="sf-group"><option value="">Select SA player</option></select></div>
-        <div class="team-pick"><div class="team-badge NZ">NZ</div><select id="pk-NZ" class="sf-group"><option value="">Select NZ player</option></select></div>
+        <div class="team-pick"><div class="team-badge ENG"><span class="team-flag">🇬🇧</span>ENG</div><select id="pk-ENG" class="sf-group"><option value="">Select ENG player</option></select></div>
+        <div class="team-pick"><div class="team-badge IND"><span class="team-flag">🇮🇳</span>IND</div><select id="pk-IND" class="sf-group"><option value="">Select IND player</option></select></div>
+        <div class="team-pick"><div class="team-badge SA"><span class="team-flag">🇿🇦</span>SA</div><select id="pk-SA" class="sf-group"><option value="">Select SA player</option></select></div>
+        <div class="team-pick"><div class="team-badge NZ"><span class="team-flag">🇳🇿</span>NZ</div><select id="pk-NZ" class="sf-group"><option value="">Select NZ player</option></select></div>
         <button class="sf-btn sf-btn-primary" id="subBtn" onclick="submitPicks()">✅ Submit Entry</button>
         <div class="sf-msg" id="subMsg"></div>
         <div id="histBox" style="margin-top:18px"></div>
@@ -592,6 +611,7 @@
     // VIEW SWITCHING
     // ═══════════════════════════════════════════════════
     let _mgr = null, _code = null, _teams = {};
+    let _mgrHasCode = {};
 
     document.querySelectorAll('.view-btn').forEach(b => {
       b.onclick = () => {
@@ -671,9 +691,12 @@
       }
       const managers = weekData.managers;
       let html = '';
-      html += '<div class="leaderboard-title">🏆 Leaderboard</div>';
+      html += '<div class="leaderboard-title">🏆 Archived Leaderboard</div>';
       html += '<div class="podium">';
-      const medals = ['🥇','🥈','🥉'];
+      let medals = ['🥇','🥈','🥉'];
+      if (managers[1] && managers[2] && String(managers[1].totalPoints) === String(managers[2].totalPoints)) {
+        medals = ['🥇','🥈','🥈'];
+      }
       managers.slice(0,3).forEach((m,i) => {
         html += '<div class="podium-card"><div class="rank-badge">'+(medals[i]||(i+1))+'</div>';
         html += '<div class="podium-name">'+m.name+'</div>';
@@ -736,11 +759,15 @@
           const sel = document.getElementById('mgrSel');
           sel.innerHTML = '<option value="">— Select your name —</option>';
           r.managers.forEach(m => {
+            _mgrHasCode[m.name] = !!m.hasCode;
             const o = document.createElement('option'); o.value=m.name;
             o.textContent = m.name + (m.hasCode ? '' : ' (new)');
             sel.appendChild(o);
           });
+          sel.onchange = refreshAuthUI;
+          refreshAuthUI();
           if (_mgr) sel.value = _mgr;
+          refreshAuthUI();
         }
       } catch(e) { console.error(e); }
 
@@ -760,13 +787,55 @@
       if (_mgr) { document.getElementById('mgrSel').value=_mgr; document.getElementById('pickBox').style.display=''; loadHist(); }
     }
 
+
+    function refreshAuthUI(){
+      const mgr = document.getElementById('mgrSel').value;
+      const has = _mgrHasCode[mgr];
+      const codeGroup = document.getElementById('codeGroup');
+      const authBtn = document.getElementById('authBtn');
+      const msg = document.getElementById('authMsg');
+      msg.className = 'sf-msg'; msg.style.display='none';
+      if(!mgr){
+        codeGroup.style.display='';
+        authBtn.textContent='Verify & Continue';
+        authBtn.disabled=false;
+        return;
+      }
+      if(has){
+        codeGroup.style.display='';
+        authBtn.textContent='Verify & Continue';
+        authBtn.disabled=false;
+      }else{
+        codeGroup.style.display='none';  // first-time manager: don't show passcode input yet
+        authBtn.textContent='Set Passcode';
+        authBtn.disabled=false;
+        sfMsg(msg,'inf','First time here — set a passcode to continue.');
+      }
+    }
+
     async function doAuth() {
       const mgr = document.getElementById('mgrSel').value;
-      const code = document.getElementById('codeIn').value.trim();
+      const has = _mgrHasCode[mgr];
+      const codeInEl = document.getElementById('codeIn');
+      const code = (codeInEl ? codeInEl.value.trim() : '');
       const m = document.getElementById('authMsg');
+      const btn = document.getElementById('authBtn');
       m.className='sf-msg'; m.style.display='none';
+
       if (!mgr) { sfMsg(m,'err','Select your name.'); return; }
-      if (code.length<4) { sfMsg(m,'err','Code must be at least 4 characters.'); return; }
+
+      // First-time manager: set passcode first (no "enter passcode" field shown)
+      if (has === false) {
+        document.getElementById('regOverlay').classList.remove('hide');
+        document.getElementById('regOverlay').dataset.mgr = mgr;
+        return;
+      }
+
+      if (code.length<4) { sfMsg(m,'err','Passcode must be at least 4 characters.'); return; }
+
+      btn.disabled = true;
+      btn.textContent = 'Verifying…';
+      sfMsg(m,'inf','Verifying… Please wait.');
       try {
         const r = await jp(SF_API+'?action=verify&manager='+enc(mgr)+'&code='+enc(code));
         if (r.ok) {
@@ -778,9 +847,10 @@
           document.getElementById('regOverlay').classList.remove('hide');
           document.getElementById('regOverlay').dataset.mgr = mgr;
         } else {
-          sfMsg(m,'err',r.message||'Verification failed.');
+          sfMsg(m,'err','Incorrect passcode.');
         }
       } catch(e) { sfMsg(m,'err','Network error. Try again.'); }
+      finally { refreshAuthUI(); }
     }
 
     async function regCode() {
@@ -793,10 +863,12 @@
         const r = await jp(SF_API+'?action=register&manager='+enc(mgr)+'&code='+enc(code));
         if (r.ok) {
           _mgr=mgr; _code=code;
+          _mgrHasCode[mgr] = true;
           document.getElementById('regOverlay').classList.add('hide');
           document.getElementById('codeIn').value=code;
-          sfMsg(document.getElementById('authMsg'),'ok','🔒 Code set! Pick your players below.');
+          sfMsg(document.getElementById('authMsg'),'ok','🔒 Passcode set! Pick your players below.');
           document.getElementById('pickBox').style.display='';
+          loadHist();
         } else { sfMsg(m,'err',r.message||'Failed.'); }
       } catch(e) { sfMsg(m,'err','Network error.'); }
     }
@@ -812,7 +884,7 @@
       btn.disabled=true; btn.textContent='Submitting…';
       try {
         const r = await jp(SF_API+'?action=submit&manager='+enc(_mgr)+'&code='+enc(_code)+'&week=SF&eng='+enc(eng)+'&ind='+enc(ind)+'&sa='+enc(sa)+'&nz='+enc(nz));
-        if (r.ok) { sfMsg(m,'ok','✅ '+r.message); loadHist(); }
+        if (r.ok) { sfMsg(m,'ok','✅ Entry submitted.'); loadHist(); }
         else { sfMsg(m,'err',r.message||'Failed.'); }
       } catch(e) { sfMsg(m,'err','Network error.'); }
       btn.disabled=false; btn.textContent='✅ Submit Entry';
@@ -831,7 +903,12 @@
           const lat = i===0;
           h += '<div class="sf-hist" style="'+(lat?'border-color:var(--copper-light)':'')+'">';
           h += '<div class="ts">'+(lat?'✅ LATEST — ':'')+dt.toLocaleString('en-IN',{timeZone:'Asia/Kolkata'})+'</div>';
-          h += '<div class="pk"><span style="color:#60a5fa">ENG:</span> '+esc(e.eng)+' · <span style="color:#fb923c">IND:</span> '+esc(e.ind)+' · <span style="color:#4ade80">SA:</span> '+esc(e.sa)+' · <span style="color:#e2e8f0">NZ:</span> '+esc(e.nz)+'</div>';
+          h += '<div class="pk">'+
+            '<span style="color:#60a5fa">ENG:</span> '+(getFlag(e.eng)?'<span class="player-flag">'+getFlag(e.eng)+'</span> ':'')+esc(e.eng)+' · '+
+            '<span style="color:#fb923c">IND:</span> '+(getFlag(e.ind)?'<span class="player-flag">'+getFlag(e.ind)+'</span> ':'')+esc(e.ind)+' · '+
+            '<span style="color:#4ade80">SA:</span> '+(getFlag(e.sa)?'<span class="player-flag">'+getFlag(e.sa)+'</span> ':'')+esc(e.sa)+' · '+
+            '<span style="color:#e2e8f0">NZ:</span> '+(getFlag(e.nz)?'<span class="player-flag">'+getFlag(e.nz)+'</span> ':'')+esc(e.nz)+'
+          +'</div>';
           h += '</div>';
         });
         sec.innerHTML = h;
@@ -856,7 +933,7 @@
         }
 
         // Podium for top 3
-        let html = '<div class="leaderboard-title">🏆 Semi-Final Leaderboard</div>';
+        let html = '<div class="leaderboard-title">🏆 Playoff Leaderboard</div>';
         const medals = ['🥇','🥈','🥉'];
         html += '<div class="podium">';
         r.leaderboard.slice(0,3).forEach((e,i) => {
@@ -888,6 +965,7 @@
     // INIT
     // ═══════════════════════════════════════════════════
     fetchData();
+    initEntries();
   </script>
 </body>
 </html>
