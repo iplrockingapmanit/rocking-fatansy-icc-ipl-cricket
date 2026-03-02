@@ -447,7 +447,7 @@
 
       <!-- Auth -->
       <div class="sf-section" id="authBox">
-        <h3 class="sf-hdr"><img src="icc_logo.png" alt="ICC T20 WC" class="icc-logo">Pick your players</h3>
+        <h3 class="sf-hdr"><img src="icc_logo.png" alt="ICC T20 WC" class="icc-logo" loading="lazy" onerror="this.style.display='none'">Pick your players</h3>
         <div class="sf-group">
           <label>Select your name</label>
           <select id="mgrSel"><option value="">Loading…</option></select>
@@ -907,8 +907,7 @@
             '<span style="color:#60a5fa">ENG:</span> '+(getFlag(e.eng)?'<span class="player-flag">'+getFlag(e.eng)+'</span> ':'')+esc(e.eng)+' · '+
             '<span style="color:#fb923c">IND:</span> '+(getFlag(e.ind)?'<span class="player-flag">'+getFlag(e.ind)+'</span> ':'')+esc(e.ind)+' · '+
             '<span style="color:#4ade80">SA:</span> '+(getFlag(e.sa)?'<span class="player-flag">'+getFlag(e.sa)+'</span> ':'')+esc(e.sa)+' · '+
-            '<span style="color:#e2e8f0">NZ:</span> '+(getFlag(e.nz)?'<span class="player-flag">'+getFlag(e.nz)+'</span> ':'')+esc(e.nz)+'
-          +'</div>';
+            '<span style="color:#e2e8f0">NZ:</span> '+(getFlag(e.nz)?'<span class="player-flag">'+getFlag(e.nz)+'</span> ':'')+esc(e.nz)+'</div>';
           h += '</div>';
         });
         sec.innerHTML = h;
