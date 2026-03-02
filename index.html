@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,6 +15,11 @@
       --silver: #BFB9B5;
       --glass: rgba(255,255,255,0.06);
       --glass-strong: rgba(255,255,255,0.12);
+      /* SF team colours */
+      --eng: #1d4ed8;
+      --ind: #ea580c;
+      --sa: #16a34a;
+      --nz: #222;
     }
 
     * { margin:0; padding:0; box-sizing:border-box; }
@@ -64,6 +68,37 @@
       box-shadow:0 0 25px rgba(195,86,39,0.6);
     }
 
+    /* ═══ Top-level view tabs (Super8s / SF Entries / SF Leaderboard) ═══ */
+    .view-tabs {
+      display:flex;
+      justify-content:center;
+      gap:10px;
+      padding:20px 20px 0;
+      flex-wrap:wrap;
+    }
+    .view-btn {
+      padding:10px 24px;
+      border:none;
+      border-radius:25px;
+      background:var(--glass);
+      color:#ddd;
+      font-family:'Poppins',sans-serif;
+      font-weight:600;
+      font-size:0.85rem;
+      cursor:pointer;
+      backdrop-filter: blur(8px);
+      transition:0.3s;
+    }
+    .view-btn:hover { background:var(--glass-strong); }
+    .view-btn.active {
+      background: linear-gradient(135deg, var(--copper-light), var(--copper));
+      color:white;
+      box-shadow:0 0 20px rgba(195,86,39,0.6);
+    }
+    .view-panel { display:none; }
+    .view-panel.active { display:block; }
+
+    /* ═══ Week tabs (inside Super 8s) ═══ */
     .tabs {
       display:flex;
       justify-content:center;
@@ -78,6 +113,7 @@
       border-radius:25px;
       background:var(--glass);
       color:#ddd;
+      font-family:'Poppins',sans-serif;
       font-weight:600;
       cursor:pointer;
       backdrop-filter: blur(8px);
@@ -122,57 +158,32 @@
       width:220px;
       transition:0.3s;
     }
-
     .podium-card:hover {
       transform:translateY(-8px);
       box-shadow:0 15px 40px rgba(0,0,0,0.4);
     }
-
-    
-    /* Podium medal badge (force size; overrides any accidental duplicates) */
     .podium-card .rank-badge {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 14px;
-      font-size: 2.5rem !important; /* 1/4 of previous 10rem */
-      line-height: 1 !important;
-      background: transparent !important;
-      box-shadow: none !important;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 14px; font-size: 2.5rem !important; line-height: 1 !important;
+      background: transparent !important; box-shadow: none !important;
       filter: drop-shadow(0 6px 14px rgba(0,0,0,0.25));
     }
-.podium-name {
-      font-size:1.2rem;
-      font-weight:700;
-      margin-bottom:8px;
-    }
-
+    .podium-name { font-size:1.2rem; font-weight:700; margin-bottom:8px; }
     .podium-points {
-      font-size:2rem;
-      font-weight:800;
+      font-size:2rem; font-weight:800;
       background: linear-gradient(90deg, var(--sand), var(--copper));
-      -webkit-background-clip:text;
-      -webkit-text-fill-color:transparent;
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent;
     }
 
-    .filter-bar{
-      display:flex;
-      justify-content:flex-end;
-      align-items:center;
-      gap:10px;
-      margin: 0 0 14px;
+    .filter-bar { display:flex; justify-content:flex-end; align-items:center; gap:10px; margin:0 0 14px; }
+    .filter-label { font-size:0.85rem; opacity:0.8; }
+    .filter-select {
+      background: var(--glass); border: 1px solid var(--glass-strong);
+      color: #fff; border-radius: 12px; padding: 8px 12px;
+      backdrop-filter: blur(10px); outline: none; font-family:'Poppins',sans-serif;
     }
-    .filter-label{ font-size:0.85rem; opacity:0.8; }
-    .filter-select{
-      background: var(--glass);
-      border: 1px solid var(--glass-strong);
-      color: #fff;
-      border-radius: 12px;
-      padding: 8px 12px;
-      backdrop-filter: blur(10px);
-      outline: none;
-    }
-    .filter-select option{ color:#111; }
+    .filter-select option { color:#111; }
+
     .manager-grid {
       display:grid;
       grid-template-columns: repeat(auto-fill,minmax(320px,1fr));
@@ -187,145 +198,195 @@
       padding:20px;
       transition:0.3s;
     }
-
     .manager-card:hover {
       transform:translateY(-6px);
       box-shadow:0 15px 35px rgba(0,0,0,0.4);
     }
 
     .manager-header {
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      margin-bottom:12px;
+      display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;
     }
-
     .manager-rank {
       background: linear-gradient(135deg, var(--copper-light), var(--copper));
-      width:30px;
-      height:30px;
-      border-radius:50%;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-size:0.8rem;
-      font-weight:700;
+      width:30px; height:30px; border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
+      font-size:0.8rem; font-weight:700;
     }
-
-    .manager-name {
-      flex:1;
-      margin-left:10px;
-      font-weight:700;
-    }
-
-    .manager-total {
-      font-weight:800;
-      color:var(--sand);
-    }
+    .manager-name { flex:1; margin-left:10px; font-weight:700; }
+    .manager-total { font-weight:800; color:var(--sand); }
 
     .player-row {
-      display: grid;
-      grid-template-columns: 1fr auto auto;
-      align-items: center;
-      gap: 12px;
-      padding: 6px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.05);
-      font-size: 0.85rem;
+      display: grid; grid-template-columns: 1fr auto auto;
+      align-items: center; gap: 12px; padding: 6px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 0.85rem;
     }
-.player-row:last-child { border:none; }
+    .player-row:last-child { border:none; }
+    .player-pts { font-weight: 700; color: #6ecf8e; text-align: right; min-width: 64px; }
+    .slots-info { font-size: 0.75rem; opacity: 0.75; margin-left: 6px; }
+    .player-row .slots-info { margin-left: 0; text-align: right; min-width: 54px; opacity: 0.85; }
+    .player-name { display: inline-flex; align-items: center; gap: 8px; }
+    .player-flag { font-size: 1.05rem; line-height: 1; filter: drop-shadow(0 2px 6px rgba(0,0,0,0.25)); }
 
-    .player-pts {
-      font-weight: 700;
-      color: #6ecf8e;
-      text-align: right;
-      min-width: 64px;
-    }
-.slots-info {
-      font-size: 0.75rem;
-      opacity: 0.75;
-      margin-left: 6px;
-    }
-    .player-row .slots-info {
-      margin-left: 0;
-      text-align: right;
-      min-width: 54px;
-      opacity: 0.85;
-    }
+    .loading { text-align:center; padding:80px 20px; opacity:0.6; }
 
-    .player-name {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
+    /* ═══ SF Form Elements (matching existing glass style) ═══ */
+    .sf-section {
+      background: var(--glass);
+      backdrop-filter: blur(14px);
+      border: 1px solid var(--glass-strong);
+      border-radius: 20px;
+      padding: 24px;
+      margin-bottom: 18px;
     }
-    .player-flag {
-      font-size: 1.05rem;
-      line-height: 1;
-      filter: drop-shadow(0 2px 6px rgba(0,0,0,0.25));
+    .sf-section h3 {
+      font-size: 0.95rem; color: var(--sand); margin-bottom: 16px;
+      font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
     }
-
-
-    .loading {
-      text-align:center;
-      padding:80px 20px;
-      opacity:0.6;
+    .sf-group { margin-bottom: 14px; }
+    .sf-group label {
+      display: block; font-size: 0.8rem; opacity: 0.75; margin-bottom: 5px; font-weight: 500;
     }
+    .sf-group select, .sf-group input {
+      width: 100%; padding: 12px 14px;
+      background: rgba(0,0,0,0.35); border: 1px solid var(--glass-strong);
+      border-radius: 14px; color: #fff; font-size: 0.9rem;
+      font-family: 'Poppins', sans-serif; outline: none; transition: 0.3s;
+      backdrop-filter: blur(8px);
+    }
+    .sf-group select:focus, .sf-group input:focus {
+      border-color: var(--copper-light);
+      box-shadow: 0 0 12px rgba(195,86,39,0.25);
+    }
+    .sf-group select option { background: #1e2d33; color: #fff; }
 
-    
+    .team-pick { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+    .team-badge {
+      width: 48px; height: 48px; border-radius: 14px; display: flex;
+      align-items: center; justify-content: center; font-weight: 700;
+      font-size: 0.72rem; letter-spacing: 1px; flex-shrink: 0; color: #fff;
+      border: 1px solid rgba(255,255,255,0.15);
+    }
+    .team-badge.ENG { background: var(--eng); }
+    .team-badge.IND { background: var(--ind); }
+    .team-badge.SA  { background: var(--sa); }
+    .team-badge.NZ  { background: var(--nz); border-color: rgba(255,255,255,0.25); }
+    .team-pick select { flex: 1; }
+
+    .sf-btn {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      width: 100%; padding: 14px 28px; border: none; border-radius: 14px;
+      font-size: 0.9rem; font-weight: 700; cursor: pointer; transition: 0.3s;
+      font-family: 'Poppins', sans-serif;
+    }
+    .sf-btn-primary {
+      background: linear-gradient(135deg, var(--copper-light), var(--copper));
+      color: #fff; box-shadow: 0 0 18px rgba(195,86,39,0.4);
+    }
+    .sf-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 28px rgba(195,86,39,0.6); }
+    .sf-btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+    .sf-btn-outline {
+      background: var(--glass); border: 1px solid var(--glass-strong); color: #ddd;
+    }
+    .sf-btn-outline:hover { background: var(--glass-strong); }
+
+    .sf-msg {
+      padding: 10px 14px; border-radius: 12px; font-size: 0.82rem;
+      margin-top: 10px; display: none;
+    }
+    .sf-msg.ok  { display:block; background:rgba(110,207,142,0.12); color:#6ecf8e; border:1px solid rgba(110,207,142,0.25); }
+    .sf-msg.err { display:block; background:rgba(220,80,80,0.12); color:#f47373; border:1px solid rgba(220,80,80,0.25); }
+    .sf-msg.inf { display:block; background:rgba(76,132,141,0.15); color:var(--aqua); border:1px solid rgba(76,132,141,0.25); }
+
+    /* Countdown */
+    .sf-countdown {
+      text-align: center; padding: 14px;
+      background: rgba(220,80,80,0.06); border: 1px solid rgba(220,80,80,0.15);
+      border-radius: 16px; margin-bottom: 20px; backdrop-filter: blur(8px);
+    }
+    .sf-countdown .cd-label { font-size: 0.72rem; opacity: 0.7; text-transform: uppercase; letter-spacing: 1px; }
+    .sf-countdown .cd-time { font-size: 1.8rem; font-weight: 800; color: #f47373; letter-spacing: 2px; }
+    .sf-countdown.expired .cd-time { color: var(--silver); opacity: 0.6; }
+    .sf-countdown.expired { background: rgba(255,255,255,0.03); border-color: var(--glass-strong); }
+
+    /* Auth overlay */
+    .sf-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.8);
+      z-index: 100; display: flex; align-items: center; justify-content: center; padding: 20px;
+      backdrop-filter: blur(6px);
+    }
+    .sf-overlay.hide { display: none; }
+    .sf-overlay-box {
+      background: rgba(30,45,51,0.95); border: 1px solid var(--glass-strong);
+      border-radius: 22px; padding: 30px; max-width: 380px; width: 100%;
+      backdrop-filter: blur(16px);
+    }
+    .sf-overlay-box h2 {
+      font-size: 1.4rem; font-weight: 800; margin-bottom: 4px;
+      background: linear-gradient(90deg, var(--sand), var(--copper));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .sf-overlay-box p { opacity: 0.7; font-size: 0.82rem; margin-bottom: 18px; }
+    .sf-overlay-box input {
+      width: 100%; text-align: center; padding: 14px;
+      background: rgba(0,0,0,0.4); border: 2px solid var(--glass-strong);
+      border-radius: 14px; color: var(--sand); font-size: 1.3rem;
+      font-weight: 700; letter-spacing: 6px; font-family: 'Poppins', sans-serif;
+      outline: none; transition: 0.3s; margin-bottom: 14px;
+    }
+    .sf-overlay-box input:focus { border-color: var(--copper-light); }
+
+    /* SF Leaderboard cards */
+    .sf-lb-card {
+      background: var(--glass); backdrop-filter: blur(12px);
+      border: 1px solid var(--glass-strong); border-radius: 18px;
+      margin-bottom: 12px; overflow: hidden; transition: 0.3s;
+    }
+    .sf-lb-card:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(0,0,0,0.35); }
+    .sf-lb-header {
+      display: flex; align-items: center; padding: 16px 20px; gap: 14px;
+    }
+    .sf-lb-picks {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 1px; background: rgba(255,255,255,0.04);
+    }
+    .sf-lb-pick {
+      padding: 10px 8px; background: rgba(0,0,0,0.2); text-align: center;
+    }
+    .sf-lb-pick .tl {
+      font-size: 0.62rem; font-weight: 700; letter-spacing: 1px;
+      margin-bottom: 3px; text-transform: uppercase;
+    }
+    .sf-lb-pick .pl { font-size: 0.8rem; opacity: 0.8; }
+    .sf-lb-pick .pp { font-size: 0.9rem; font-weight: 700; color: #6ecf8e; margin-top: 3px; }
+    .sf-lb-pick .tl.ENG { color: #60a5fa; }
+    .sf-lb-pick .tl.IND { color: #fb923c; }
+    .sf-lb-pick .tl.SA  { color: #4ade80; }
+    .sf-lb-pick .tl.NZ  { color: #e2e8f0; }
+
+    .sf-locked {
+      text-align: center; padding: 60px 20px;
+    }
+    .sf-locked .ico { font-size: 3rem; margin-bottom: 14px; }
+    .sf-locked h3 { font-size: 1.2rem; color: var(--sand); margin-bottom: 6px; }
+    .sf-locked p { opacity: 0.6; font-size: 0.85rem; }
+
+    /* History entries */
+    .sf-hist { background: var(--glass); border: 1px solid var(--glass-strong); border-radius: 14px; padding: 14px 16px; margin-bottom: 8px; }
+    .sf-hist .ts { font-size: 0.72rem; opacity: 0.5; margin-bottom: 4px; }
+    .sf-hist .pk { font-size: 0.82rem; opacity: 0.8; }
+
+    /* ═══ Responsive ═══ */
     @media(max-width:640px){
-      /* Podium: ensure 3 cards are visible without swipe even on narrow screens */
-      .podium{
-        flex-wrap: nowrap;
-        justify-content: space-between;
-        overflow: hidden;
-        gap: 8px;
-        padding: 0 6px 6px;
-      }
-     
-      .podium-card .rank-badge{
-        font-size: 1.6rem !important; /* 1/4 of previous mobile size */
-        margin: 0 auto 10px;
-        line-height: 1 !important;
-      }
-}
-.podium-card{
-        flex: 0 0 calc((100% - 16px) / 3); /* 2 gaps x 8px */
-        width: calc((100% - 16px) / 3);
-        min-width: 0;
-        padding: 12px 10px;
-        border-radius: 16px;
-      }
-      .podium-name{ font-size: 0.85rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-      .podium-points{ font-size: 1.15rem; }
-
-      .leaderboard-title{ font-size: 1.35rem; margin-bottom: 26px; }
-
-      /* Manager list: single column */
-      .manager-grid{ grid-template-columns: 1fr; }
-    }
-
-.podium-card {
-        flex: 1 1 0;
-        width: auto;
-        min-width: 0;
-        padding: 14px 12px;
-      }
-      .podium-name { font-size: 0.95rem; }
-      .podium-points { font-size: 1.35rem; }
-
-      /* Manager list single column */
+      .podium { flex-wrap: nowrap; justify-content: space-between; overflow: hidden; gap: 8px; padding: 0 6px 6px; }
+      .podium-card { flex: 0 0 calc((100% - 16px) / 3); width: calc((100% - 16px) / 3); min-width: 0; padding: 12px 10px; border-radius: 16px; }
+      .podium-card .rank-badge { font-size: 1.6rem !important; margin: 0 auto 10px; line-height: 1 !important; }
+      .podium-name { font-size: 0.85rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+      .podium-points { font-size: 1.15rem; }
+      .leaderboard-title { font-size: 1.35rem; margin-bottom: 26px; }
       .manager-grid { grid-template-columns: 1fr; }
+      .view-btn { padding: 8px 14px; font-size: 0.78rem; }
+      .sf-lb-picks { grid-template-columns: repeat(2, 1fr); }
     }
-
-.podium-card {
-        flex: 0 0 260px;
-        width: 260px;
-        scroll-snap-align: start;
-      }
-
-      /* Manager list can remain as-is (single column) */
-      .manager-grid { grid-template-columns: 1fr; }
-    }
-
   </style>
 </head>
 <body>
@@ -335,186 +396,240 @@
     <div class="badge" id="badgeText">Loading...</div>
   </div>
 
-  <div class="tabs" id="tabsContainer"></div>
+  <!-- ═══ Top-level view tabs ═══ -->
+  <div class="view-tabs">
+    <button class="view-btn active" data-view="super8s">📊 Leaderboard</button>
+    <button class="view-btn" data-view="sf-entries">🏏 SF Entries</button>
+    <button class="view-btn" data-view="sf-lb">🏆 SF Leaderboard</button>
+  </div>
 
-  <div class="container">
-    <div id="content">
-      <div class="loading">Loading scores...</div>
+  <!-- ════════════════════════════════════════════════════════
+       VIEW 1: Super 8s (EXISTING — Week1, Week2, Super8s)
+       ════════════════════════════════════════════════════════ -->
+  <div class="view-panel active" id="vp-super8s">
+    <div class="tabs" id="tabsContainer"></div>
+    <div class="container">
+      <div id="content">
+        <div class="loading">Loading scores...</div>
+      </div>
     </div>
   </div>
 
-  <!-- KEEPING YOUR ORIGINAL JS LOGIC INTACT -->
+  <!-- ════════════════════════════════════════════════════════
+       VIEW 2: SF Entries
+       ════════════════════════════════════════════════════════ -->
+  <div class="view-panel" id="vp-sf-entries">
+    <div class="container">
+
+      <div class="sf-countdown" id="cdBar">
+        <div class="cd-label">Entries close — Wed Mar 4, 7 PM IST</div>
+        <div class="cd-time" id="cdTime">--:--:--</div>
+      </div>
+
+      <!-- Auth -->
+      <div class="sf-section" id="authBox">
+        <h3>🔐 Your Identity</h3>
+        <div class="sf-group">
+          <label>Select your name</label>
+          <select id="mgrSel"><option value="">Loading…</option></select>
+        </div>
+        <div class="sf-group">
+          <label>Your secret code</label>
+          <input type="password" id="codeIn" placeholder="Min 4 characters" maxlength="20">
+        </div>
+        <button class="sf-btn sf-btn-outline" onclick="doAuth()">Verify & Continue</button>
+        <div class="sf-msg" id="authMsg"></div>
+      </div>
+
+      <!-- Picks (hidden until authed) -->
+      <div class="sf-section" id="pickBox" style="display:none">
+        <h3>🏏 Pick Your Players — Semi-Finals</h3>
+        <p style="opacity:0.6;font-size:0.8rem;margin-bottom:16px">
+          1 player from each team. Update anytime — only last entry before deadline counts.
+        </p>
+        <div class="team-pick"><div class="team-badge ENG">ENG</div><select id="pk-ENG" class="sf-group"><option value="">Select ENG player</option></select></div>
+        <div class="team-pick"><div class="team-badge IND">IND</div><select id="pk-IND" class="sf-group"><option value="">Select IND player</option></select></div>
+        <div class="team-pick"><div class="team-badge SA">SA</div><select id="pk-SA" class="sf-group"><option value="">Select SA player</option></select></div>
+        <div class="team-pick"><div class="team-badge NZ">NZ</div><select id="pk-NZ" class="sf-group"><option value="">Select NZ player</option></select></div>
+        <button class="sf-btn sf-btn-primary" id="subBtn" onclick="submitPicks()">✅ Submit Entry</button>
+        <div class="sf-msg" id="subMsg"></div>
+        <div id="histBox" style="margin-top:18px"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════
+       VIEW 3: SF Leaderboard
+       ════════════════════════════════════════════════════════ -->
+  <div class="view-panel" id="vp-sf-lb">
+    <div class="container">
+      <div id="sfLbContent"><div class="loading">Loading…</div></div>
+    </div>
+  </div>
+
+  <!-- ═══ Registration overlay ═══ -->
+  <div class="sf-overlay hide" id="regOverlay">
+    <div class="sf-overlay-box">
+      <h2>Set Your Code</h2>
+      <p>First time? Choose a secret code only you'll know. You'll need it to update picks.</p>
+      <input type="text" id="regCodeIn" placeholder="CODE" maxlength="20">
+      <button class="sf-btn sf-btn-primary" onclick="regCode()">Lock It In 🔒</button>
+      <div class="sf-msg" id="regMsg"></div>
+    </div>
+  </div>
+
+
   <script>
-
-    // Country flag mapping for cricket players (emoji flags)
+    // ═══════════════════════════════════════════════════
+    // PLAYER FLAGS (your existing map — unchanged)
+    // ═══════════════════════════════════════════════════
     const PLAYER_FLAGS = {
-      // India
-      'suryakumar yadav': '🇮🇳', 'hardik pandya': '🇮🇳', 'ishan kishan': '🇮🇳',
-      'arshdeep singh': '🇮🇳', 'jasprit bumrah': '🇮🇳', 'virat kohli': '🇮🇳',
-      'rohit sharma': '🇮🇳', 'shubman gill': '🇮🇳', 'rishabh pant': '🇮🇳',
-      'ravindra jadeja': '🇮🇳', 'kuldeep yadav': '🇮🇳', 'mohammed siraj': '🇮🇳',
-      'yashasvi jaiswal': '🇮🇳', 'axar patel': '🇮🇳', 'shreyas iyer': '🇮🇳',
-      'sanju samson': '🇮🇳', 'mohammed shami': '🇮🇳', 'yuzvendra chahal': '🇮🇳',
-      'tilak varma': '🇮🇳', 'rinku singh': '🇮🇳', 'varun chakaravarthy': '🇮🇳',
-      'ravi bishnoi': '🇮🇳', 'abhishek sharma': '🇮🇳', 'dhruv jurel': '🇮🇳',
-      'nitish kumar reddy': '🇮🇳', 'shivam dube': '🇮🇳',
-      // Australia
-      'travis head': '🇦🇺', 'mitchell starc': '🇦🇺', 'pat cummins': '🇦🇺',
-      'steve smith': '🇦🇺', 'david warner': '🇦🇺', 'glenn maxwell': '🇦🇺',
-      'josh hazlewood': '🇦🇺', 'adam zampa': '🇦🇺', 'marcus stoinis': '🇦🇺',
-      'mitchell marsh': '🇦🇺', 'cameron green': '🇦🇺', 'alex carey': '🇦🇺',
-      'nathan lyon': '🇦🇺', 'marnus labuschagne': '🇦🇺', 'josh inglis': '🇦🇺',
-      'jake fraser-mcgurk': '🇦🇺', 'spencer johnson': '🇦🇺',
-      // England (use UK flag as a simple, consistent option)
-      'jos buttler': '🇬🇧', 'harry brook': '🇬🇧', 'ben stokes': '🇬🇧',
-      'jofra archer': '🇬🇧', 'mark wood': '🇬🇧', 'adil rashid': '🇬🇧',
-      'liam livingstone': '🇬🇧', 'phil salt': '🇬🇧', 'moeen ali': '🇬🇧',
-      'jamie overton': '🇬🇧', 'sam curran': '🇬🇧', 'reece topley': '🇬🇧',
-      'jonny bairstow': '🇬🇧', 'jacob bethell': '🇬🇧', 'jamie smith': '🇬🇧',
-      'brydon carse': '🇬🇧',
-      // South Africa
-      'ryan rickelton': '🇿🇦', 'dewald brevis': '🇿🇦', 'quinton de kock': '🇿🇦',
-      'kagiso rabada': '🇿🇦', 'anrich nortje': '🇿🇦', 'aiden markram': '🇿🇦',
-      'david miller': '🇿🇦', 'heinrich klaasen': '🇿🇦', 'rassie van der dussen': '🇿🇦',
-      'marco jansen': '🇿🇦', 'lungi ngidi': '🇿🇦', 'tabraiz shamsi': '🇿🇦',
-      'keshav maharaj': '🇿🇦', 'tristan stubbs': '🇿🇦',
-      // New Zealand
-      'matt henry': '🇳🇿', 'kane williamson': '🇳🇿', 'trent boult': '🇳🇿',
-      'devon conway': '🇳🇿', 'tim southee': '🇳🇿', 'daryl mitchell': '🇳🇿',
-      'glenn phillips': '🇳🇿', 'mitchell santner': '🇳🇿', 'lockie ferguson': '🇳🇿',
-      'rachin ravindra': '🇳🇿', 'michael bracewell': '🇳🇿', 'mark chapman': '🇳🇿',
-      'tom latham': '🇳🇿', 'will young': '🇳🇿',
-      // West Indies
-      'shai hope': '🇯🇲', 'nicholas pooran': '🇹🇹', 'andre russell': '🇯🇲',
-      'shimron hetmyer': '🇬🇾', 'roston chase': '🇧🇧', 'jason holder': '🇧🇧',
-      'alzarri joseph': '🇱🇨', 'brandon king': '🇯🇲', 'romario shepherd': '🇬🇾',
-      'gudakesh motie': '🇬🇾', 'akeal hosein': '🇹🇹', 'evin lewis': '🇹🇹',
-      'kyle mayers': '🇧🇧', 'shamar joseph': '🇬🇾', 'sherfane rutherford': '🇬🇾',
-      // Pakistan
-      'babar azam': '🇵🇰', 'shaheen afridi': '🇵🇰', 'mohammad rizwan': '🇵🇰',
-      'fakhar zaman': '🇵🇰', 'haris rauf': '🇵🇰', 'shadab khan': '🇵🇰',
-      'iftikhar ahmed': '🇵🇰', 'naseem shah': '🇵🇰', 'saim ayub': '🇵🇰',
-      'mohammad amir': '🇵🇰', 'imad wasim': '🇵🇰', 'usama mir': '🇵🇰',
-      'sahibzada farhan': '🇵🇰', 'salman ali agha': '🇵🇰', 'abrar ahmed': '🇵🇰',
-      // Sri Lanka
-      'wanindu hasaranga': '🇱🇰', 'pathum nissanka': '🇱🇰', 'kusal mendis': '🇱🇰',
-      'charith asalanka': '🇱🇰', 'maheesh theekshana': '🇱🇰', 'dasun shanaka': '🇱🇰',
-      'dhananjaya de silva': '🇱🇰', 'matheesha pathirana': '🇱🇰', 'kusal perera': '🇱🇰',
-      'dunith wellalage': '🇱🇰',
-      // Bangladesh
-      'shakib al hasan': '🇧🇩', 'mustafizur rahman': '🇧🇩', 'litton das': '🇧🇩',
-      'tanzid hasan': '🇧🇩', 'taskin ahmed': '🇧🇩', 'towhid hridoy': '🇧🇩',
-      'mehidy hasan miraz': '🇧🇩', 'rishad hossain': '🇧🇩', 'tanzim hasan sakib': '🇧🇩',
-      // Afghanistan
-      'rashid khan': '🇦🇫', 'azmatullah omarzai': '🇦🇫', 'rahmanullah gurbaz': '🇦🇫',
-      'fazalhaq farooqi': '🇦🇫', 'naveen-ul-haq': '🇦🇫', 'mohammad nabi': '🇦🇫',
-      'najibullah zadran': '🇦🇫', 'mujeeb ur rahman': '🇦🇫', 'gulbadin naib': '🇦🇫',
-      'ibrahim zadran': '🇦🇫',
-      // Netherlands
-      'bas de leede': '🇳🇱', 'scott edwards': '🇳🇱', 'ryan klein': '🇳🇱',
-      "max o'dowd": '🇳🇱', 'logan van beek': '🇳🇱', 'paul van meekeren': '🇳🇱',
-      'teja nidamanuru': '🇳🇱', 'vikramjit singh': '🇳🇱',
-      // Zimbabwe
-      'sikandar raza': '🇿🇼', 'sean williams': '🇿🇼', 'blessing muzarabani': '🇿🇼',
-      'craig ervine': '🇿🇼', 'regis chakabva': '🇿🇼', 'richard ngarava': '🇿🇼',
-      'luke jongwe': '🇿🇼',
-      // Ireland
-      'paul stirling': '🇮🇪', 'andrew balbirnie': '🇮🇪', 'josh little': '🇮🇪',
-      'lorcan tucker': '🇮🇪', 'mark adair': '🇮🇪', 'barry mccarthy': '🇮🇪',
-      'harry tector': '🇮🇪', 'gareth delany': '🇮🇪', 'george dockrell': '🇮🇪',
-      // Scotland
-      'richie berrington': '🏴', 'michael leask': '🏴', 'brad wheal': '🏴',
-      'brandon mcmullen': '🏴', 'george munsey': '🏴', 'mark watt': '🏴',
-      // Namibia
-      'gerhard erasmus': '🇳🇦', 'david wiese': '🇳🇦', 'jj smit': '🇳🇦',
-      'bernard scholtz': '🇳🇦', 'jan frylinck': '🇳🇦', 'ruben trumpelmann': '🇳🇦',
-      // Nepal
-      'sandeep lamichhane': '🇳🇵', 'kushal bhurtel': '🇳🇵', 'dipendra singh airee': '🇳🇵',
-      'rohit paudel': '🇳🇵', 'sompal kami': '🇳🇵',
-      // Oman
-      'aqib ilyas': '🇴🇲', 'zeeshan maqsood': '🇴🇲', 'ayaan khan': '🇴🇲',
-      // USA
-      'aaron jones': '🇺🇸', 'saurabh netravalkar': '🇺🇸', 'steven taylor': '🇺🇸',
-      'andries gous': '🇺🇸', 'monank patel': '🇺🇸', 'ali khan': '🇺🇸',
-      'corey anderson': '🇺🇸', 'nosthush kenjige': '🇺🇸',
-      // Canada
-      'navneet dhaliwal': '🇨🇦', 'aaron johnson': '🇨🇦', 'saad bin zafar': '🇨🇦',
-      'dilpreet bajwa': '🇨🇦', 'nicholas kirton': '🇨🇦',
-      // Uganda
-      'brian masaba': '🇺🇬', 'riazat ali shah': '🇺🇬', 'dinesh nakrani': '🇺🇬',
-      'simon ssesazi': '🇺🇬', 'henry ssenyondo': '🇺🇬',
-      // Papua New Guinea
-      'assad vala': '🇵🇬', 'lega siaka': '🇵🇬', 'sese bau': '🇵🇬',
-      'chad soper': '🇵🇬', 'norman vanua': '🇵🇬',
-      // Added from user inputs
-      'saiteja': '🇺🇸',
-      'fin allen': '🇳🇿',
-      'finn allen': '🇳🇿',
-      'nawaz': '🇵🇰',
-      'levitt': '🇳🇱',
-      'noor': '🇦🇫',
-      'mitchel marsh': '🇦🇺',
-      'devan': '🇳🇿',
-      'max odowd': '🇳🇱',
-      's jayasuriya': '🇱🇰',
-      'shadley van schalkwyk': '🇺🇸',
-      'shubham': '🇺🇸',
-      'salman agha': '🇵🇰',
-      'usman tariq': '🇵🇰',
-      'brad evans': '🇿🇼',
-      'corbin bosch': '🇿🇦',
-      'will jacks': '🇬🇧',
-      'tim seifert': '🇳🇿',
-      'brian bennett': '🇿🇼',
-      // Corrections added (vNext3)
-      'say the jamukumala': '🇺🇸',
-      'mohamed navaz nawaz': '🇵🇰',
-      'michael levitt': '🇳🇱',
-      'noor ahmed': '🇦🇫',
-      'devon convoy': '🇳🇿',
-      'shubam ranjan': '🇺🇸',
-      'mahmad nawaz': '🇵🇰',
-      // Additional corrections (vNext4)
-      'saiteja mukkamalla': '🇺🇸',
-      'mohammad nawaz': '🇵🇰',
-      'philip salt': '🇬🇧',
-      'devan conway': '🇳🇿',
-      'shubham ranjane': '🇺🇸',
-
-
-
+      'suryakumar yadav':'🇮🇳','hardik pandya':'🇮🇳','ishan kishan':'🇮🇳',
+      'arshdeep singh':'🇮🇳','jasprit bumrah':'🇮🇳','virat kohli':'🇮🇳',
+      'rohit sharma':'🇮🇳','shubman gill':'🇮🇳','rishabh pant':'🇮🇳',
+      'ravindra jadeja':'🇮🇳','kuldeep yadav':'🇮🇳','mohammed siraj':'🇮🇳',
+      'yashasvi jaiswal':'🇮🇳','axar patel':'🇮🇳','shreyas iyer':'🇮🇳',
+      'sanju samson':'🇮🇳','mohammed shami':'🇮🇳','yuzvendra chahal':'🇮🇳',
+      'tilak varma':'🇮🇳','rinku singh':'🇮🇳','varun chakaravarthy':'🇮🇳',
+      'ravi bishnoi':'🇮🇳','abhishek sharma':'🇮🇳','dhruv jurel':'🇮🇳',
+      'nitish kumar reddy':'🇮🇳','shivam dube':'🇮🇳',
+      'travis head':'🇦🇺','mitchell starc':'🇦🇺','pat cummins':'🇦🇺',
+      'steve smith':'🇦🇺','david warner':'🇦🇺','glenn maxwell':'🇦🇺',
+      'josh hazlewood':'🇦🇺','adam zampa':'🇦🇺','marcus stoinis':'🇦🇺',
+      'mitchell marsh':'🇦🇺','cameron green':'🇦🇺','alex carey':'🇦🇺',
+      'nathan lyon':'🇦🇺','marnus labuschagne':'🇦🇺','josh inglis':'🇦🇺',
+      'jake fraser-mcgurk':'🇦🇺','spencer johnson':'🇦🇺',
+      'jos buttler':'🇬🇧','harry brook':'🇬🇧','ben stokes':'🇬🇧',
+      'jofra archer':'🇬🇧','mark wood':'🇬🇧','adil rashid':'🇬🇧',
+      'liam livingstone':'🇬🇧','phil salt':'🇬🇧','moeen ali':'🇬🇧',
+      'jamie overton':'🇬🇧','sam curran':'🇬🇧','reece topley':'🇬🇧',
+      'jonny bairstow':'🇬🇧','jacob bethell':'🇬🇧','jamie smith':'🇬🇧',
+      'brydon carse':'🇬🇧',
+      'ryan rickelton':'🇿🇦','dewald brevis':'🇿🇦','quinton de kock':'🇿🇦',
+      'kagiso rabada':'🇿🇦','anrich nortje':'🇿🇦','aiden markram':'🇿🇦',
+      'david miller':'🇿🇦','heinrich klaasen':'🇿🇦','rassie van der dussen':'🇿🇦',
+      'marco jansen':'🇿🇦','lungi ngidi':'🇿🇦','tabraiz shamsi':'🇿🇦',
+      'keshav maharaj':'🇿🇦','tristan stubbs':'🇿🇦',
+      'matt henry':'🇳🇿','kane williamson':'🇳🇿','trent boult':'🇳🇿',
+      'devon conway':'🇳🇿','tim southee':'🇳🇿','daryl mitchell':'🇳🇿',
+      'glenn phillips':'🇳🇿','mitchell santner':'🇳🇿','lockie ferguson':'🇳🇿',
+      'rachin ravindra':'🇳🇿','michael bracewell':'🇳🇿','mark chapman':'🇳🇿',
+      'tom latham':'🇳🇿','will young':'🇳🇿',
+      'shai hope':'🇯🇲','nicholas pooran':'🇹🇹','andre russell':'🇯🇲',
+      'shimron hetmyer':'🇬🇾','roston chase':'🇧🇧','jason holder':'🇧🇧',
+      'alzarri joseph':'🇱🇨','brandon king':'🇯🇲','romario shepherd':'🇬🇾',
+      'gudakesh motie':'🇬🇾','akeal hosein':'🇹🇹','evin lewis':'🇹🇹',
+      'kyle mayers':'🇧🇧','shamar joseph':'🇬🇾','sherfane rutherford':'🇬🇾',
+      'babar azam':'🇵🇰','shaheen afridi':'🇵🇰','mohammad rizwan':'🇵🇰',
+      'fakhar zaman':'🇵🇰','haris rauf':'🇵🇰','shadab khan':'🇵🇰',
+      'iftikhar ahmed':'🇵🇰','naseem shah':'🇵🇰','saim ayub':'🇵🇰',
+      'mohammad amir':'🇵🇰','imad wasim':'🇵🇰','usama mir':'🇵🇰',
+      'sahibzada farhan':'🇵🇰','salman ali agha':'🇵🇰','abrar ahmed':'🇵🇰',
+      'wanindu hasaranga':'🇱🇰','pathum nissanka':'🇱🇰','kusal mendis':'🇱🇰',
+      'charith asalanka':'🇱🇰','maheesh theekshana':'🇱🇰','dasun shanaka':'🇱🇰',
+      'dhananjaya de silva':'🇱🇰','matheesha pathirana':'🇱🇰','kusal perera':'🇱🇰',
+      'dunith wellalage':'🇱🇰',
+      'shakib al hasan':'🇧🇩','mustafizur rahman':'🇧🇩','litton das':'🇧🇩',
+      'tanzid hasan':'🇧🇩','taskin ahmed':'🇧🇩','towhid hridoy':'🇧🇩',
+      'mehidy hasan miraz':'🇧🇩','rishad hossain':'🇧🇩','tanzim hasan sakib':'🇧🇩',
+      'rashid khan':'🇦🇫','azmatullah omarzai':'🇦🇫','rahmanullah gurbaz':'🇦🇫',
+      'fazalhaq farooqi':'🇦🇫','naveen-ul-haq':'🇦🇫','mohammad nabi':'🇦🇫',
+      'najibullah zadran':'🇦🇫','mujeeb ur rahman':'🇦🇫','gulbadin naib':'🇦🇫',
+      'ibrahim zadran':'🇦🇫',
+      'bas de leede':'🇳🇱','scott edwards':'🇳🇱','ryan klein':'🇳🇱',
+      "max o'dowd":'🇳🇱','logan van beek':'🇳🇱','paul van meekeren':'🇳🇱',
+      'teja nidamanuru':'🇳🇱','vikramjit singh':'🇳🇱',
+      'sikandar raza':'🇿🇼','sean williams':'🇿🇼','blessing muzarabani':'🇿🇼',
+      'craig ervine':'🇿🇼','regis chakabva':'🇿🇼','richard ngarava':'🇿🇼',
+      'luke jongwe':'🇿🇼',
+      'paul stirling':'🇮🇪','andrew balbirnie':'🇮🇪','josh little':'🇮🇪',
+      'lorcan tucker':'🇮🇪','mark adair':'🇮🇪','barry mccarthy':'🇮🇪',
+      'harry tector':'🇮🇪','gareth delany':'🇮🇪','george dockrell':'🇮🇪',
+      'richie berrington':'🏴','michael leask':'🏴','brad wheal':'🏴',
+      'brandon mcmullen':'🏴','george munsey':'🏴','mark watt':'🏴',
+      'gerhard erasmus':'🇳🇦','david wiese':'🇳🇦','jj smit':'🇳🇦',
+      'bernard scholtz':'🇳🇦','jan frylinck':'🇳🇦','ruben trumpelmann':'🇳🇦',
+      'sandeep lamichhane':'🇳🇵','kushal bhurtel':'🇳🇵','dipendra singh airee':'🇳🇵',
+      'rohit paudel':'🇳🇵','sompal kami':'🇳🇵',
+      'aqib ilyas':'🇴🇲','zeeshan maqsood':'🇴🇲','ayaan khan':'🇴🇲',
+      'aaron jones':'🇺🇸','saurabh netravalkar':'🇺🇸','steven taylor':'🇺🇸',
+      'andries gous':'🇺🇸','monank patel':'🇺🇸','ali khan':'🇺🇸',
+      'corey anderson':'🇺🇸','nosthush kenjige':'🇺🇸',
+      'navneet dhaliwal':'🇨🇦','aaron johnson':'🇨🇦','saad bin zafar':'🇨🇦',
+      'dilpreet bajwa':'🇨🇦','nicholas kirton':'🇨🇦',
+      'brian masaba':'🇺🇬','riazat ali shah':'🇺🇬','dinesh nakrani':'🇺🇬',
+      'simon ssesazi':'🇺🇬','henry ssenyondo':'🇺🇬',
+      'assad vala':'🇵🇬','lega siaka':'🇵🇬','sese bau':'🇵🇬',
+      'chad soper':'🇵🇬','norman vanua':'🇵🇬',
+      'saiteja':'🇺🇸','fin allen':'🇳🇿','finn allen':'🇳🇿','nawaz':'🇵🇰',
+      'levitt':'🇳🇱','noor':'🇦🇫','mitchel marsh':'🇦🇺','devan':'🇳🇿',
+      'max odowd':'🇳🇱','s jayasuriya':'🇱🇰','shadley van schalkwyk':'🇺🇸',
+      'shubham':'🇺🇸','salman agha':'🇵🇰','usman tariq':'🇵🇰',
+      'brad evans':'🇿🇼','corbin bosch':'🇿🇦','will jacks':'🇬🇧',
+      'tim seifert':'🇳🇿','brian bennett':'🇿🇼',
+      'say the jamukumala':'🇺🇸','mohamed navaz nawaz':'🇵🇰',
+      'michael levitt':'🇳🇱','noor ahmed':'🇦🇫','devon convoy':'🇳🇿',
+      'shubam ranjan':'🇺🇸','mahmad nawaz':'🇵🇰',
+      'saiteja mukkamalla':'🇺🇸','mohammad nawaz':'🇵🇰','philip salt':'🇬🇧',
+      'devan conway':'🇳🇿','shubham ranjane':'🇺🇸'
     };
+    function getFlag(n){ return PLAYER_FLAGS[(n||'').toLowerCase().trim()]||''; }
 
-    function getFlag(playerName) {
-      const key = (playerName || '').toLowerCase().trim();
-      return PLAYER_FLAGS[key] || '';
+    // ═══════════════════════════════════════════════════
+    // CONFIG — UPDATE THESE URLs
+    // ═══════════════════════════════════════════════════
+
+    // Your EXISTING Super 8s web app (old sheet — keeps Week1, Week2, Super8s)
+    const S8_API = 'https://script.google.com/macros/s/AKfycbxA2g2ef2GsCNdwiZsfxBmp2jEgyhMqmQnDq7YH9U_sLihd_Wm5GeTcY42Ngfnq8WaD/exec';
+
+    // Your NEW Semis/Final web app (new sheet)
+    const SF_API = 'YOUR_NEW_SEMIFINAL_WEBAPP_URL';
+
+    // Deadline
+    const DL = new Date('2026-03-04T19:00:00+05:30');
+
+    // ═══════════════════════════════════════════════════
+    // VIEW SWITCHING
+    // ═══════════════════════════════════════════════════
+    let _mgr = null, _code = null, _teams = {};
+
+    document.querySelectorAll('.view-btn').forEach(b => {
+      b.onclick = () => {
+        document.querySelectorAll('.view-btn').forEach(x => x.classList.remove('active'));
+        document.querySelectorAll('.view-panel').forEach(x => x.classList.remove('active'));
+        b.classList.add('active');
+        document.getElementById('vp-' + b.dataset.view).classList.add('active');
+        if (b.dataset.view === 'sf-entries') initEntries();
+        if (b.dataset.view === 'sf-lb') loadSfLb();
+      };
+    });
+
+    // ═══════════════════════════════════════════════════
+    // JSONP helper (for SF API — cross-origin)
+    // ═══════════════════════════════════════════════════
+    function jp(url) {
+      return new Promise((ok, no) => {
+        const cb = '_j' + Date.now() + '_' + (Math.random()*1e6|0);
+        const s = document.createElement('script');
+        s.src = url + (url.includes('?') ? '&' : '?') + 'callback=' + cb;
+        s.onerror = () => { delete window[cb]; s.remove(); no(new Error('Network error')); };
+        window[cb] = d => { delete window[cb]; s.remove(); ok(d); };
+        document.body.appendChild(s);
+      });
     }
+    function enc(s) { return encodeURIComponent(s); }
+    function esc(s) { if(!s) return ''; const d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
+    function sfMsg(el, cls, txt) { el.className='sf-msg '+cls; el.textContent=txt; }
 
-
-
-    function listMissingFlags(data){
-      try{
-        const missing = new Set();
-        if(!data || !data.weeks) return [];
-        Object.values(data.weeks).forEach(w=>{
-          (w.managers||[]).forEach(m=>{
-            (m.players||[]).forEach(p=>{
-              const name = (p.name||'').trim();
-              if(!name) return;
-              if(!getFlag(name)) missing.add(name);
-            });
-          });
-        });
-        return Array.from(missing).sort((a,b)=>a.localeCompare(b));
-      }catch(e){ return []; }
-    }
-const API_URL = 'https://script.google.com/macros/s/AKfycbxA2g2ef2GsCNdwiZsfxBmp2jEgyhMqmQnDq7YH9U_sLihd_Wm5GeTcY42Ngfnq8WaD/exec';
+    // ═══════════════════════════════════════════════════
+    // VIEW 1: SUPER 8s (EXISTING LOGIC — UNCHANGED)
+    // ═══════════════════════════════════════════════════
     let DATA = null;
     let currentWeek = null;
 
     async function fetchData() {
       try {
-        const res = await fetch(API_URL);
+        const res = await fetch(S8_API);
         DATA = await res.json();
         document.getElementById('tournamentName').textContent = DATA.tournamentName || 'Rocking Fantasy';
         document.getElementById('badgeText').textContent = DATA.badgeText || '';
@@ -522,21 +637,6 @@ const API_URL = 'https://script.google.com/macros/s/AKfycbxA2g2ef2GsCNdwiZsfxBmp
         const weekKeys = Object.keys(DATA.weeks);
         currentWeek = DATA.currentWeek && DATA.weeks[DATA.currentWeek] ? DATA.currentWeek : weekKeys[0];
         renderWeek(currentWeek);
-        const missing = listMissingFlags(DATA);
-        if(missing.length){
-          console.log('Missing flags for:', missing);
-          const box = document.getElementById('missingFlagsBox');
-          if(box){
-            box.innerHTML = '<details style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.10);border-radius:14px;padding:12px 14px;backdrop-filter:blur(10px)">'
-              + '<summary style="cursor:pointer;font-weight:600;">Players missing flags (' + missing.length + ')</summary>'
-              + '<div style="margin-top:8px;font-size:0.9rem;line-height:1.5;">' + missing.join(', ') + '</div>'
-              + '</details>';
-          }
-        } else {
-          const box = document.getElementById('missingFlagsBox');
-          if(box) box.innerHTML = '';
-        }
-
       } catch (err) {
         document.getElementById('content').innerHTML = '<div class="loading">Failed to load data.</div>';
       }
@@ -564,83 +664,230 @@ const API_URL = 'https://script.google.com/macros/s/AKfycbxA2g2ef2GsCNdwiZsfxBmp
       document.querySelectorAll('.tab-btn').forEach(b => {
         b.classList.toggle('active', b.dataset.week === weekKey);
       });
-
       const weekData = DATA.weeks[weekKey];
       if (!weekData || !weekData.managers) {
         document.getElementById('content').innerHTML = '<div class="loading">No data.</div>';
         return;
       }
-
       const managers = weekData.managers;
       let html = '';
-
       html += '<div class="leaderboard-title">🏆 Leaderboard</div>';
       html += '<div class="podium">';
-
       const medals = ['🥇','🥈','🥉'];
-      managers.slice(0,3).forEach((m,i)=>{
-        html += '<div class="podium-card">';
-        html += '<div class="rank-badge">' + (medals[i] || (i+1)) + '</div>';
-        html += '<div class="podium-name">' + m.name + '</div>';
-        html += '<div class="podium-points">'+m.totalPoints+'</div>';
-        html += '</div>';
+      managers.slice(0,3).forEach((m,i) => {
+        html += '<div class="podium-card"><div class="rank-badge">'+(medals[i]||(i+1))+'</div>';
+        html += '<div class="podium-name">'+m.name+'</div>';
+        html += '<div class="podium-points">'+m.totalPoints+'</div></div>';
       });
-
       html += '</div>';
-      html += '<div class="filter-bar">';
-      html += '<label for="managerFilter" class="filter-label">Detailed view:</label>';
-      html += '<select id="managerFilter" class="filter-select">';
-      html += '<option value="__all__">All managers</option>';
-      managers.forEach(m => { html += '<option value="' + encodeURIComponent(m.name) + '">' + m.name + '</option>'; });
-      html += '</select>';
-      html += '</div>';
-      html += '<div class="manager-grid">';
+      html += '<div class="filter-bar"><label for="managerFilter" class="filter-label">Detailed view:</label>';
+      html += '<select id="managerFilter" class="filter-select"><option value="__all__">All managers</option>';
+      managers.forEach(m => { html += '<option value="'+enc(m.name)+'">'+m.name+'</option>'; });
+      html += '</select></div><div class="manager-grid">';
 
-      managers.forEach((m,i)=>{
-        const slotsUsed = (m.players || []).reduce((s,p)=>s + (Number(p.slots)||0), 0);
-        const slotsMax  = (m.players || []).reduce((s,p)=>s + (Number(p.maxSlots)||0), 0);
-
-        html += '<div class="manager-card" data-manager="' + encodeURIComponent(m.name) + '">';
-        html += '<div class="manager-header">';
-        html += '<div class="manager-rank">'+(m.rank || i+1)+'</div>';
+      managers.forEach((m,i) => {
+        const slotsUsed = (m.players||[]).reduce((s,p) => s+(Number(p.slots)||0), 0);
+        const slotsMax  = (m.players||[]).reduce((s,p) => s+(Number(p.maxSlots)||0), 0);
+        html += '<div class="manager-card" data-manager="'+enc(m.name)+'">';
+        html += '<div class="manager-header"><div class="manager-rank">'+(m.rank||i+1)+'</div>';
         html += '<div class="manager-name">'+m.name+'</div>';
-        html += '<div class="manager-total">' + m.totalPoints + ' pts'
-          + '<span class="slots-info"> • slots ' + slotsUsed + '/' + slotsMax + '</span>'
-          + '</div>';
-        html += '</div>';
-
-        m.players.forEach(p=>{
-          html += '<div class="player-row">';
+        html += '<div class="manager-total">'+m.totalPoints+' pts<span class="slots-info"> • slots '+slotsUsed+'/'+slotsMax+'</span></div></div>';
+        m.players.forEach(p => {
           const flag = getFlag(p.name);
-          html += '<span class="player-name">' + (flag ? '<span class="player-flag">' + flag + '</span>' : '') + p.name + '</span>';
-          html += '<span class="player-pts">' + p.points + ' pts</span>';
-          html += '<span class="slots-info">(' + p.slots + '/' + p.maxSlots + ')</span>';
-          html += '</div>';
+          html += '<div class="player-row"><span class="player-name">'+(flag?'<span class="player-flag">'+flag+'</span>':'')+p.name+'</span>';
+          html += '<span class="player-pts">'+p.points+' pts</span>';
+          html += '<span class="slots-info">('+p.slots+'/'+p.maxSlots+')</span></div>';
         });
-
         html += '</div>';
       });
-
       html += '</div>';
-
       document.getElementById('content').innerHTML = html;
 
-      // Manager filter (detailed view)
       const sel = document.getElementById('managerFilter');
-      function applyManagerFilter(){
+      function applyFilter() {
         if(!sel) return;
         const v = sel.value;
-        document.querySelectorAll('.manager-card').forEach(card=>{
-          const m = card.getAttribute('data-manager') || '';
-          card.style.display = (v==='__all__' || v===m) ? '' : 'none';
+        document.querySelectorAll('.manager-card').forEach(card => {
+          card.style.display = (v==='__all__' || v===card.getAttribute('data-manager')) ? '' : 'none';
         });
       }
-      if(sel){ sel.onchange = applyManagerFilter; applyManagerFilter(); }
-
+      if(sel) { sel.onchange = applyFilter; applyFilter(); }
     }
 
+    // ═══════════════════════════════════════════════════
+    // COUNTDOWN
+    // ═══════════════════════════════════════════════════
+    function tickCD() {
+      const diff = DL - new Date(), el = document.getElementById('cdTime'), bar = document.getElementById('cdBar');
+      if (diff <= 0) { el.textContent = 'DEADLINE PASSED'; bar.classList.add('expired'); return; }
+      const d=diff/864e5|0, h=(diff%864e5)/36e5|0, m=(diff%36e5)/6e4|0, s=(diff%6e4)/1e3|0;
+      el.textContent = (d?d+'d ':'') + String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+    }
+    setInterval(tickCD, 1000); tickCD();
+
+    // ═══════════════════════════════════════════════════
+    // VIEW 2: SF ENTRIES
+    // ═══════════════════════════════════════════════════
+    let _entInit = false;
+    async function initEntries() {
+      try {
+        const r = await jp(SF_API + '?action=managers');
+        if (r.ok) {
+          const sel = document.getElementById('mgrSel');
+          sel.innerHTML = '<option value="">— Select your name —</option>';
+          r.managers.forEach(m => {
+            const o = document.createElement('option'); o.value=m.name;
+            o.textContent = m.name + (m.hasCode ? '' : ' (new)');
+            sel.appendChild(o);
+          });
+          if (_mgr) sel.value = _mgr;
+        }
+      } catch(e) { console.error(e); }
+
+      try {
+        const r = await jp(SF_API + '?action=teams');
+        if (r.ok) {
+          _teams = r.teams;
+          ['ENG','IND','SA','NZ'].forEach(t => {
+            const sel = document.getElementById('pk-'+t);
+            sel.innerHTML = '<option value="">Select '+t+' player</option>';
+            (_teams[t]||[]).forEach(p => { const o=document.createElement('option'); o.value=p; o.textContent=p; sel.appendChild(o); });
+          });
+        }
+      } catch(e) { console.error(e); }
+
+      _entInit = true;
+      if (_mgr) { document.getElementById('mgrSel').value=_mgr; document.getElementById('pickBox').style.display=''; loadHist(); }
+    }
+
+    async function doAuth() {
+      const mgr = document.getElementById('mgrSel').value;
+      const code = document.getElementById('codeIn').value.trim();
+      const m = document.getElementById('authMsg');
+      m.className='sf-msg'; m.style.display='none';
+      if (!mgr) { sfMsg(m,'err','Select your name.'); return; }
+      if (code.length<4) { sfMsg(m,'err','Code must be at least 4 characters.'); return; }
+      try {
+        const r = await jp(SF_API+'?action=verify&manager='+enc(mgr)+'&code='+enc(code));
+        if (r.ok) {
+          _mgr=mgr; _code=code;
+          sfMsg(m,'ok','✅ Verified! Pick your players below.');
+          document.getElementById('pickBox').style.display='';
+          loadHist();
+        } else if (r.needsRegister) {
+          document.getElementById('regOverlay').classList.remove('hide');
+          document.getElementById('regOverlay').dataset.mgr = mgr;
+        } else {
+          sfMsg(m,'err',r.message||'Verification failed.');
+        }
+      } catch(e) { sfMsg(m,'err','Network error. Try again.'); }
+    }
+
+    async function regCode() {
+      const mgr = document.getElementById('regOverlay').dataset.mgr || document.getElementById('mgrSel').value;
+      const code = document.getElementById('regCodeIn').value.trim();
+      const m = document.getElementById('regMsg');
+      m.className='sf-msg'; m.style.display='none';
+      if (code.length<4) { sfMsg(m,'err','Min 4 characters.'); return; }
+      try {
+        const r = await jp(SF_API+'?action=register&manager='+enc(mgr)+'&code='+enc(code));
+        if (r.ok) {
+          _mgr=mgr; _code=code;
+          document.getElementById('regOverlay').classList.add('hide');
+          document.getElementById('codeIn').value=code;
+          sfMsg(document.getElementById('authMsg'),'ok','🔒 Code set! Pick your players below.');
+          document.getElementById('pickBox').style.display='';
+        } else { sfMsg(m,'err',r.message||'Failed.'); }
+      } catch(e) { sfMsg(m,'err','Network error.'); }
+    }
+
+    async function submitPicks() {
+      if (!_mgr||!_code) { alert('Verify first.'); return; }
+      const eng=document.getElementById('pk-ENG').value, ind=document.getElementById('pk-IND').value;
+      const sa=document.getElementById('pk-SA').value, nz=document.getElementById('pk-NZ').value;
+      const m=document.getElementById('subMsg');
+      m.className='sf-msg'; m.style.display='none';
+      if (!eng||!ind||!sa||!nz) { sfMsg(m,'err','Pick one player from each team.'); return; }
+      const btn=document.getElementById('subBtn');
+      btn.disabled=true; btn.textContent='Submitting…';
+      try {
+        const r = await jp(SF_API+'?action=submit&manager='+enc(_mgr)+'&code='+enc(_code)+'&week=SF&eng='+enc(eng)+'&ind='+enc(ind)+'&sa='+enc(sa)+'&nz='+enc(nz));
+        if (r.ok) { sfMsg(m,'ok','✅ '+r.message); loadHist(); }
+        else { sfMsg(m,'err',r.message||'Failed.'); }
+      } catch(e) { sfMsg(m,'err','Network error.'); }
+      btn.disabled=false; btn.textContent='✅ Submit Entry';
+    }
+
+    async function loadHist() {
+      if (!_mgr||!_code) return;
+      const sec = document.getElementById('histBox');
+      try {
+        const r = await jp(SF_API+'?action=entries&manager='+enc(_mgr)+'&code='+enc(_code));
+        if (!r.ok||!r.entries.length) { sec.innerHTML=''; return; }
+        const entries = r.entries.reverse().slice(0,5);
+        let h = '<h3 style="font-size:0.75rem;opacity:0.5;margin-bottom:8px;text-transform:uppercase;letter-spacing:1px">Your Recent Entries</h3>';
+        entries.forEach((e,i) => {
+          const dt = new Date(e.timestamp);
+          const lat = i===0;
+          h += '<div class="sf-hist" style="'+(lat?'border-color:var(--copper-light)':'')+'">';
+          h += '<div class="ts">'+(lat?'✅ LATEST — ':'')+dt.toLocaleString('en-IN',{timeZone:'Asia/Kolkata'})+'</div>';
+          h += '<div class="pk"><span style="color:#60a5fa">ENG:</span> '+esc(e.eng)+' · <span style="color:#fb923c">IND:</span> '+esc(e.ind)+' · <span style="color:#4ade80">SA:</span> '+esc(e.sa)+' · <span style="color:#e2e8f0">NZ:</span> '+esc(e.nz)+'</div>';
+          h += '</div>';
+        });
+        sec.innerHTML = h;
+      } catch(e) { console.error(e); }
+    }
+
+    // ═══════════════════════════════════════════════════
+    // VIEW 3: SF LEADERBOARD
+    // ═══════════════════════════════════════════════════
+    async function loadSfLb() {
+      const c = document.getElementById('sfLbContent');
+      c.innerHTML = '<div class="loading">Loading…</div>';
+      try {
+        const r = await jp(SF_API+'?action=leaderboard');
+        if (r.locked) {
+          c.innerHTML = '<div class="sf-locked"><div class="ico">🔒</div><h3>Leaderboard Locked</h3><p>'+esc(r.message)+'</p><p style="margin-top:10px;color:var(--sand);font-weight:700;font-size:0.95rem">Entries are open — submit your picks!</p></div>';
+          return;
+        }
+        if (!r.leaderboard||!r.leaderboard.length) {
+          c.innerHTML = '<div class="loading">No entries yet.</div>';
+          return;
+        }
+
+        // Podium for top 3
+        let html = '<div class="leaderboard-title">🏆 Semi-Final Leaderboard</div>';
+        const medals = ['🥇','🥈','🥉'];
+        html += '<div class="podium">';
+        r.leaderboard.slice(0,3).forEach((e,i) => {
+          html += '<div class="podium-card"><div class="rank-badge">'+(medals[i]||(i+1))+'</div>';
+          html += '<div class="podium-name">'+esc(e.manager)+'</div>';
+          html += '<div class="podium-points">'+e.totalPoints+'</div></div>';
+        });
+        html += '</div>';
+
+        // Detailed cards
+        r.leaderboard.forEach(entry => {
+          const rc = entry.rank===1?'gold':entry.rank===2?'silver':entry.rank===3?'bronze':'';
+          let picks = (entry.players||[]).map(p =>
+            '<div class="sf-lb-pick"><div class="tl '+esc(p.team)+'">'+esc(p.team)+'</div><div class="pl">'+esc(p.player)+'</div><div class="pp">'+p.points+' pts</div></div>'
+          ).join('');
+          html += '<div class="sf-lb-card"><div class="sf-lb-header">';
+          html += '<div class="manager-rank">'+entry.rank+'</div>';
+          html += '<div class="manager-name">'+esc(entry.manager)+'</div>';
+          html += '<div class="manager-total">'+entry.totalPoints+' pts</div>';
+          html += '</div><div class="sf-lb-picks">'+picks+'</div></div>';
+        });
+        c.innerHTML = html;
+      } catch(e) {
+        c.innerHTML = '<div class="loading" style="color:#f47373">Failed to load leaderboard.</div>';
+      }
+    }
+
+    // ═══════════════════════════════════════════════════
+    // INIT
+    // ═══════════════════════════════════════════════════
     fetchData();
   </script>
-
 </body>
 </html>
