@@ -616,10 +616,12 @@
         }
         if (!r.leaderboard||!r.leaderboard.length) { c.innerHTML = '<div class="loading">No entries yet.</div>'; return; }
 
+        const showFinalPicks = new Date() >= new Date('2026-03-09T19:00:00+05:30');
+
         let html = '<div class="leaderboard-title">🏆 Playoff Leaderboard</div>';
         const medals = ['🥇','🥈','🥉'];
         html += '<div class="podium">';
-        r.leaderboard.slice(0,3).forEach((e,i) => { html += '<div class="podium-card"><div class="rank-badge">'+(medals[i]||(i+1))+'</div><div class="podium-name">'+esc(e.manager)+'</div><div class="podium-points">'+e.totalPoints+'</div></div>'; });
+        r.leaderboard.slice(0,3).forEach((e,i) => { html += '<div class="podium-card"><div class="rank-badge">'+(medals[i]||(i+1))+'</div><div class="podium-name">'+esc(e.manager)+'</div><div class="podium-points">'+(showFinalPicks ? e.totalPoints : (e.sfPicks||[]).reduce((s,p)=>s+p.points,0))+'</div></div>'; });
         html += '</div>';
 
         r.leaderboard.forEach(entry => {
@@ -630,9 +632,12 @@
             '<div class="sf-lb-fpick"><div class="tl '+esc(p.team)+'">'+esc(p.team)+'</div><div class="pl">'+esc(p.player)+'</div><div class="pp">'+p.points+' pts</div><span class="score-src">Final only</span></div>'
           ).join('');
 
-          html += '<div class="sf-lb-card"><div class="sf-lb-header"><div class="manager-rank">'+entry.rank+'</div><div class="manager-name">'+esc(entry.manager)+'</div><div class="manager-total">'+entry.totalPoints+' pts</div></div>';
+          const displayTotal = showFinalPicks ? entry.totalPoints : (entry.sfPicks||[]).reduce((s,p)=>s+p.points,0);
+
+          html += '<div class="sf-lb-card"><div class="sf-lb-header"><div class="manager-rank">'+entry.rank+'</div><div class="manager-name">'+esc(entry.manager)+'</div><div class="manager-total">'+displayTotal+' pts</div></div>';
           if (sfHtml) { html += '<div class="lb-section-label">Semi-Final Picks</div><div class="sf-lb-picks">'+sfHtml+'</div>'; }
-          if (fHtml) { html += '<div class="lb-section-label" style="background:rgba(195,86,39,0.1)">🏆 Final Picks</div><div class="sf-lb-fpicks">'+fHtml+'</div>'; }
+          if (fHtml && showFinalPicks) { html += '<div class="lb-section-label" style="background:rgba(195,86,39,0.1)">🏆 Final Picks</div><div class="sf-lb-fpicks">'+fHtml+'</div>'; }
+          else if (entry.fPicks && entry.fPicks.length) { html += '<div class="lb-section-label" style="background:rgba(195,86,39,0.1)">🏆 Final Picks</div><div style="padding:12px 20px;opacity:0.5;font-size:0.8rem">🔒 Revealed at kickoff — Sun Mar 9, 7 PM</div>'; }
           html += '</div>';
         });
         c.innerHTML = html;
