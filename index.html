@@ -200,6 +200,10 @@
       .sf-frozen-picks { grid-template-columns: 1fr 1fr; }
       .final-pick-row { flex-direction: column; align-items: stretch; }
       .final-pick-row select, .final-pick-row .team-sel { flex: 1 1 auto; width: 100%; }
+      #champContent table { font-size: 0.72rem; }
+      #champContent table th, #champContent table td { padding: 8px 6px; white-space: nowrap; }
+      #champContent table th:first-child, #champContent table td:first-child { padding: 8px 4px; }
+      #champContent { overflow-x: auto; -webkit-overflow-scrolling: touch; }
     }
   </style>
 </head>
@@ -420,7 +424,7 @@
     let DATA = null, currentWeek = null;
     async function fetchData() {
       try {
-        const res = await fetch(S8_API); DATA = await res.json();
+        DATA = await getS8Data();
         document.getElementById('tournamentName').textContent = DATA.tournamentName || 'Rocking Fantasy';
         document.getElementById('badgeText').textContent = DATA.badgeText || '';
         buildTabs();
@@ -616,7 +620,7 @@
       const c = document.getElementById('sfLbContent');
       c.innerHTML = '<div class="loading">Loading…</div>';
       try {
-        const r = await jp(SF_API+'?action=leaderboard');
+        const r = await getSfLbData();
         if (r.locked) {
           c.innerHTML = '<div class="sf-locked"><div class="ico">🔒</div><h3>Leaderboard Locked</h3><p>'+esc(r.message)+'</p><p style="margin-top:10px;color:var(--sand);font-weight:700;font-size:0.95rem">Submit your Final picks before kickoff!</p></div>';
           return;
@@ -679,8 +683,7 @@
       const allPhases = {};
 
       try {
-        const res = await fetch(S8_API);
-        const data = await res.json();
+        const data = await getS8Data();
         const weekKeys = Object.keys(data.weeks || {});
         weekKeys.forEach(weekKey => {
           const week = data.weeks[weekKey];
@@ -698,7 +701,7 @@
       } catch(e) { console.error('S8 fetch failed', e); }
 
       try {
-        const r = await jp(SF_API + '?action=leaderboard');
+        const r = await getSfLbData();
         if (r.ok && !r.locked && r.leaderboard && r.leaderboard.length) {
           const showFinalPicks = new Date() >= new Date('2026-03-09T19:00:00+05:30');
           const ranked = r.leaderboard.map(e => ({
@@ -769,7 +772,22 @@
       html += '</tbody></table></div>';
       c.innerHTML = html;
     }
-    // INIT
+// INIT — cache API responses to avoid duplicate calls
+    let _s8Cache = null, _sfLbCache = null;
+
+    async function getS8Data() {
+      if (_s8Cache) return _s8Cache;
+      const res = await fetch(S8_API);
+      _s8Cache = await res.json();
+      return _s8Cache;
+    }
+
+    async function getSfLbData() {
+      if (_sfLbCache) return _sfLbCache;
+      _sfLbCache = await jp(SF_API + '?action=leaderboard');
+      return _sfLbCache;
+    }
+
     fetchData();
     initEntries();
     switchRound('final');
