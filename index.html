@@ -392,6 +392,78 @@
     .sf-hist .ts { font-size: 0.72rem; opacity: 0.5; margin-bottom: 4px; }
     .sf-hist .pk { font-size: 0.82rem; opacity: 0.8; }
 
+    /* ═══ Round toggle (SF locked vs Final open) ═══ */
+    .round-toggle {
+      display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;
+    }
+    .round-btn {
+      padding: 10px 22px; border: none; border-radius: 25px;
+      background: var(--glass); color: #ddd; font-family: 'Poppins', sans-serif;
+      font-weight: 600; font-size: 0.82rem; cursor: pointer;
+      backdrop-filter: blur(8px); transition: 0.3s;
+    }
+    .round-btn.active {
+      background: linear-gradient(135deg, var(--copper-light), var(--copper));
+      color: white; box-shadow: 0 0 18px rgba(195,86,39,0.5);
+    }
+    .round-btn .lock-ico { margin-right: 4px; font-size: 0.8rem; }
+
+    /* ═══ Final pick rows ═══ */
+    .final-pick-row {
+      display: flex; align-items: center; gap: 10px; margin-bottom: 12px; flex-wrap: wrap;
+      justify-content: center;
+    }
+    .final-pick-row select { flex: 0 1 260px; min-height: 54px; }
+    .final-pick-row .team-sel {
+      flex: 0 0 110px; min-height: 54px;
+    }
+
+    /* SF picks frozen display */
+    .sf-frozen-picks {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 16px;
+    }
+    .sf-frozen-pick {
+      background: rgba(0,0,0,0.25); border: 1px solid var(--glass-strong);
+      border-radius: 14px; padding: 12px; text-align: center;
+    }
+    .sf-frozen-pick .team-label {
+      font-size: 0.65rem; font-weight: 700; letter-spacing: 1px;
+      text-transform: uppercase; margin-bottom: 3px;
+    }
+    .sf-frozen-pick .player-label { font-size: 0.85rem; opacity: 0.85; }
+    .sf-frozen-pick .team-label.ENG { color: #60a5fa; }
+    .sf-frozen-pick .team-label.IND { color: #fb923c; }
+    .sf-frozen-pick .team-label.SA  { color: #4ade80; }
+    .sf-frozen-pick .team-label.NZ  { color: #e2e8f0; }
+
+    /* SF section label for Final picks header */
+    .sf-section .round-label {
+      display: inline-block; padding: 3px 10px; border-radius: 8px;
+      font-size: 0.65rem; font-weight: 700; letter-spacing: 1px;
+      text-transform: uppercase; margin-left: 8px;
+    }
+    .round-label.sf-label { background: rgba(76,132,141,0.2); color: var(--aqua); }
+    .round-label.f-label { background: rgba(195,86,39,0.2); color: var(--copper-light); }
+
+    /* ═══ Leaderboard section divider ═══ */
+    .lb-section-label {
+      font-size: 0.6rem; font-weight: 700; letter-spacing: 1.5px;
+      text-transform: uppercase; opacity: 0.5; padding: 6px 20px;
+      background: rgba(0,0,0,0.15);
+    }
+    .sf-lb-fpicks {
+      display: grid; grid-template-columns: repeat(2, 1fr);
+      gap: 1px; background: rgba(195,86,39,0.08);
+    }
+    .sf-lb-fpick {
+      padding: 10px 8px; background: rgba(0,0,0,0.2); text-align: center;
+    }
+    .sf-lb-fpick .tl { font-size: 0.62rem; font-weight: 700; letter-spacing: 1px; margin-bottom: 3px; text-transform: uppercase; }
+    .sf-lb-fpick .pl { font-size: 0.8rem; opacity: 0.8; }
+    .sf-lb-fpick .pp { font-size: 0.9rem; font-weight: 700; color: #6ecf8e; margin-top: 3px; }
+    .sf-lb-fpick .tl.IND { color: #fb923c; }
+    .sf-lb-fpick .tl.NZ  { color: #e2e8f0; }
+
     /* ═══ Responsive ═══ */
     @media(max-width:640px){
       .podium { flex-wrap: nowrap; justify-content: space-between; overflow: hidden; gap: 8px; padding: 0 6px 6px; }
@@ -403,6 +475,10 @@
       .manager-grid { grid-template-columns: 1fr; }
       .view-btn { padding: 8px 14px; font-size: 0.78rem; }
       .sf-lb-picks { grid-template-columns: repeat(2, 1fr); }
+      .sf-lb-fpicks { grid-template-columns: 1fr 1fr; }
+      .sf-frozen-picks { grid-template-columns: 1fr 1fr; }
+      .final-pick-row { flex-direction: column; align-items: stretch; }
+      .final-pick-row select, .final-pick-row .team-sel { flex: 1 1 auto; width: 100%; }
     }
   </style>
 </head>
@@ -435,14 +511,31 @@
   </div>
 
   <!-- ════════════════════════════════════════════════════════
-       VIEW 2: SF Entries
+       VIEW 2: Playoff Entries (SF frozen + Final open)
        ════════════════════════════════════════════════════════ -->
   <div class="view-panel active" id="vp-sf-entries">
     <div class="container">
 
-      <div class="sf-countdown" id="cdBar">
-        <div class="cd-label">Entries close — Wed Mar 4, 7 PM IST</div>
-        <div class="cd-time" id="cdTime">--:--:--</div>
+      <!-- Round toggle: SF (locked) / Final (active) -->
+      <div class="round-toggle" id="roundToggle">
+        <button class="round-btn" data-round="sf" onclick="switchRound('sf')">
+          <span class="lock-ico">🔒</span> Semi-Final Picks
+        </button>
+        <button class="round-btn active" data-round="final" onclick="switchRound('final')">
+          🏆 Final Picks
+        </button>
+      </div>
+
+      <!-- SF deadline bar (expired) -->
+      <div class="sf-countdown expired" id="cdBarSF" style="display:none">
+        <div class="cd-label">Semi-Final entries — CLOSED</div>
+        <div class="cd-time">DEADLINE PASSED</div>
+      </div>
+
+      <!-- Final deadline bar -->
+      <div class="sf-countdown" id="cdBarF">
+        <div class="cd-label">Final entries close — Sun Mar 9, 7 PM IST</div>
+        <div class="cd-time" id="cdTimeF">--:--:--</div>
       </div>
 
       <!-- Auth -->
@@ -460,25 +553,73 @@
         <div class="sf-msg" id="authMsg"></div>
       </div>
 
-      <!-- Picks (hidden until authed) -->
-      <div class="sf-section" id="pickBox" style="display:none">
-        <h3>🏏 Pick Your Players — Semi-Finals</h3>
-        <p style="opacity:0.6;font-size:0.8rem;margin-bottom:16px">
-          1 player from each team. Update anytime — only last entry before deadline counts.
-        </p>
-        <div class="team-pick"><div class="team-badge ENG"><span class="team-flag">🇬🇧</span>ENG</div><select id="pk-ENG" class="sf-group"><option value="">Select ENG player</option></select></div>
-        <div class="team-pick"><div class="team-badge IND"><span class="team-flag">🇮🇳</span>IND</div><select id="pk-IND" class="sf-group"><option value="">Select IND player</option></select></div>
-        <div class="team-pick"><div class="team-badge SA"><span class="team-flag">🇿🇦</span>SA</div><select id="pk-SA" class="sf-group"><option value="">Select SA player</option></select></div>
-        <div class="team-pick"><div class="team-badge NZ"><span class="team-flag">🇳🇿</span>NZ</div><select id="pk-NZ" class="sf-group"><option value="">Select NZ player</option></select></div>
-        <button class="sf-btn sf-btn-primary" id="subBtn" onclick="submitPicks()">✅ Submit Entry</button>
-        <div class="sf-msg" id="subMsg"></div>
-        <div id="histBox" style="margin-top:18px"></div>
+      <!-- ── SF Round panel (view only — locked) ── -->
+      <div id="sfRoundPanel" style="display:none">
+        <div class="sf-section">
+          <h3>🔒 Semi-Final Picks <span class="round-label sf-label">Locked</span></h3>
+          <p style="opacity:0.5;font-size:0.78rem;margin-bottom:14px">
+            Your SF picks are frozen. These players' scores still count toward your total.
+          </p>
+          <div class="sf-frozen-picks" id="sfFrozenPicks">
+            <div class="sf-frozen-pick"><div class="team-label ENG">ENG</div><div class="player-label">—</div></div>
+            <div class="sf-frozen-pick"><div class="team-label IND">IND</div><div class="player-label">—</div></div>
+            <div class="sf-frozen-pick"><div class="team-label SA">SA</div><div class="player-label">—</div></div>
+            <div class="sf-frozen-pick"><div class="team-label NZ">NZ</div><div class="player-label">—</div></div>
+          </div>
+        </div>
       </div>
+
+      <!-- ── Final Round panel (active — pick 2 from IND/NZ) ── -->
+      <div id="finalRoundPanel" style="display:none">
+        <div class="sf-section">
+          <h3>🏆 Final Picks — Replace SA & ENG <span class="round-label f-label">New</span></h3>
+          <p style="opacity:0.6;font-size:0.8rem;margin-bottom:16px">
+            SA & ENG are out! Pick <strong>2 players</strong> from <strong>India</strong> or <strong>New Zealand</strong> (the finalists). You can pick both from the same team or one from each. Update anytime — only last entry before deadline counts.
+          </p>
+
+          <div style="margin-bottom:6px;font-size:0.75rem;opacity:0.5;text-transform:uppercase;letter-spacing:1px">Pick 1</div>
+          <div class="final-pick-row">
+            <select id="fp1-team" class="team-sel sf-group" onchange="populateFinalPlayerSel('fp1')">
+              <option value="">Team</option>
+              <option value="IND">🇮🇳 India</option>
+              <option value="NZ">🇳🇿 New Zealand</option>
+            </select>
+            <select id="fp1-player" class="sf-group"><option value="">Select team first</option></select>
+          </div>
+
+          <div style="margin-bottom:6px;font-size:0.75rem;opacity:0.5;text-transform:uppercase;letter-spacing:1px">Pick 2</div>
+          <div class="final-pick-row">
+            <select id="fp2-team" class="team-sel sf-group" onchange="populateFinalPlayerSel('fp2')">
+              <option value="">Team</option>
+              <option value="IND">🇮🇳 India</option>
+              <option value="NZ">🇳🇿 New Zealand</option>
+            </select>
+            <select id="fp2-player" class="sf-group"><option value="">Select team first</option></select>
+          </div>
+
+          <button class="sf-btn sf-btn-primary" id="subFinalBtn" onclick="submitFinalPicks()">✅ Submit Final Picks</button>
+          <div class="sf-msg" id="subFinalMsg"></div>
+        </div>
+
+        <!-- Show SF picks as context -->
+        <div class="sf-section" style="opacity:0.7">
+          <h3 style="font-size:0.75rem">Your locked Semi-Final picks (still counting)</h3>
+          <div class="sf-frozen-picks" id="sfFrozenPicksInFinal">
+            <div class="sf-frozen-pick"><div class="team-label ENG">ENG</div><div class="player-label">—</div></div>
+            <div class="sf-frozen-pick"><div class="team-label IND">IND</div><div class="player-label">—</div></div>
+            <div class="sf-frozen-pick"><div class="team-label SA">SA</div><div class="player-label">—</div></div>
+            <div class="sf-frozen-pick"><div class="team-label NZ">NZ</div><div class="player-label">—</div></div>
+          </div>
+        </div>
+
+        <div id="histBoxFinal" style="margin-top:12px"></div>
+      </div>
+
     </div>
   </div>
 
   <!-- ════════════════════════════════════════════════════════
-       VIEW 3: SF Leaderboard
+       VIEW 3: Playoff Leaderboard
        ════════════════════════════════════════════════════════ -->
   <div class="view-panel" id="vp-sf-lb">
     <div class="container">
@@ -604,15 +745,22 @@
     // Your NEW Semis/Final web app (new sheet)
     const SF_API = 'https://script.google.com/macros/s/AKfycbxy0q_xnXjwVI6qDVEDBEzqpt-rfC3cmB8Ccgff8S7ypp2wvnTY6bhUT97MAEeFrm3zgA/exec';
 
-    // Deadline
-    const DL = new Date('2026-03-04T19:00:00+05:30');
+    // Deadlines
+    const DL_SF = new Date('2026-03-04T19:00:00+05:30');
+    const DL_F  = new Date('2026-03-09T19:00:00+05:30');
+
+    // ═══════════════════════════════════════════════════
+    // STATE
+    // ═══════════════════════════════════════════════════
+    let _mgr = null, _code = null, _teams = {};
+    let _mgrHasCode = {};
+    let _currentRound = 'final'; // 'sf' or 'final'
+    let _sfPicks = null;  // cached SF picks for this manager
+    let _fPicks = null;   // cached Final picks
 
     // ═══════════════════════════════════════════════════
     // VIEW SWITCHING
     // ═══════════════════════════════════════════════════
-    let _mgr = null, _code = null, _teams = {};
-    let _mgrHasCode = {};
-
     document.querySelectorAll('.view-btn').forEach(b => {
       b.onclick = () => {
         document.querySelectorAll('.view-btn').forEach(x => x.classList.remove('active'));
@@ -623,6 +771,18 @@
         if (b.dataset.view === 'sf-lb') loadSfLb();
       };
     });
+
+    // ═══════════════════════════════════════════════════
+    // ROUND SWITCHING (SF locked / Final active)
+    // ═══════════════════════════════════════════════════
+    function switchRound(round) {
+      _currentRound = round;
+      document.querySelectorAll('.round-btn').forEach(b => b.classList.toggle('active', b.dataset.round === round));
+      document.getElementById('sfRoundPanel').style.display = (round === 'sf' && _mgr) ? '' : 'none';
+      document.getElementById('finalRoundPanel').style.display = (round === 'final' && _mgr) ? '' : 'none';
+      document.getElementById('cdBarSF').style.display = round === 'sf' ? '' : 'none';
+      document.getElementById('cdBarF').style.display = round === 'final' ? '' : 'none';
+    }
 
     // ═══════════════════════════════════════════════════
     // JSONP helper (for SF API — cross-origin)
@@ -738,10 +898,10 @@
     }
 
     // ═══════════════════════════════════════════════════
-    // COUNTDOWN
+    // COUNTDOWN (Final deadline)
     // ═══════════════════════════════════════════════════
     function tickCD() {
-      const diff = DL - new Date(), el = document.getElementById('cdTime'), bar = document.getElementById('cdBar');
+      const diff = DL_F - new Date(), el = document.getElementById('cdTimeF'), bar = document.getElementById('cdBarF');
       if (diff <= 0) { el.textContent = 'DEADLINE PASSED'; bar.classList.add('expired'); return; }
       const d=diff/864e5|0, h=(diff%864e5)/36e5|0, m=(diff%36e5)/6e4|0, s=(diff%6e4)/1e3|0;
       el.textContent = (d?d+'d ':'') + String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
@@ -749,7 +909,7 @@
     setInterval(tickCD, 1000); tickCD();
 
     // ═══════════════════════════════════════════════════
-    // VIEW 2: SF ENTRIES
+    // VIEW 2: PLAYOFF ENTRIES
     // ═══════════════════════════════════════════════════
     let _entInit = false;
     async function initEntries() {
@@ -775,16 +935,85 @@
         const r = await jp(SF_API + '?action=teams');
         if (r.ok) {
           _teams = r.teams;
-          ['ENG','IND','SA','NZ'].forEach(t => {
-            const sel = document.getElementById('pk-'+t);
-            sel.innerHTML = '<option value="">Select '+t+' player</option>';
-            (_teams[t]||[]).forEach(p => { const o=document.createElement('option'); o.value=p; o.textContent=p; sel.appendChild(o); });
-          });
         }
       } catch(e) { console.error(e); }
 
       _entInit = true;
-      if (_mgr) { document.getElementById('mgrSel').value=_mgr; document.getElementById('pickBox').style.display=''; loadHist(); }
+      if (_mgr) {
+        document.getElementById('mgrSel').value=_mgr;
+        showPickPanels();
+        loadHist();
+      }
+    }
+
+    function populateFinalPlayerSel(prefix) {
+      const teamSel = document.getElementById(prefix + '-team');
+      const playerSel = document.getElementById(prefix + '-player');
+      const team = teamSel.value;
+      playerSel.innerHTML = '<option value="">Select player</option>';
+      if (!team || !_teams[team]) return;
+      _teams[team].forEach(p => {
+        const o = document.createElement('option');
+        o.value = p; o.textContent = (getFlag(p) ? getFlag(p) + ' ' : '') + p;
+        playerSel.appendChild(o);
+      });
+    }
+
+    function showPickPanels() {
+      // Show the correct panel based on current round
+      if (_currentRound === 'sf') {
+        document.getElementById('sfRoundPanel').style.display = '';
+        document.getElementById('finalRoundPanel').style.display = 'none';
+      } else {
+        document.getElementById('sfRoundPanel').style.display = 'none';
+        document.getElementById('finalRoundPanel').style.display = '';
+      }
+      loadManagerSfPicks();
+    }
+
+    // Load SF picks to show as frozen
+    async function loadManagerSfPicks() {
+      if (!_mgr || !_code) return;
+      try {
+        const r = await jp(SF_API+'?action=entries&manager='+enc(_mgr)+'&code='+enc(_code));
+        if (!r.ok) return;
+
+        // Find latest SF entry
+        const sfEntries = r.entries.filter(e => e.week === 'SF');
+        const latestSF = sfEntries.length ? sfEntries[sfEntries.length - 1] : null;
+
+        // Find latest F entry
+        const fEntries = r.entries.filter(e => e.week === 'F');
+        const latestF = fEntries.length ? fEntries[fEntries.length - 1] : null;
+
+        _sfPicks = latestSF;
+        _fPicks = latestF;
+
+        // Render frozen SF picks in both panels
+        const picks = latestSF ? {ENG: latestSF.eng, IND: latestSF.ind, SA: latestSF.sa, NZ: latestSF.nz} : null;
+        ['sfFrozenPicks', 'sfFrozenPicksInFinal'].forEach(containerId => {
+          const container = document.getElementById(containerId);
+          if (!container) return;
+          const teams = ['ENG','IND','SA','NZ'];
+          container.innerHTML = teams.map(t => {
+            const player = picks ? picks[t] : '—';
+            const flag = getFlag(player);
+            return '<div class="sf-frozen-pick"><div class="team-label '+t+'">'+t+'</div><div class="player-label">'+(flag?flag+' ':'')+esc(player||'—')+'</div></div>';
+          }).join('');
+        });
+
+        // Pre-fill Final picks if they exist
+        if (latestF && latestF.f_pick1) {
+          document.getElementById('fp1-team').value = latestF.f_pick1team || '';
+          populateFinalPlayerSel('fp1');
+          setTimeout(() => { document.getElementById('fp1-player').value = latestF.f_pick1 || ''; }, 50);
+
+          document.getElementById('fp2-team').value = latestF.f_pick2team || '';
+          populateFinalPlayerSel('fp2');
+          setTimeout(() => { document.getElementById('fp2-player').value = latestF.f_pick2 || ''; }, 50);
+        }
+
+      } catch(e) { console.error(e); }
     }
 
 
@@ -806,7 +1035,7 @@
         authBtn.textContent='Verify & Continue';
         authBtn.disabled=false;
       }else{
-        codeGroup.style.display='none';  // first-time manager: don't show passcode input yet
+        codeGroup.style.display='none';
         authBtn.textContent='Set Passcode';
         authBtn.disabled=false;
         sfMsg(msg,'inf','First time here — set a passcode to continue.');
@@ -824,7 +1053,6 @@
 
       if (!mgr) { sfMsg(m,'err','Select your name.'); return; }
 
-      // First-time manager: set passcode first (no "enter passcode" field shown)
       if (has === false) {
         document.getElementById('regOverlay').classList.remove('hide');
         document.getElementById('regOverlay').dataset.mgr = mgr;
@@ -840,8 +1068,8 @@
         const r = await jp(SF_API+'?action=verify&manager='+enc(mgr)+'&code='+enc(code));
         if (r.ok) {
           _mgr=mgr; _code=code;
-          sfMsg(m,'ok','✅ Verified! Pick your players below.');
-          document.getElementById('pickBox').style.display='';
+          sfMsg(m,'ok','✅ Verified! Pick your Final players below.');
+          showPickPanels();
           loadHist();
         } else if (r.needsRegister) {
           document.getElementById('regOverlay').classList.remove('hide');
@@ -866,56 +1094,71 @@
           _mgrHasCode[mgr] = true;
           document.getElementById('regOverlay').classList.add('hide');
           document.getElementById('codeIn').value=code;
-          sfMsg(document.getElementById('authMsg'),'ok','🔒 Passcode set! Pick your players below.');
-          document.getElementById('pickBox').style.display='';
+          sfMsg(document.getElementById('authMsg'),'ok','🔒 Passcode set! Pick your Final players below.');
+          showPickPanels();
           loadHist();
         } else { sfMsg(m,'err',r.message||'Failed.'); }
       } catch(e) { sfMsg(m,'err','Network error.'); }
     }
 
-    async function submitPicks() {
+    // ── Submit Final Picks (2 from IND/NZ) ──
+    async function submitFinalPicks() {
       if (!_mgr||!_code) { alert('Verify first.'); return; }
-      const eng=document.getElementById('pk-ENG').value, ind=document.getElementById('pk-IND').value;
-      const sa=document.getElementById('pk-SA').value, nz=document.getElementById('pk-NZ').value;
-      const m=document.getElementById('subMsg');
+      const t1 = document.getElementById('fp1-team').value;
+      const p1 = document.getElementById('fp1-player').value;
+      const t2 = document.getElementById('fp2-team').value;
+      const p2 = document.getElementById('fp2-player').value;
+      const m = document.getElementById('subFinalMsg');
       m.className='sf-msg'; m.style.display='none';
-      if (!eng||!ind||!sa||!nz) { sfMsg(m,'err','Pick one player from each team.'); return; }
-      const btn=document.getElementById('subBtn');
+
+      if (!t1 || !p1) { sfMsg(m,'err','Select team & player for Pick 1.'); return; }
+      if (!t2 || !p2) { sfMsg(m,'err','Select team & player for Pick 2.'); return; }
+      if (p1 === p2)  { sfMsg(m,'err','Cannot pick the same player twice!'); return; }
+
+      const btn = document.getElementById('subFinalBtn');
       btn.disabled=true; btn.textContent='Submitting…';
       try {
-        const r = await jp(SF_API+'?action=submit&manager='+enc(_mgr)+'&code='+enc(_code)+'&week=SF&eng='+enc(eng)+'&ind='+enc(ind)+'&sa='+enc(sa)+'&nz='+enc(nz));
-        if (r.ok) { sfMsg(m,'ok','✅ Entry submitted.'); loadHist(); }
+        const url = SF_API+'?action=submitfinal&manager='+enc(_mgr)+'&code='+enc(_code)
+          +'&pick1='+enc(p1)+'&pick1team='+enc(t1)
+          +'&pick2='+enc(p2)+'&pick2team='+enc(t2);
+        const r = await jp(url);
+        if (r.ok) { sfMsg(m,'ok','✅ Final picks saved!'); loadHist(); }
         else { sfMsg(m,'err',r.message||'Failed.'); }
       } catch(e) { sfMsg(m,'err','Network error.'); }
-      btn.disabled=false; btn.textContent='✅ Submit Entry';
+      btn.disabled=false; btn.textContent='✅ Submit Final Picks';
     }
 
     async function loadHist() {
       if (!_mgr||!_code) return;
-      const sec = document.getElementById('histBox');
+      const sec = document.getElementById('histBoxFinal');
       try {
         const r = await jp(SF_API+'?action=entries&manager='+enc(_mgr)+'&code='+enc(_code));
         if (!r.ok||!r.entries.length) { sec.innerHTML=''; return; }
-        const entries = r.entries.reverse().slice(0,5);
-        let h = '<h3 style="font-size:0.75rem;opacity:0.5;margin-bottom:8px;text-transform:uppercase;letter-spacing:1px">Your Recent Entries</h3>';
-        entries.forEach((e,i) => {
+
+        // Show Final entries
+        const fEntries = r.entries.filter(e => e.week === 'F').reverse().slice(0,5);
+        if (!fEntries.length) { sec.innerHTML=''; return; }
+
+        let h = '<div class="sf-section" style="padding:16px"><h3 style="font-size:0.75rem;margin-bottom:8px">Your Final Entries</h3>';
+        fEntries.forEach((e,i) => {
           const dt = new Date(e.timestamp);
           const lat = i===0;
+          const flag1 = getFlag(e.f_pick1);
+          const flag2 = getFlag(e.f_pick2);
           h += '<div class="sf-hist" style="'+(lat?'border-color:var(--copper-light)':'')+'">';
           h += '<div class="ts">'+(lat?'✅ LATEST — ':'')+dt.toLocaleString('en-IN',{timeZone:'Asia/Kolkata'})+'</div>';
-          h += '<div class="pk">'+
-            '<span style="color:#60a5fa">ENG:</span> '+(getFlag(e.eng)?'<span class="player-flag">'+getFlag(e.eng)+'</span> ':'')+esc(e.eng)+' · '+
-            '<span style="color:#fb923c">IND:</span> '+(getFlag(e.ind)?'<span class="player-flag">'+getFlag(e.ind)+'</span> ':'')+esc(e.ind)+' · '+
-            '<span style="color:#4ade80">SA:</span> '+(getFlag(e.sa)?'<span class="player-flag">'+getFlag(e.sa)+'</span> ':'')+esc(e.sa)+' · '+
-            '<span style="color:#e2e8f0">NZ:</span> '+(getFlag(e.nz)?'<span class="player-flag">'+getFlag(e.nz)+'</span> ':'')+esc(e.nz)+'</div>';
-          h += '</div>';
+          h += '<div class="pk">';
+          h += '<span style="color:'+(e.f_pick1team==='IND'?'#fb923c':'#e2e8f0')+'">'+esc(e.f_pick1team)+':</span> '+(flag1?'<span class="player-flag">'+flag1+'</span> ':'')+esc(e.f_pick1)+' · ';
+          h += '<span style="color:'+(e.f_pick2team==='IND'?'#fb923c':'#e2e8f0')+'">'+esc(e.f_pick2team)+':</span> '+(flag2?'<span class="player-flag">'+flag2+'</span> ':'')+esc(e.f_pick2);
+          h += '</div></div>';
         });
+        h += '</div>';
         sec.innerHTML = h;
       } catch(e) { console.error(e); }
     }
 
     // ═══════════════════════════════════════════════════
-    // VIEW 3: SF LEADERBOARD
+    // VIEW 3: PLAYOFF LEADERBOARD
     // ═══════════════════════════════════════════════════
     async function loadSfLb() {
       const c = document.getElementById('sfLbContent');
@@ -944,15 +1187,35 @@
 
         // Detailed cards
         r.leaderboard.forEach(entry => {
-          const rc = entry.rank===1?'gold':entry.rank===2?'silver':entry.rank===3?'bronze':'';
-          let picks = (entry.players||[]).map(p =>
+          // SF picks row
+          let sfPicksHtml = (entry.sfPicks||[]).map(p =>
             '<div class="sf-lb-pick"><div class="tl '+esc(p.team)+'">'+esc(p.team)+'</div><div class="pl">'+esc(p.player)+'</div><div class="pp">'+p.points+' pts</div></div>'
           ).join('');
+
+          // Final picks row
+          let fPicksHtml = (entry.fPicks||[]).map(p =>
+            '<div class="sf-lb-fpick"><div class="tl '+esc(p.team)+'">'+esc(p.team)+'</div><div class="pl">'+esc(p.player)+'</div><div class="pp">'+p.points+' pts</div></div>'
+          ).join('');
+
           html += '<div class="sf-lb-card"><div class="sf-lb-header">';
           html += '<div class="manager-rank">'+entry.rank+'</div>';
           html += '<div class="manager-name">'+esc(entry.manager)+'</div>';
           html += '<div class="manager-total">'+entry.totalPoints+' pts</div>';
-          html += '</div><div class="sf-lb-picks">'+picks+'</div></div>';
+          html += '</div>';
+
+          // SF section
+          if (sfPicksHtml) {
+            html += '<div class="lb-section-label">Semi-Final Picks</div>';
+            html += '<div class="sf-lb-picks">'+sfPicksHtml+'</div>';
+          }
+
+          // Final section
+          if (fPicksHtml) {
+            html += '<div class="lb-section-label" style="background:rgba(195,86,39,0.1)">🏆 Final Picks</div>';
+            html += '<div class="sf-lb-fpicks">'+fPicksHtml+'</div>';
+          }
+
+          html += '</div>';
         });
         c.innerHTML = html;
       } catch(e) {
@@ -965,6 +1228,7 @@
     // ═══════════════════════════════════════════════════
     fetchData();
     initEntries();
+    switchRound('final'); // default to Final round
   </script>
 </body>
 </html>
