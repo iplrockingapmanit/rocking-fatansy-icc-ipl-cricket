@@ -388,6 +388,7 @@
         document.getElementById('vp-' + b.dataset.view).classList.add('active');
         if (b.dataset.view === 'sf-entries') initEntries();
         if (b.dataset.view === 'sf-lb') loadSfLb();
+        if (b.dataset.view === 'championship') loadChampionship();
       };
     });
 
@@ -650,6 +651,122 @@
       } catch(e) { c.innerHTML = '<div class="loading" style="color:#f47373">Failed to load leaderboard.</div>'; }
     }
 
+    // ═══════════════════════════════════════════════════
+    // VIEW 4: CHAMPIONSHIP — 2026 IN NUMBERS
+    // ═══════════════════════════════════════════════════
+    function coinsForRanks(sortedManagers) {
+      const pools = [3000, 2000, 1000];
+      const coins = {};
+      let i = 0;
+      while (i < sortedManagers.length && i < 3) {
+        const score = sortedManagers[i].totalPoints;
+        let j = i;
+        while (j < sortedManagers.length && sortedManagers[j].totalPoints === score) j++;
+        const tiedCount = j - i;
+        let poolSum = 0;
+        for (let k = i; k < Math.min(j, 3); k++) poolSum += pools[k];
+        const perPerson = Math.round(poolSum / tiedCount);
+        for (let k = i; k < j; k++) coins[sortedManagers[k].name] = perPerson;
+        i = j;
+      }
+      return coins;
+    }
+
+    async function loadChampionship() {
+      const c = document.getElementById('champContent');
+      c.innerHTML = '<div class="loading">Crunching numbers…</div>';
+
+      const allPhases = {};
+
+      try {
+        const res = await fetch(S8_API);
+        const data = await res.json();
+        const weekKeys = Object.keys(data.weeks || {});
+        weekKeys.forEach(weekKey => {
+          const week = data.weeks[weekKey];
+          const label = week.label || weekKey;
+          const managers = (week.managers || []).slice().sort((a,b) => b.totalPoints - a.totalPoints);
+          const phaseCoins = coinsForRanks(managers);
+          managers.forEach(m => {
+            if (!allPhases[m.name]) allPhases[m.name] = { totalPoints: 0, totalCoins: 0, phases: [] };
+            const co = phaseCoins[m.name] || 0;
+            allPhases[m.name].totalPoints += m.totalPoints;
+            allPhases[m.name].totalCoins += co;
+            allPhases[m.name].phases.push({ label, points: m.totalPoints, coins: co, rank: m.rank });
+          });
+        });
+      } catch(e) { console.error('S8 fetch failed', e); }
+
+      try {
+        const r = await jp(SF_API + '?action=leaderboard');
+        if (r.ok && !r.locked && r.leaderboard && r.leaderboard.length) {
+          const showFinalPicks = new Date() >= new Date('2026-03-09T19:00:00+05:30');
+          const ranked = r.leaderboard.map(e => ({
+            name: e.manager,
+            totalPoints: showFinalPicks ? e.totalPoints : (e.sfPicks||[]).reduce((s,p)=>s+p.points, 0)
+          })).sort((a,b) => b.totalPoints - a.totalPoints);
+          const phaseCoins = coinsForRanks(ranked);
+          ranked.forEach((m, idx) => {
+            if (!allPhases[m.name]) allPhases[m.name] = { totalPoints: 0, totalCoins: 0, phases: [] };
+            const co = phaseCoins[m.name] || 0;
+            allPhases[m.name].totalPoints += m.totalPoints;
+            allPhases[m.name].totalCoins += co;
+            allPhases[m.name].phases.push({ label: 'Playoffs', points: m.totalPoints, coins: co, rank: idx + 1 });
+          });
+        }
+      } catch(e) { console.error('SF fetch failed', e); }
+
+      const rows = Object.keys(allPhases).map(name => ({ name, ...allPhases[name] }));
+      rows.sort((a,b) => b.totalCoins - a.totalCoins || b.totalPoints - a.totalPoints);
+
+      if (!rows.length) { c.innerHTML = '<div class="loading">No data yet.</div>'; return; }
+
+      let html = '<div class="leaderboard-title">🏆 2026 Championship</div>';
+      const medals = ['🥇','🥈','🥉'];
+      html += '<div class="podium">';
+      rows.slice(0,3).forEach((m,i) => {
+        html += '<div class="podium-card"><div class="rank-badge">'+(medals[i]||(i+1))+'</div>';
+        html += '<div class="podium-name">'+esc(m.name)+'</div>';
+        html += '<div class="podium-points">'+m.totalCoins.toLocaleString()+'</div>';
+        html += '<div style="font-size:0.7rem;opacity:0.5;margin-top:2px">coins</div></div>';
+      });
+      html += '</div>';
+
+      html += '<div style="overflow-x:auto">';
+      html += '<table style="width:100%;border-collapse:separate;border-spacing:0;font-size:0.85rem">';
+      html += '<thead><tr style="text-align:left">';
+      html += '<th style="padding:12px 14px;background:rgba(0,0,0,0.3);border-radius:12px 0 0 0;color:var(--sand);font-size:0.7rem;text-transform:uppercase;letter-spacing:1px">#</th>';
+      html += '<th style="padding:12px 14px;background:rgba(0,0,0,0.3);color:var(--sand);font-size:0.7rem;text-transform:uppercase;letter-spacing:1px">Manager</th>';
+
+      const phaseLabels = rows[0].phases.map(p => p.label);
+      phaseLabels.forEach(l => {
+        html += '<th style="padding:12px 8px;background:rgba(0,0,0,0.3);color:var(--sand);font-size:0.65rem;text-transform:uppercase;letter-spacing:1px;text-align:center">'+esc(l)+'</th>';
+      });
+      html += '<th style="padding:12px 14px;background:rgba(0,0,0,0.3);color:var(--sand);font-size:0.7rem;text-transform:uppercase;letter-spacing:1px;text-align:right">Total Pts</th>';
+      html += '<th style="padding:12px 14px;background:rgba(0,0,0,0.3);border-radius:0 12px 0 0;color:var(--copper-light);font-size:0.7rem;text-transform:uppercase;letter-spacing:1px;text-align:right">Total Coins</th>';
+      html += '</tr></thead><tbody>';
+
+      rows.forEach((m, idx) => {
+        const bg = idx % 2 === 0 ? 'rgba(255,255,255,0.03)' : 'transparent';
+        html += '<tr style="background:'+bg+'">';
+        html += '<td style="padding:10px 14px;font-weight:700;opacity:0.5">'+(idx+1)+'</td>';
+        html += '<td style="padding:10px 14px;font-weight:700">'+esc(m.name)+'</td>';
+        m.phases.forEach(p => {
+          const coinColor = p.coins >= 3000 ? '#fbbf24' : p.coins >= 2000 ? '#d1d5db' : p.coins >= 1000 ? '#d6794d' : 'rgba(255,255,255,0.3)';
+          const medal = p.rank === 1 ? '🥇' : p.rank === 2 ? '🥈' : p.rank === 3 ? '🥉' : '';
+          html += '<td style="padding:10px 8px;text-align:center">';
+          html += '<div style="font-size:0.82rem;font-weight:600">'+p.points+'<span style="font-size:0.7rem;opacity:0.5"> pts</span></div>';
+          if (p.coins > 0) html += '<div style="font-size:0.72rem;color:'+coinColor+';font-weight:700">'+medal+' '+p.coins.toLocaleString()+'</div>';
+          html += '</td>';
+        });
+        html += '<td style="padding:10px 14px;text-align:right;font-weight:700;color:#6ecf8e">'+m.totalPoints.toLocaleString()+'</td>';
+        html += '<td style="padding:10px 14px;text-align:right;font-weight:800;font-size:1rem;background:linear-gradient(90deg,var(--sand),var(--copper));-webkit-background-clip:text;-webkit-text-fill-color:transparent">'+m.totalCoins.toLocaleString()+'</td>';
+        html += '</tr>';
+      });
+
+      html += '</tbody></table></div>';
+      c.innerHTML = html;
+    }
     // INIT
     fetchData();
     initEntries();
