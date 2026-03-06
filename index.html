@@ -15,7 +15,6 @@
       --silver: #BFB9B5;
       --glass: rgba(255,255,255,0.06);
       --glass-strong: rgba(255,255,255,0.12);
-      /* SF team colours */
       --eng: #1d4ed8;
       --ind: #ea580c;
       --sa: #16a34a;
@@ -27,352 +26,116 @@
     body {
       font-family: 'Poppins', sans-serif;
       background: radial-gradient(circle at 20% 10%, #3a6f7a 0%, #1e2d33 40%, #14191d 100%);
-      color:white;
-      min-height:100vh;
+      color:white; min-height:100vh;
     }
 
     body::before {
-      content:"";
-      position:fixed;
-      inset:0;
-      background:
-        radial-gradient(circle at 80% 80%, rgba(76,132,141,0.15), transparent 40%),
+      content:""; position:fixed; inset:0;
+      background: radial-gradient(circle at 80% 80%, rgba(76,132,141,0.15), transparent 40%),
         radial-gradient(circle at 10% 90%, rgba(195,86,39,0.15), transparent 40%);
       pointer-events:none;
     }
 
-    .header {
-      backdrop-filter: blur(16px);
-      background: rgba(0,0,0,0.5);
-      padding:25px;
-      text-align:center;
-      border-bottom:1px solid var(--glass-strong);
-    }
+    .header { backdrop-filter: blur(16px); background: rgba(0,0,0,0.5); padding:25px; text-align:center; border-bottom:1px solid var(--glass-strong); }
+    .header h1 { font-size:2rem; font-weight:800; background: linear-gradient(90deg, var(--sand), var(--copper)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+    .badge { display:inline-block; margin-top:10px; padding:6px 20px; border-radius:25px; font-size:0.75rem; font-weight:600; background: linear-gradient(135deg, var(--copper-light), var(--copper)); box-shadow:0 0 25px rgba(195,86,39,0.6); }
 
-    .header h1 {
-      font-size:2rem;
-      font-weight:800;
-      background: linear-gradient(90deg, var(--sand), var(--copper));
-      -webkit-background-clip:text;
-      -webkit-text-fill-color:transparent;
-    }
-
-    .badge {
-      display:inline-block;
-      margin-top:10px;
-      padding:6px 20px;
-      border-radius:25px;
-      font-size:0.75rem;
-      font-weight:600;
-      background: linear-gradient(135deg, var(--copper-light), var(--copper));
-      box-shadow:0 0 25px rgba(195,86,39,0.6);
-    }
-
-
-    /* ═══ Header band for top-level view tabs (to separate from Week tabs) ═══ */
-    .view-tabs-band{
-      position: sticky;
-      top: 0;
-      z-index: 50;
-      padding: 14px 12px 6px;
-      backdrop-filter: blur(18px);
-      background: rgba(0,0,0,0.42);
-      border-bottom: 1px solid var(--glass-strong);
-    }
-
-    /* ICC logo in auth header */
+    .view-tabs-band { position: sticky; top: 0; z-index: 50; padding: 14px 12px 6px; backdrop-filter: blur(18px); background: rgba(0,0,0,0.42); border-bottom: 1px solid var(--glass-strong); }
     .sf-hdr{ display:flex; align-items:center; justify-content:center; gap:10px; }
     .icc-logo{ width: 28px; height: 28px; object-fit: contain; filter: drop-shadow(0 6px 14px rgba(0,0,0,0.35)); }
     .team-flag{ font-size: 1.05rem; margin-right: 6px; line-height: 1; }
-    /* ═══ Top-level view tabs (Super8s / SF Entries / SF Leaderboard) ═══ */
-    .view-tabs {
-      display:flex;
-      justify-content:center;
-      gap:10px;
-      padding:20px 20px 0;
-      flex-wrap:wrap;
-    }
-    .view-btn {
-      padding:10px 24px;
-      border:none;
-      border-radius:25px;
-      background:var(--glass);
-      color:#ddd;
-      font-family:'Poppins',sans-serif;
-      font-weight:600;
-      font-size:0.85rem;
-      cursor:pointer;
-      backdrop-filter: blur(8px);
-      transition:0.3s;
-    }
+
+    .view-tabs { display:flex; justify-content:center; gap:10px; padding:20px 20px 0; flex-wrap:wrap; }
+    .view-btn { padding:10px 24px; border:none; border-radius:25px; background:var(--glass); color:#ddd; font-family:'Poppins',sans-serif; font-weight:600; font-size:0.85rem; cursor:pointer; backdrop-filter: blur(8px); transition:0.3s; }
     .view-btn:hover { background:var(--glass-strong); }
-    .view-btn.active {
-      background: linear-gradient(135deg, var(--copper-light), var(--copper));
-      color:white;
-      box-shadow:0 0 20px rgba(195,86,39,0.6);
-    }
+    .view-btn.active { background: linear-gradient(135deg, var(--copper-light), var(--copper)); color:white; box-shadow:0 0 20px rgba(195,86,39,0.6); }
     .view-panel { display:none; }
     .view-panel.active { display:block; }
 
-    /* ═══ Week tabs (inside Super 8s) ═══ */
-    .tabs {
-      display:flex;
-      justify-content:center;
-      gap:12px;
-      padding:20px;
-      flex-wrap:wrap;
-    }
+    .tabs { display:flex; justify-content:center; gap:12px; padding:20px; flex-wrap:wrap; }
+    .tab-btn { padding:10px 26px; border:none; border-radius:25px; background:var(--glass); color:#ddd; font-family:'Poppins',sans-serif; font-weight:600; cursor:pointer; backdrop-filter: blur(8px); transition:0.3s; }
+    .tab-btn.active { background: linear-gradient(135deg, var(--copper-light), var(--copper)); color:white; box-shadow:0 0 20px rgba(195,86,39,0.6); }
 
-    .tab-btn {
-      padding:10px 26px;
-      border:none;
-      border-radius:25px;
-      background:var(--glass);
-      color:#ddd;
-      font-family:'Poppins',sans-serif;
-      font-weight:600;
-      cursor:pointer;
-      backdrop-filter: blur(8px);
-      transition:0.3s;
-    }
+    .container { max-width:1100px; margin:0 auto; padding:30px 20px 60px; }
+    .leaderboard-title { text-align:center; font-size:1.6rem; margin-bottom:35px; font-weight:700; color:var(--sand); }
 
-    .tab-btn.active {
-      background: linear-gradient(135deg, var(--copper-light), var(--copper));
-      color:white;
-      box-shadow:0 0 20px rgba(195,86,39,0.6);
-    }
-
-    .container {
-      max-width:1100px;
-      margin:0 auto;
-      padding:30px 20px 60px;
-    }
-
-    .leaderboard-title {
-      text-align:center;
-      font-size:1.6rem;
-      margin-bottom:35px;
-      font-weight:700;
-      color:var(--sand);
-    }
-
-    .podium {
-      display:flex;
-      justify-content:center;
-      gap:25px;
-      flex-wrap:wrap;
-      margin-bottom:50px;
-    }
-
-    .podium-card {
-      background:var(--glass);
-      backdrop-filter: blur(14px);
-      border:1px solid var(--glass-strong);
-      border-radius:20px;
-      padding:25px;
-      text-align:center;
-      width:220px;
-      transition:0.3s;
-    }
-    .podium-card:hover {
-      transform:translateY(-8px);
-      box-shadow:0 15px 40px rgba(0,0,0,0.4);
-    }
-    .podium-card .rank-badge {
-      display: flex; align-items: center; justify-content: center;
-      margin: 0 auto 14px; font-size: 2.5rem !important; line-height: 1 !important;
-      background: transparent !important; box-shadow: none !important;
-      filter: drop-shadow(0 6px 14px rgba(0,0,0,0.25));
-    }
+    .podium { display:flex; justify-content:center; gap:25px; flex-wrap:wrap; margin-bottom:50px; }
+    .podium-card { background:var(--glass); backdrop-filter: blur(14px); border:1px solid var(--glass-strong); border-radius:20px; padding:25px; text-align:center; width:220px; transition:0.3s; }
+    .podium-card:hover { transform:translateY(-8px); box-shadow:0 15px 40px rgba(0,0,0,0.4); }
+    .podium-card .rank-badge { display: flex; align-items: center; justify-content: center; margin: 0 auto 14px; font-size: 2.5rem !important; line-height: 1 !important; background: transparent !important; box-shadow: none !important; filter: drop-shadow(0 6px 14px rgba(0,0,0,0.25)); }
     .podium-name { font-size:1.2rem; font-weight:700; margin-bottom:8px; }
-    .podium-points {
-      font-size:2rem; font-weight:800;
-      background: linear-gradient(90deg, var(--sand), var(--copper));
-      -webkit-background-clip:text; -webkit-text-fill-color:transparent;
-    }
+    .podium-points { font-size:2rem; font-weight:800; background: linear-gradient(90deg, var(--sand), var(--copper)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
 
     .filter-bar { display:flex; justify-content:flex-end; align-items:center; gap:10px; margin:0 0 14px; }
     .filter-label { font-size:0.85rem; opacity:0.8; }
-    .filter-select {
-      background: var(--glass); border: 1px solid var(--glass-strong);
-      color: #fff; border-radius: 12px; padding: 8px 12px;
-      backdrop-filter: blur(10px); outline: none; font-family:'Poppins',sans-serif;
-    }
+    .filter-select { background: var(--glass); border: 1px solid var(--glass-strong); color: #fff; border-radius: 12px; padding: 8px 12px; backdrop-filter: blur(10px); outline: none; font-family:'Poppins',sans-serif; }
     .filter-select option { color:#111; }
 
-    .manager-grid {
-      display:grid;
-      grid-template-columns: repeat(auto-fill,minmax(320px,1fr));
-      gap:20px;
-    }
-
-    .manager-card {
-      background:var(--glass);
-      backdrop-filter: blur(12px);
-      border:1px solid var(--glass-strong);
-      border-radius:18px;
-      padding:20px;
-      transition:0.3s;
-    }
-    .manager-card:hover {
-      transform:translateY(-6px);
-      box-shadow:0 15px 35px rgba(0,0,0,0.4);
-    }
-
-    .manager-header {
-      display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;
-    }
-    .manager-rank {
-      background: linear-gradient(135deg, var(--copper-light), var(--copper));
-      width:30px; height:30px; border-radius:50%;
-      display:flex; align-items:center; justify-content:center;
-      font-size:0.8rem; font-weight:700;
-    }
+    .manager-grid { display:grid; grid-template-columns: repeat(auto-fill,minmax(320px,1fr)); gap:20px; }
+    .manager-card { background:var(--glass); backdrop-filter: blur(12px); border:1px solid var(--glass-strong); border-radius:18px; padding:20px; transition:0.3s; }
+    .manager-card:hover { transform:translateY(-6px); box-shadow:0 15px 35px rgba(0,0,0,0.4); }
+    .manager-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
+    .manager-rank { background: linear-gradient(135deg, var(--copper-light), var(--copper)); width:30px; height:30px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:0.8rem; font-weight:700; }
     .manager-name { flex:1; margin-left:10px; font-weight:700; }
     .manager-total { font-weight:800; color:var(--sand); }
 
-    .player-row {
-      display: grid; grid-template-columns: 1fr auto auto;
-      align-items: center; gap: 12px; padding: 6px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 0.85rem;
-    }
+    .player-row { display: grid; grid-template-columns: 1fr auto auto; align-items: center; gap: 12px; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 0.85rem; }
     .player-row:last-child { border:none; }
     .player-pts { font-weight: 700; color: #6ecf8e; text-align: right; min-width: 64px; }
     .slots-info { font-size: 0.75rem; opacity: 0.75; margin-left: 6px; }
     .player-row .slots-info { margin-left: 0; text-align: right; min-width: 54px; opacity: 0.85; }
     .player-name { display: inline-flex; align-items: center; gap: 8px; }
     .player-flag { font-size: 1.05rem; line-height: 1; filter: drop-shadow(0 2px 6px rgba(0,0,0,0.25)); }
-
     .loading { text-align:center; padding:80px 20px; opacity:0.6; }
 
-    /* ═══ SF Form Elements (matching existing glass style) ═══ */
-    .sf-section {
-      background: var(--glass);
-      backdrop-filter: blur(14px);
-      border: 1px solid var(--glass-strong);
-      border-radius: 20px;
-      padding: 24px;
-      margin-bottom: 18px;
-    }
-    .sf-section h3 {
-      font-size: 0.95rem; color: var(--sand); margin-bottom: 16px;
-      font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
-    }
+    .sf-section { background: var(--glass); backdrop-filter: blur(14px); border: 1px solid var(--glass-strong); border-radius: 20px; padding: 24px; margin-bottom: 18px; }
+    .sf-section h3 { font-size: 0.95rem; color: var(--sand); margin-bottom: 16px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
     .sf-group { margin-bottom: 14px; }
-    .sf-group label {
-      display: block; font-size: 0.8rem; opacity: 0.75; margin-bottom: 5px; font-weight: 500;
-    }
-    .sf-group select, .sf-group input {
-      width: 100%; padding: 14px 14px; min-height: 52px;
-      background: rgba(0,0,0,0.35); border: 1px solid var(--glass-strong);
-      border-radius: 14px; color: #fff; font-size: 0.9rem;
-      font-family: 'Poppins', sans-serif; outline: none; transition: 0.3s;
-      backdrop-filter: blur(8px);
-    }
-    .sf-group select:focus, .sf-group input:focus {
-      border-color: var(--copper-light);
-      box-shadow: 0 0 12px rgba(195,86,39,0.25);
-    }
+    .sf-group label { display: block; font-size: 0.8rem; opacity: 0.75; margin-bottom: 5px; font-weight: 500; }
+    .sf-group select, .sf-group input { width: 100%; padding: 14px 14px; min-height: 52px; background: rgba(0,0,0,0.35); border: 1px solid var(--glass-strong); border-radius: 14px; color: #fff; font-size: 0.9rem; font-family: 'Poppins', sans-serif; outline: none; transition: 0.3s; backdrop-filter: blur(8px); }
+    .sf-group select:focus, .sf-group input:focus { border-color: var(--copper-light); box-shadow: 0 0 12px rgba(195,86,39,0.25); }
     .sf-group select option { background: #1e2d33; color: #fff; }
 
-    .team-pick { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
-    .team-badge {
-      width: 48px; height: 48px; border-radius: 14px; display: flex;
-      align-items: center; justify-content: center; font-weight: 700;
-      font-size: 0.72rem; letter-spacing: 1px; flex-shrink: 0; color: #fff;
-      border: 1px solid rgba(255,255,255,0.15);
-    }
+    .team-pick { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; justify-content: center; }
+    .team-badge { width: 48px; height: 48px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.72rem; letter-spacing: 1px; flex-shrink: 0; color: #fff; border: 1px solid rgba(255,255,255,0.15); }
     .team-badge.ENG { background: var(--eng); }
     .team-badge.IND { background: var(--ind); }
     .team-badge.SA  { background: var(--sa); }
     .team-badge.NZ  { background: var(--nz); border-color: rgba(255,255,255,0.25); }
-    .team-pick { justify-content: center; }
     .team-pick select { flex: 0 1 520px; min-height: 54px; }
 
-    .sf-btn {
-      display: flex; align-items: center; justify-content: center; gap: 8px;
-      width: 100%; padding: 14px 28px; border: none; border-radius: 14px;
-      font-size: 0.9rem; font-weight: 700; cursor: pointer; transition: 0.3s;
-      font-family: 'Poppins', sans-serif;
-    }
-    .sf-btn-primary {
-      background: linear-gradient(135deg, var(--copper-light), var(--copper));
-      color: #fff; box-shadow: 0 0 18px rgba(195,86,39,0.4);
-    }
+    .sf-btn { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 14px 28px; border: none; border-radius: 14px; font-size: 0.9rem; font-weight: 700; cursor: pointer; transition: 0.3s; font-family: 'Poppins', sans-serif; }
+    .sf-btn-primary { background: linear-gradient(135deg, var(--copper-light), var(--copper)); color: #fff; box-shadow: 0 0 18px rgba(195,86,39,0.4); }
     .sf-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 28px rgba(195,86,39,0.6); }
     .sf-btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-    .sf-btn-outline {
-      background: var(--glass); border: 1px solid var(--glass-strong); color: #ddd;
-    }
+    .sf-btn-outline { background: var(--glass); border: 1px solid var(--glass-strong); color: #ddd; }
     .sf-btn-outline:hover { background: var(--glass-strong); }
 
-    .sf-msg {
-      padding: 10px 14px; border-radius: 12px; font-size: 0.82rem;
-      margin-top: 10px; display: none;
-    }
+    .sf-msg { padding: 10px 14px; border-radius: 12px; font-size: 0.82rem; margin-top: 10px; display: none; }
     .sf-msg.ok  { display:block; background:rgba(110,207,142,0.12); color:#6ecf8e; border:1px solid rgba(110,207,142,0.25); }
     .sf-msg.err { display:block; background:rgba(220,80,80,0.12); color:#f47373; border:1px solid rgba(220,80,80,0.25); }
     .sf-msg.inf { display:block; background:rgba(76,132,141,0.15); color:var(--aqua); border:1px solid rgba(76,132,141,0.25); }
 
-    /* Countdown */
-    .sf-countdown {
-      text-align: center; padding: 14px;
-      background: rgba(220,80,80,0.06); border: 1px solid rgba(220,80,80,0.15);
-      border-radius: 16px; margin-bottom: 20px; backdrop-filter: blur(8px);
-    }
+    .sf-countdown { text-align: center; padding: 14px; background: rgba(220,80,80,0.06); border: 1px solid rgba(220,80,80,0.15); border-radius: 16px; margin-bottom: 20px; backdrop-filter: blur(8px); }
     .sf-countdown .cd-label { font-size: 0.72rem; opacity: 0.7; text-transform: uppercase; letter-spacing: 1px; }
     .sf-countdown .cd-time { font-size: 1.8rem; font-weight: 800; color: #f47373; letter-spacing: 2px; }
     .sf-countdown.expired .cd-time { color: var(--silver); opacity: 0.6; }
     .sf-countdown.expired { background: rgba(255,255,255,0.03); border-color: var(--glass-strong); }
 
-    /* Auth overlay */
-    .sf-overlay {
-      position: fixed; inset: 0; background: rgba(0,0,0,0.8);
-      z-index: 100; display: flex; align-items: center; justify-content: center; padding: 20px;
-      backdrop-filter: blur(6px);
-    }
+    .sf-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 100; display: flex; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(6px); }
     .sf-overlay.hide { display: none; }
-    .sf-overlay-box {
-      background: rgba(30,45,51,0.95); border: 1px solid var(--glass-strong);
-      border-radius: 22px; padding: 30px; max-width: 380px; width: 100%;
-      backdrop-filter: blur(16px);
-    }
-    .sf-overlay-box h2 {
-      font-size: 1.4rem; font-weight: 800; margin-bottom: 4px;
-      background: linear-gradient(90deg, var(--sand), var(--copper));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    }
+    .sf-overlay-box { background: rgba(30,45,51,0.95); border: 1px solid var(--glass-strong); border-radius: 22px; padding: 30px; max-width: 380px; width: 100%; backdrop-filter: blur(16px); }
+    .sf-overlay-box h2 { font-size: 1.4rem; font-weight: 800; margin-bottom: 4px; background: linear-gradient(90deg, var(--sand), var(--copper)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
     .sf-overlay-box p { opacity: 0.7; font-size: 0.82rem; margin-bottom: 18px; }
-    .sf-overlay-box input {
-      width: 100%; text-align: center; padding: 14px;
-      background: rgba(0,0,0,0.4); border: 2px solid var(--glass-strong);
-      border-radius: 14px; color: var(--sand); font-size: 1.3rem;
-      font-weight: 700; letter-spacing: 6px; font-family: 'Poppins', sans-serif;
-      outline: none; transition: 0.3s; margin-bottom: 14px;
-    }
+    .sf-overlay-box input { width: 100%; text-align: center; padding: 14px; background: rgba(0,0,0,0.4); border: 2px solid var(--glass-strong); border-radius: 14px; color: var(--sand); font-size: 1.3rem; font-weight: 700; letter-spacing: 6px; font-family: 'Poppins', sans-serif; outline: none; transition: 0.3s; margin-bottom: 14px; }
     .sf-overlay-box input:focus { border-color: var(--copper-light); }
 
-    /* SF Leaderboard cards */
-    .sf-lb-card {
-      background: var(--glass); backdrop-filter: blur(12px);
-      border: 1px solid var(--glass-strong); border-radius: 18px;
-      margin-bottom: 12px; overflow: hidden; transition: 0.3s;
-    }
+    .sf-lb-card { background: var(--glass); backdrop-filter: blur(12px); border: 1px solid var(--glass-strong); border-radius: 18px; margin-bottom: 12px; overflow: hidden; transition: 0.3s; }
     .sf-lb-card:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(0,0,0,0.35); }
-    .sf-lb-header {
-      display: flex; align-items: center; padding: 16px 20px; gap: 14px;
-    }
-    .sf-lb-picks {
-      display: grid; grid-template-columns: repeat(4, 1fr);
-      gap: 1px; background: rgba(255,255,255,0.04);
-    }
-    .sf-lb-pick {
-      padding: 10px 8px; background: rgba(0,0,0,0.2); text-align: center;
-    }
-    .sf-lb-pick .tl {
-      font-size: 0.62rem; font-weight: 700; letter-spacing: 1px;
-      margin-bottom: 3px; text-transform: uppercase;
-    }
+    .sf-lb-header { display: flex; align-items: center; padding: 16px 20px; gap: 14px; }
+    .sf-lb-picks { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: rgba(255,255,255,0.04); }
+    .sf-lb-pick { padding: 10px 8px; background: rgba(0,0,0,0.2); text-align: center; }
+    .sf-lb-pick .tl { font-size: 0.62rem; font-weight: 700; letter-spacing: 1px; margin-bottom: 3px; text-transform: uppercase; }
     .sf-lb-pick .pl { font-size: 0.8rem; opacity: 0.8; }
     .sf-lb-pick .pp { font-size: 0.9rem; font-weight: 700; color: #6ecf8e; margin-top: 3px; }
     .sf-lb-pick .tl.ENG { color: #60a5fa; }
@@ -380,91 +143,49 @@
     .sf-lb-pick .tl.SA  { color: #4ade80; }
     .sf-lb-pick .tl.NZ  { color: #e2e8f0; }
 
-    .sf-locked {
-      text-align: center; padding: 60px 20px;
-    }
+    .sf-locked { text-align: center; padding: 60px 20px; }
     .sf-locked .ico { font-size: 3rem; margin-bottom: 14px; }
     .sf-locked h3 { font-size: 1.2rem; color: var(--sand); margin-bottom: 6px; }
     .sf-locked p { opacity: 0.6; font-size: 0.85rem; }
 
-    /* History entries */
     .sf-hist { background: var(--glass); border: 1px solid var(--glass-strong); border-radius: 14px; padding: 14px 16px; margin-bottom: 8px; }
     .sf-hist .ts { font-size: 0.72rem; opacity: 0.5; margin-bottom: 4px; }
     .sf-hist .pk { font-size: 0.82rem; opacity: 0.8; }
 
-    /* ═══ Round toggle (SF locked vs Final open) ═══ */
-    .round-toggle {
-      display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;
-    }
-    .round-btn {
-      padding: 10px 22px; border: none; border-radius: 25px;
-      background: var(--glass); color: #ddd; font-family: 'Poppins', sans-serif;
-      font-weight: 600; font-size: 0.82rem; cursor: pointer;
-      backdrop-filter: blur(8px); transition: 0.3s;
-    }
-    .round-btn.active {
-      background: linear-gradient(135deg, var(--copper-light), var(--copper));
-      color: white; box-shadow: 0 0 18px rgba(195,86,39,0.5);
-    }
+    .round-toggle { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+    .round-btn { padding: 10px 22px; border: none; border-radius: 25px; background: var(--glass); color: #ddd; font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 0.82rem; cursor: pointer; backdrop-filter: blur(8px); transition: 0.3s; }
+    .round-btn.active { background: linear-gradient(135deg, var(--copper-light), var(--copper)); color: white; box-shadow: 0 0 18px rgba(195,86,39,0.5); }
     .round-btn .lock-ico { margin-right: 4px; font-size: 0.8rem; }
 
-    /* ═══ Final pick rows ═══ */
-    .final-pick-row {
-      display: flex; align-items: center; gap: 10px; margin-bottom: 12px; flex-wrap: wrap;
-      justify-content: center;
-    }
+    .final-pick-row { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; justify-content: center; }
     .final-pick-row select { flex: 0 1 260px; min-height: 54px; }
-    .final-pick-row .team-sel {
-      flex: 0 0 110px; min-height: 54px;
-    }
+    .final-pick-row .team-sel { flex: 0 0 110px; min-height: 54px; }
 
-    /* SF picks frozen display */
-    .sf-frozen-picks {
-      display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 16px;
-    }
-    .sf-frozen-pick {
-      background: rgba(0,0,0,0.25); border: 1px solid var(--glass-strong);
-      border-radius: 14px; padding: 12px; text-align: center;
-    }
-    .sf-frozen-pick .team-label {
-      font-size: 0.65rem; font-weight: 700; letter-spacing: 1px;
-      text-transform: uppercase; margin-bottom: 3px;
-    }
+    .sf-frozen-picks { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 16px; }
+    .sf-frozen-pick { background: rgba(0,0,0,0.25); border: 1px solid var(--glass-strong); border-radius: 14px; padding: 12px; text-align: center; }
+    .sf-frozen-pick .team-label { font-size: 0.65rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 3px; }
     .sf-frozen-pick .player-label { font-size: 0.85rem; opacity: 0.85; }
     .sf-frozen-pick .team-label.ENG { color: #60a5fa; }
     .sf-frozen-pick .team-label.IND { color: #fb923c; }
     .sf-frozen-pick .team-label.SA  { color: #4ade80; }
     .sf-frozen-pick .team-label.NZ  { color: #e2e8f0; }
 
-    /* SF section label for Final picks header */
-    .sf-section .round-label {
-      display: inline-block; padding: 3px 10px; border-radius: 8px;
-      font-size: 0.65rem; font-weight: 700; letter-spacing: 1px;
-      text-transform: uppercase; margin-left: 8px;
-    }
+    .sf-section .round-label { display: inline-block; padding: 3px 10px; border-radius: 8px; font-size: 0.65rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-left: 8px; }
     .round-label.sf-label { background: rgba(76,132,141,0.2); color: var(--aqua); }
     .round-label.f-label { background: rgba(195,86,39,0.2); color: var(--copper-light); }
 
-    /* ═══ Leaderboard section divider ═══ */
-    .lb-section-label {
-      font-size: 0.6rem; font-weight: 700; letter-spacing: 1.5px;
-      text-transform: uppercase; opacity: 0.5; padding: 6px 20px;
-      background: rgba(0,0,0,0.15);
-    }
-    .sf-lb-fpicks {
-      display: grid; grid-template-columns: repeat(2, 1fr);
-      gap: 1px; background: rgba(195,86,39,0.08);
-    }
-    .sf-lb-fpick {
-      padding: 10px 8px; background: rgba(0,0,0,0.2); text-align: center;
-    }
+    .lb-section-label { font-size: 0.6rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; opacity: 0.5; padding: 6px 20px; background: rgba(0,0,0,0.15); }
+    .sf-lb-fpicks { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: rgba(195,86,39,0.08); }
+    .sf-lb-fpick { padding: 10px 8px; background: rgba(0,0,0,0.2); text-align: center; }
     .sf-lb-fpick .tl { font-size: 0.62rem; font-weight: 700; letter-spacing: 1px; margin-bottom: 3px; text-transform: uppercase; }
     .sf-lb-fpick .pl { font-size: 0.8rem; opacity: 0.8; }
     .sf-lb-fpick .pp { font-size: 0.9rem; font-weight: 700; color: #6ecf8e; margin-top: 3px; }
     .sf-lb-fpick .tl.IND { color: #fb923c; }
     .sf-lb-fpick .tl.NZ  { color: #e2e8f0; }
 
-    /* ═══ Responsive ═══ */
+    /* Score source badge in leaderboard */
+    .score-src { font-size: 0.55rem; opacity: 0.45; display: block; margin-top: 1px; }
+
     @media(max-width:640px){
       .podium { flex-wrap: nowrap; justify-content: space-between; overflow: hidden; gap: 8px; padding: 0 6px 6px; }
       .podium-card { flex: 0 0 calc((100% - 16px) / 3); width: calc((100% - 16px) / 3); min-width: 0; padding: 12px 10px; border-radius: 16px; }
@@ -489,56 +210,39 @@
     <div class="badge" id="badgeText">Loading...</div>
   </div>
 
-  <!-- ═══ Top-level view tabs ═══ -->
   <div class="view-tabs-band">
     <div class="view-tabs">
-    <button class="view-btn" data-view="super8s">📊 Archived Leaderboard</button>
-    <button class="view-btn active" data-view="sf-entries">🏏 Playoff Entries</button>
-    <button class="view-btn" data-view="sf-lb">🏆 Playoff Leaderboard</button>
+      <button class="view-btn" data-view="super8s">📊 Archived Leaderboard</button>
+      <button class="view-btn active" data-view="sf-entries">🏏 Playoff Entries</button>
+      <button class="view-btn" data-view="sf-lb">🏆 Playoff Leaderboard</button>
     </div>
   </div>
 
-  <!-- ════════════════════════════════════════════════════════
-       VIEW 1: Super 8s (EXISTING — Week1, Week2, Super8s)
-       ════════════════════════════════════════════════════════ -->
+  <!-- VIEW 1: Super 8s -->
   <div class="view-panel" id="vp-super8s">
     <div class="tabs" id="tabsContainer"></div>
-    <div class="container">
-      <div id="content">
-        <div class="loading">Loading scores...</div>
-      </div>
-    </div>
+    <div class="container"><div id="content"><div class="loading">Loading scores...</div></div></div>
   </div>
 
-  <!-- ════════════════════════════════════════════════════════
-       VIEW 2: Playoff Entries (SF frozen + Final open)
-       ════════════════════════════════════════════════════════ -->
+  <!-- VIEW 2: Playoff Entries -->
   <div class="view-panel active" id="vp-sf-entries">
     <div class="container">
 
-      <!-- Round toggle: SF (locked) / Final (active) -->
       <div class="round-toggle" id="roundToggle">
-        <button class="round-btn" data-round="sf" onclick="switchRound('sf')">
-          <span class="lock-ico">🔒</span> Semi-Final Picks
-        </button>
-        <button class="round-btn active" data-round="final" onclick="switchRound('final')">
-          🏆 Final Picks
-        </button>
+        <button class="round-btn" data-round="sf" onclick="switchRound('sf')"><span class="lock-ico">🔒</span> Semi-Final Picks</button>
+        <button class="round-btn active" data-round="final" onclick="switchRound('final')">🏆 Final Picks</button>
       </div>
 
-      <!-- SF deadline bar (expired) -->
       <div class="sf-countdown expired" id="cdBarSF" style="display:none">
         <div class="cd-label">Semi-Final entries — CLOSED</div>
         <div class="cd-time">DEADLINE PASSED</div>
       </div>
 
-      <!-- Final deadline bar -->
       <div class="sf-countdown" id="cdBarF">
         <div class="cd-label">Final entries close — Sun Mar 9, 7 PM IST</div>
         <div class="cd-time" id="cdTimeF">--:--:--</div>
       </div>
 
-      <!-- Auth -->
       <div class="sf-section" id="authBox">
         <h3 class="sf-hdr"><img src="icc_logo.png" alt="ICC T20 WC" class="icc-logo" loading="lazy" onerror="this.style.display='none'">Pick your players</h3>
         <div class="sf-group">
@@ -553,13 +257,11 @@
         <div class="sf-msg" id="authMsg"></div>
       </div>
 
-      <!-- ── SF Round panel (view only — locked) ── -->
+      <!-- SF Round panel (view only) -->
       <div id="sfRoundPanel" style="display:none">
         <div class="sf-section">
           <h3>🔒 Semi-Final Picks <span class="round-label sf-label">Locked</span></h3>
-          <p style="opacity:0.5;font-size:0.78rem;margin-bottom:14px">
-            Your SF picks are frozen. These players' scores still count toward your total.
-          </p>
+          <p style="opacity:0.5;font-size:0.78rem;margin-bottom:14px">Your SF picks are frozen. These players' scores still count toward your total.</p>
           <div class="sf-frozen-picks" id="sfFrozenPicks">
             <div class="sf-frozen-pick"><div class="team-label ENG">ENG</div><div class="player-label">—</div></div>
             <div class="sf-frozen-pick"><div class="team-label IND">IND</div><div class="player-label">—</div></div>
@@ -569,12 +271,12 @@
         </div>
       </div>
 
-      <!-- ── Final Round panel (active — pick 2 from IND/NZ) ── -->
+      <!-- Final Round panel -->
       <div id="finalRoundPanel" style="display:none">
         <div class="sf-section">
           <h3>🏆 Final Picks — Replace SA & ENG <span class="round-label f-label">New</span></h3>
           <p style="opacity:0.6;font-size:0.8rem;margin-bottom:16px">
-            SA & ENG are out! Pick <strong>2 players</strong> from <strong>India</strong> or <strong>New Zealand</strong> (the finalists). You can pick both from the same team or one from each. Update anytime — only last entry before deadline counts.
+            SA & ENG are out! Pick <strong>2 players</strong> from <strong>India</strong> or <strong>New Zealand</strong> (the finalists). You can pick both from the same team or one from each. These picks score from the <strong>Final match only</strong>. Update anytime before deadline.
           </p>
 
           <div style="margin-bottom:6px;font-size:0.75rem;opacity:0.5;text-transform:uppercase;letter-spacing:1px">Pick 1</div>
@@ -601,7 +303,6 @@
           <div class="sf-msg" id="subFinalMsg"></div>
         </div>
 
-        <!-- Show SF picks as context -->
         <div class="sf-section" style="opacity:0.7">
           <h3 style="font-size:0.75rem">Your locked Semi-Final picks (still counting)</h3>
           <div class="sf-frozen-picks" id="sfFrozenPicksInFinal">
@@ -618,16 +319,12 @@
     </div>
   </div>
 
-  <!-- ════════════════════════════════════════════════════════
-       VIEW 3: Playoff Leaderboard
-       ════════════════════════════════════════════════════════ -->
+  <!-- VIEW 3: Playoff Leaderboard -->
   <div class="view-panel" id="vp-sf-lb">
-    <div class="container">
-      <div id="sfLbContent"><div class="loading">Loading…</div></div>
-    </div>
+    <div class="container"><div id="sfLbContent"><div class="loading">Loading…</div></div></div>
   </div>
 
-  <!-- ═══ Registration overlay ═══ -->
+  <!-- Registration overlay -->
   <div class="sf-overlay hide" id="regOverlay">
     <div class="sf-overlay-box">
       <h2>Set Your Code</h2>
@@ -640,127 +337,43 @@
 
 
   <script>
-    // ═══════════════════════════════════════════════════
-    // PLAYER FLAGS (your existing map — unchanged)
-    // ═══════════════════════════════════════════════════
     const PLAYER_FLAGS = {
-      'suryakumar yadav':'🇮🇳','hardik pandya':'🇮🇳','ishan kishan':'🇮🇳',
-      'arshdeep singh':'🇮🇳','jasprit bumrah':'🇮🇳','virat kohli':'🇮🇳',
-      'rohit sharma':'🇮🇳','shubman gill':'🇮🇳','rishabh pant':'🇮🇳',
-      'ravindra jadeja':'🇮🇳','kuldeep yadav':'🇮🇳','mohammed siraj':'🇮🇳',
-      'yashasvi jaiswal':'🇮🇳','axar patel':'🇮🇳','shreyas iyer':'🇮🇳',
-      'sanju samson':'🇮🇳','mohammed shami':'🇮🇳','yuzvendra chahal':'🇮🇳',
-      'tilak varma':'🇮🇳','rinku singh':'🇮🇳','varun chakaravarthy':'🇮🇳',
-      'ravi bishnoi':'🇮🇳','abhishek sharma':'🇮🇳','dhruv jurel':'🇮🇳',
-      'nitish kumar reddy':'🇮🇳','shivam dube':'🇮🇳',
-      'travis head':'🇦🇺','mitchell starc':'🇦🇺','pat cummins':'🇦🇺',
-      'steve smith':'🇦🇺','david warner':'🇦🇺','glenn maxwell':'🇦🇺',
-      'josh hazlewood':'🇦🇺','adam zampa':'🇦🇺','marcus stoinis':'🇦🇺',
-      'mitchell marsh':'🇦🇺','cameron green':'🇦🇺','alex carey':'🇦🇺',
-      'nathan lyon':'🇦🇺','marnus labuschagne':'🇦🇺','josh inglis':'🇦🇺',
-      'jake fraser-mcgurk':'🇦🇺','spencer johnson':'🇦🇺',
-      'jos buttler':'🇬🇧','harry brook':'🇬🇧','ben stokes':'🇬🇧',
-      'jofra archer':'🇬🇧','mark wood':'🇬🇧','adil rashid':'🇬🇧',
-      'liam livingstone':'🇬🇧','phil salt':'🇬🇧','moeen ali':'🇬🇧',
-      'jamie overton':'🇬🇧','sam curran':'🇬🇧','reece topley':'🇬🇧',
-      'jonny bairstow':'🇬🇧','jacob bethell':'🇬🇧','jamie smith':'🇬🇧',
-      'brydon carse':'🇬🇧',
-      'ryan rickelton':'🇿🇦','dewald brevis':'🇿🇦','quinton de kock':'🇿🇦',
-      'kagiso rabada':'🇿🇦','anrich nortje':'🇿🇦','aiden markram':'🇿🇦',
-      'david miller':'🇿🇦','heinrich klaasen':'🇿🇦','rassie van der dussen':'🇿🇦',
-      'marco jansen':'🇿🇦','lungi ngidi':'🇿🇦','tabraiz shamsi':'🇿🇦',
-      'keshav maharaj':'🇿🇦','tristan stubbs':'🇿🇦',
-      'matt henry':'🇳🇿','kane williamson':'🇳🇿','trent boult':'🇳🇿',
-      'devon conway':'🇳🇿','tim southee':'🇳🇿','daryl mitchell':'🇳🇿',
-      'glenn phillips':'🇳🇿','mitchell santner':'🇳🇿','lockie ferguson':'🇳🇿',
-      'rachin ravindra':'🇳🇿','michael bracewell':'🇳🇿','mark chapman':'🇳🇿',
-      'tom latham':'🇳🇿','will young':'🇳🇿',
-      'shai hope':'🇯🇲','nicholas pooran':'🇹🇹','andre russell':'🇯🇲',
-      'shimron hetmyer':'🇬🇾','roston chase':'🇧🇧','jason holder':'🇧🇧',
-      'alzarri joseph':'🇱🇨','brandon king':'🇯🇲','romario shepherd':'🇬🇾',
-      'gudakesh motie':'🇬🇾','akeal hosein':'🇹🇹','evin lewis':'🇹🇹',
-      'kyle mayers':'🇧🇧','shamar joseph':'🇬🇾','sherfane rutherford':'🇬🇾',
-      'babar azam':'🇵🇰','shaheen afridi':'🇵🇰','mohammad rizwan':'🇵🇰',
-      'fakhar zaman':'🇵🇰','haris rauf':'🇵🇰','shadab khan':'🇵🇰',
-      'iftikhar ahmed':'🇵🇰','naseem shah':'🇵🇰','saim ayub':'🇵🇰',
-      'mohammad amir':'🇵🇰','imad wasim':'🇵🇰','usama mir':'🇵🇰',
-      'sahibzada farhan':'🇵🇰','salman ali agha':'🇵🇰','abrar ahmed':'🇵🇰',
-      'wanindu hasaranga':'🇱🇰','pathum nissanka':'🇱🇰','kusal mendis':'🇱🇰',
-      'charith asalanka':'🇱🇰','maheesh theekshana':'🇱🇰','dasun shanaka':'🇱🇰',
-      'dhananjaya de silva':'🇱🇰','matheesha pathirana':'🇱🇰','kusal perera':'🇱🇰',
-      'dunith wellalage':'🇱🇰',
-      'shakib al hasan':'🇧🇩','mustafizur rahman':'🇧🇩','litton das':'🇧🇩',
-      'tanzid hasan':'🇧🇩','taskin ahmed':'🇧🇩','towhid hridoy':'🇧🇩',
-      'mehidy hasan miraz':'🇧🇩','rishad hossain':'🇧🇩','tanzim hasan sakib':'🇧🇩',
-      'rashid khan':'🇦🇫','azmatullah omarzai':'🇦🇫','rahmanullah gurbaz':'🇦🇫',
-      'fazalhaq farooqi':'🇦🇫','naveen-ul-haq':'🇦🇫','mohammad nabi':'🇦🇫',
-      'najibullah zadran':'🇦🇫','mujeeb ur rahman':'🇦🇫','gulbadin naib':'🇦🇫',
-      'ibrahim zadran':'🇦🇫',
-      'bas de leede':'🇳🇱','scott edwards':'🇳🇱','ryan klein':'🇳🇱',
-      "max o'dowd":'🇳🇱','logan van beek':'🇳🇱','paul van meekeren':'🇳🇱',
-      'teja nidamanuru':'🇳🇱','vikramjit singh':'🇳🇱',
-      'sikandar raza':'🇿🇼','sean williams':'🇿🇼','blessing muzarabani':'🇿🇼',
-      'craig ervine':'🇿🇼','regis chakabva':'🇿🇼','richard ngarava':'🇿🇼',
-      'luke jongwe':'🇿🇼',
-      'paul stirling':'🇮🇪','andrew balbirnie':'🇮🇪','josh little':'🇮🇪',
-      'lorcan tucker':'🇮🇪','mark adair':'🇮🇪','barry mccarthy':'🇮🇪',
-      'harry tector':'🇮🇪','gareth delany':'🇮🇪','george dockrell':'🇮🇪',
-      'richie berrington':'🏴','michael leask':'🏴','brad wheal':'🏴',
-      'brandon mcmullen':'🏴','george munsey':'🏴','mark watt':'🏴',
-      'gerhard erasmus':'🇳🇦','david wiese':'🇳🇦','jj smit':'🇳🇦',
-      'bernard scholtz':'🇳🇦','jan frylinck':'🇳🇦','ruben trumpelmann':'🇳🇦',
-      'sandeep lamichhane':'🇳🇵','kushal bhurtel':'🇳🇵','dipendra singh airee':'🇳🇵',
-      'rohit paudel':'🇳🇵','sompal kami':'🇳🇵',
+      'suryakumar yadav':'🇮🇳','hardik pandya':'🇮🇳','ishan kishan':'🇮🇳','arshdeep singh':'🇮🇳','jasprit bumrah':'🇮🇳','virat kohli':'🇮🇳','rohit sharma':'🇮🇳','shubman gill':'🇮🇳','rishabh pant':'🇮🇳','ravindra jadeja':'🇮🇳','kuldeep yadav':'🇮🇳','mohammed siraj':'🇮🇳','yashasvi jaiswal':'🇮🇳','axar patel':'🇮🇳','shreyas iyer':'🇮🇳','sanju samson':'🇮🇳','mohammed shami':'🇮🇳','yuzvendra chahal':'🇮🇳','tilak varma':'🇮🇳','rinku singh':'🇮🇳','varun chakaravarthy':'🇮🇳','ravi bishnoi':'🇮🇳','abhishek sharma':'🇮🇳','dhruv jurel':'🇮🇳','nitish kumar reddy':'🇮🇳','shivam dube':'🇮🇳',
+      'travis head':'🇦🇺','mitchell starc':'🇦🇺','pat cummins':'🇦🇺','steve smith':'🇦🇺','david warner':'🇦🇺','glenn maxwell':'🇦🇺','josh hazlewood':'🇦🇺','adam zampa':'🇦🇺','marcus stoinis':'🇦🇺','mitchell marsh':'🇦🇺','cameron green':'🇦🇺','alex carey':'🇦🇺','nathan lyon':'🇦🇺','marnus labuschagne':'🇦🇺','josh inglis':'🇦🇺','jake fraser-mcgurk':'🇦🇺','spencer johnson':'🇦🇺',
+      'jos buttler':'🇬🇧','harry brook':'🇬🇧','ben stokes':'🇬🇧','jofra archer':'🇬🇧','mark wood':'🇬🇧','adil rashid':'🇬🇧','liam livingstone':'🇬🇧','phil salt':'🇬🇧','moeen ali':'🇬🇧','jamie overton':'🇬🇧','sam curran':'🇬🇧','reece topley':'🇬🇧','jonny bairstow':'🇬🇧','jacob bethell':'🇬🇧','jamie smith':'🇬🇧','brydon carse':'🇬🇧',
+      'ryan rickelton':'🇿🇦','dewald brevis':'🇿🇦','quinton de kock':'🇿🇦','kagiso rabada':'🇿🇦','anrich nortje':'🇿🇦','aiden markram':'🇿🇦','david miller':'🇿🇦','heinrich klaasen':'🇿🇦','rassie van der dussen':'🇿🇦','marco jansen':'🇿🇦','lungi ngidi':'🇿🇦','tabraiz shamsi':'🇿🇦','keshav maharaj':'🇿🇦','tristan stubbs':'🇿🇦',
+      'matt henry':'🇳🇿','kane williamson':'🇳🇿','trent boult':'🇳🇿','devon conway':'🇳🇿','tim southee':'🇳🇿','daryl mitchell':'🇳🇿','glenn phillips':'🇳🇿','mitchell santner':'🇳🇿','lockie ferguson':'🇳🇿','rachin ravindra':'🇳🇿','michael bracewell':'🇳🇿','mark chapman':'🇳🇿','tom latham':'🇳🇿','will young':'🇳🇿',
+      'shai hope':'🇯🇲','nicholas pooran':'🇹🇹','andre russell':'🇯🇲','shimron hetmyer':'🇬🇾','roston chase':'🇧🇧','jason holder':'🇧🇧','alzarri joseph':'🇱🇨','brandon king':'🇯🇲','romario shepherd':'🇬🇾','gudakesh motie':'🇬🇾','akeal hosein':'🇹🇹','evin lewis':'🇹🇹','kyle mayers':'🇧🇧','shamar joseph':'🇬🇾','sherfane rutherford':'🇬🇾',
+      'babar azam':'🇵🇰','shaheen afridi':'🇵🇰','mohammad rizwan':'🇵🇰','fakhar zaman':'🇵🇰','haris rauf':'🇵🇰','shadab khan':'🇵🇰','iftikhar ahmed':'🇵🇰','naseem shah':'🇵🇰','saim ayub':'🇵🇰','mohammad amir':'🇵🇰','imad wasim':'🇵🇰','usama mir':'🇵🇰','sahibzada farhan':'🇵🇰','salman ali agha':'🇵🇰','abrar ahmed':'🇵🇰',
+      'wanindu hasaranga':'🇱🇰','pathum nissanka':'🇱🇰','kusal mendis':'🇱🇰','charith asalanka':'🇱🇰','maheesh theekshana':'🇱🇰','dasun shanaka':'🇱🇰','dhananjaya de silva':'🇱🇰','matheesha pathirana':'🇱🇰','kusal perera':'🇱🇰','dunith wellalage':'🇱🇰',
+      'shakib al hasan':'🇧🇩','mustafizur rahman':'🇧🇩','litton das':'🇧🇩','tanzid hasan':'🇧🇩','taskin ahmed':'🇧🇩','towhid hridoy':'🇧🇩','mehidy hasan miraz':'🇧🇩','rishad hossain':'🇧🇩','tanzim hasan sakib':'🇧🇩',
+      'rashid khan':'🇦🇫','azmatullah omarzai':'🇦🇫','rahmanullah gurbaz':'🇦🇫','fazalhaq farooqi':'🇦🇫','naveen-ul-haq':'🇦🇫','mohammad nabi':'🇦🇫','najibullah zadran':'🇦🇫','mujeeb ur rahman':'🇦🇫','gulbadin naib':'🇦🇫','ibrahim zadran':'🇦🇫',
+      'bas de leede':'🇳🇱','scott edwards':'🇳🇱','ryan klein':'🇳🇱',"max o'dowd":'🇳🇱','logan van beek':'🇳🇱','paul van meekeren':'🇳🇱','teja nidamanuru':'🇳🇱','vikramjit singh':'🇳🇱',
+      'sikandar raza':'🇿🇼','sean williams':'🇿🇼','blessing muzarabani':'🇿🇼','craig ervine':'🇿🇼','regis chakabva':'🇿🇼','richard ngarava':'🇿🇼','luke jongwe':'🇿🇼',
+      'paul stirling':'🇮🇪','andrew balbirnie':'🇮🇪','josh little':'🇮🇪','lorcan tucker':'🇮🇪','mark adair':'🇮🇪','barry mccarthy':'🇮🇪','harry tector':'🇮🇪','gareth delany':'🇮🇪','george dockrell':'🇮🇪',
+      'richie berrington':'🏴','michael leask':'🏴','brad wheal':'🏴','brandon mcmullen':'🏴','george munsey':'🏴','mark watt':'🏴',
+      'gerhard erasmus':'🇳🇦','david wiese':'🇳🇦','jj smit':'🇳🇦','bernard scholtz':'🇳🇦','jan frylinck':'🇳🇦','ruben trumpelmann':'🇳🇦',
+      'sandeep lamichhane':'🇳🇵','kushal bhurtel':'🇳🇵','dipendra singh airee':'🇳🇵','rohit paudel':'🇳🇵','sompal kami':'🇳🇵',
       'aqib ilyas':'🇴🇲','zeeshan maqsood':'🇴🇲','ayaan khan':'🇴🇲',
-      'aaron jones':'🇺🇸','saurabh netravalkar':'🇺🇸','steven taylor':'🇺🇸',
-      'andries gous':'🇺🇸','monank patel':'🇺🇸','ali khan':'🇺🇸',
-      'corey anderson':'🇺🇸','nosthush kenjige':'🇺🇸',
-      'navneet dhaliwal':'🇨🇦','aaron johnson':'🇨🇦','saad bin zafar':'🇨🇦',
-      'dilpreet bajwa':'🇨🇦','nicholas kirton':'🇨🇦',
-      'brian masaba':'🇺🇬','riazat ali shah':'🇺🇬','dinesh nakrani':'🇺🇬',
-      'simon ssesazi':'🇺🇬','henry ssenyondo':'🇺🇬',
-      'assad vala':'🇵🇬','lega siaka':'🇵🇬','sese bau':'🇵🇬',
-      'chad soper':'🇵🇬','norman vanua':'🇵🇬',
-      'saiteja':'🇺🇸','fin allen':'🇳🇿','finn allen':'🇳🇿','nawaz':'🇵🇰',
-      'levitt':'🇳🇱','noor':'🇦🇫','mitchel marsh':'🇦🇺','devan':'🇳🇿',
-      'max odowd':'🇳🇱','s jayasuriya':'🇱🇰','shadley van schalkwyk':'🇺🇸',
-      'shubham':'🇺🇸','salman agha':'🇵🇰','usman tariq':'🇵🇰',
-      'brad evans':'🇿🇼','corbin bosch':'🇿🇦','will jacks':'🇬🇧',
-      'tim seifert':'🇳🇿','brian bennett':'🇿🇼',
-      'say the jamukumala':'🇺🇸','mohamed navaz nawaz':'🇵🇰',
-      'michael levitt':'🇳🇱','noor ahmed':'🇦🇫','devon convoy':'🇳🇿',
-      'shubam ranjan':'🇺🇸','mahmad nawaz':'🇵🇰',
-      'saiteja mukkamalla':'🇺🇸','mohammad nawaz':'🇵🇰','philip salt':'🇬🇧',
-      'devan conway':'🇳🇿','shubham ranjane':'🇺🇸'
+      'aaron jones':'🇺🇸','saurabh netravalkar':'🇺🇸','steven taylor':'🇺🇸','andries gous':'🇺🇸','monank patel':'🇺🇸','ali khan':'🇺🇸','corey anderson':'🇺🇸','nosthush kenjige':'🇺🇸',
+      'navneet dhaliwal':'🇨🇦','aaron johnson':'🇨🇦','saad bin zafar':'🇨🇦','dilpreet bajwa':'🇨🇦','nicholas kirton':'🇨🇦',
+      'brian masaba':'🇺🇬','riazat ali shah':'🇺🇬','dinesh nakrani':'🇺🇬','simon ssesazi':'🇺🇬','henry ssenyondo':'🇺🇬',
+      'assad vala':'🇵🇬','lega siaka':'🇵🇬','sese bau':'🇵🇬','chad soper':'🇵🇬','norman vanua':'🇵🇬',
+      'saiteja':'🇺🇸','fin allen':'🇳🇿','finn allen':'🇳🇿','nawaz':'🇵🇰','levitt':'🇳🇱','noor':'🇦🇫','mitchel marsh':'🇦🇺','devan':'🇳🇿','max odowd':'🇳🇱','s jayasuriya':'🇱🇰','shadley van schalkwyk':'🇺🇸','shubham':'🇺🇸','salman agha':'🇵🇰','usman tariq':'🇵🇰','brad evans':'🇿🇼','corbin bosch':'🇿🇦','will jacks':'🇬🇧','tim seifert':'🇳🇿','brian bennett':'🇿🇼','say the jamukumala':'🇺🇸','mohamed navaz nawaz':'🇵🇰','michael levitt':'🇳🇱','noor ahmed':'🇦🇫','devon convoy':'🇳🇿','shubam ranjan':'🇺🇸','mahmad nawaz':'🇵🇰','saiteja mukkamalla':'🇺🇸','mohammad nawaz':'🇵🇰','philip salt':'🇬🇧','devan conway':'🇳🇿','shubham ranjane':'🇺🇸'
     };
     function getFlag(n){ return PLAYER_FLAGS[(n||'').toLowerCase().trim()]||''; }
 
-    // ═══════════════════════════════════════════════════
-    // CONFIG — UPDATE THESE URLs
-    // ═══════════════════════════════════════════════════
-
-    // Your EXISTING Super 8s web app (old sheet — keeps Week1, Week2, Super8s)
     const S8_API = 'https://script.google.com/macros/s/AKfycbxA2g2ef2GsCNdwiZsfxBmp2jEgyhMqmQnDq7YH9U_sLihd_Wm5GeTcY42Ngfnq8WaD/exec';
-
-    // Your NEW Semis/Final web app (new sheet)
     const SF_API = 'https://script.google.com/macros/s/AKfycbxy0q_xnXjwVI6qDVEDBEzqpt-rfC3cmB8Ccgff8S7ypp2wvnTY6bhUT97MAEeFrm3zgA/exec';
 
-    // Deadlines
+    // Both deadlines and leaderboard unlock → March 9, 7 PM IST
     const DL_SF = new Date('2026-03-04T19:00:00+05:30');
-    const DL_F  = new Date('2026-03-08T19:00:00+05:30');
+    const DL_F  = new Date('2026-03-09T19:00:00+05:30');
 
-    // ═══════════════════════════════════════════════════
-    // STATE
-    // ═══════════════════════════════════════════════════
-    let _mgr = null, _code = null, _teams = {};
-    let _mgrHasCode = {};
-    let _currentRound = 'final'; // 'sf' or 'final'
-    let _sfPicks = null;  // cached SF picks for this manager
-    let _fPicks = null;   // cached Final picks
+    let _mgr = null, _code = null, _teams = {}, _mgrHasCode = {};
+    let _currentRound = 'final';
 
-    // ═══════════════════════════════════════════════════
-    // VIEW SWITCHING
-    // ═══════════════════════════════════════════════════
+    // View switching
     document.querySelectorAll('.view-btn').forEach(b => {
       b.onclick = () => {
         document.querySelectorAll('.view-btn').forEach(x => x.classList.remove('active'));
@@ -772,9 +385,6 @@
       };
     });
 
-    // ═══════════════════════════════════════════════════
-    // ROUND SWITCHING (SF locked / Final active)
-    // ═══════════════════════════════════════════════════
     function switchRound(round) {
       _currentRound = round;
       document.querySelectorAll('.round-btn').forEach(b => b.classList.toggle('active', b.dataset.round === round));
@@ -784,9 +394,7 @@
       document.getElementById('cdBarF').style.display = round === 'final' ? '' : 'none';
     }
 
-    // ═══════════════════════════════════════════════════
-    // JSONP helper (for SF API — cross-origin)
-    // ═══════════════════════════════════════════════════
+    // JSONP
     function jp(url) {
       return new Promise((ok, no) => {
         const cb = '_j' + Date.now() + '_' + (Math.random()*1e6|0);
@@ -801,105 +409,54 @@
     function esc(s) { if(!s) return ''; const d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
     function sfMsg(el, cls, txt) { el.className='sf-msg '+cls; el.textContent=txt; }
 
-    // ═══════════════════════════════════════════════════
-    // VIEW 1: SUPER 8s (EXISTING LOGIC — UNCHANGED)
-    // ═══════════════════════════════════════════════════
-    let DATA = null;
-    let currentWeek = null;
-
+    // VIEW 1: SUPER 8s
+    let DATA = null, currentWeek = null;
     async function fetchData() {
       try {
-        const res = await fetch(S8_API);
-        DATA = await res.json();
+        const res = await fetch(S8_API); DATA = await res.json();
         document.getElementById('tournamentName').textContent = DATA.tournamentName || 'Rocking Fantasy';
         document.getElementById('badgeText').textContent = DATA.badgeText || '';
         buildTabs();
         const weekKeys = Object.keys(DATA.weeks);
         currentWeek = DATA.currentWeek && DATA.weeks[DATA.currentWeek] ? DATA.currentWeek : weekKeys[0];
         renderWeek(currentWeek);
-      } catch (err) {
-        document.getElementById('content').innerHTML = '<div class="loading">Failed to load data.</div>';
-      }
+      } catch (err) { document.getElementById('content').innerHTML = '<div class="loading">Failed to load data.</div>'; }
     }
-
     function buildTabs() {
-      const container = document.getElementById('tabsContainer');
-      container.innerHTML = '';
+      const container = document.getElementById('tabsContainer'); container.innerHTML = '';
       Object.keys(DATA.weeks).forEach(key => {
-        const btn = document.createElement('button');
-        btn.className = 'tab-btn';
-        btn.textContent = DATA.weeks[key].label || key;
-        btn.dataset.week = key;
-        btn.onclick = () => {
-          currentWeek = key;
-          renderWeek(key);
-          document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-          btn.classList.add('active');
-        };
+        const btn = document.createElement('button'); btn.className = 'tab-btn'; btn.textContent = DATA.weeks[key].label || key; btn.dataset.week = key;
+        btn.onclick = () => { currentWeek = key; renderWeek(key); document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active')); btn.classList.add('active'); };
         container.appendChild(btn);
       });
     }
-
     function renderWeek(weekKey) {
-      document.querySelectorAll('.tab-btn').forEach(b => {
-        b.classList.toggle('active', b.dataset.week === weekKey);
-      });
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.week === weekKey));
       const weekData = DATA.weeks[weekKey];
-      if (!weekData || !weekData.managers) {
-        document.getElementById('content').innerHTML = '<div class="loading">No data.</div>';
-        return;
-      }
+      if (!weekData || !weekData.managers) { document.getElementById('content').innerHTML = '<div class="loading">No data.</div>'; return; }
       const managers = weekData.managers;
-      let html = '';
-      html += '<div class="leaderboard-title">🏆 Archived Leaderboard</div>';
-      html += '<div class="podium">';
+      let html = '<div class="leaderboard-title">🏆 Archived Leaderboard</div><div class="podium">';
       let medals = ['🥇','🥈','🥉'];
-      if (managers[1] && managers[2] && String(managers[1].totalPoints) === String(managers[2].totalPoints)) {
-        medals = ['🥇','🥈','🥈'];
-      }
-      managers.slice(0,3).forEach((m,i) => {
-        html += '<div class="podium-card"><div class="rank-badge">'+(medals[i]||(i+1))+'</div>';
-        html += '<div class="podium-name">'+m.name+'</div>';
-        html += '<div class="podium-points">'+m.totalPoints+'</div></div>';
-      });
-      html += '</div>';
-      html += '<div class="filter-bar"><label for="managerFilter" class="filter-label">Detailed view:</label>';
-      html += '<select id="managerFilter" class="filter-select"><option value="__all__">All managers</option>';
+      if (managers[1] && managers[2] && String(managers[1].totalPoints) === String(managers[2].totalPoints)) medals = ['🥇','🥈','🥈'];
+      managers.slice(0,3).forEach((m,i) => { html += '<div class="podium-card"><div class="rank-badge">'+(medals[i]||(i+1))+'</div><div class="podium-name">'+m.name+'</div><div class="podium-points">'+m.totalPoints+'</div></div>'; });
+      html += '</div><div class="filter-bar"><label for="managerFilter" class="filter-label">Detailed view:</label><select id="managerFilter" class="filter-select"><option value="__all__">All managers</option>';
       managers.forEach(m => { html += '<option value="'+enc(m.name)+'">'+m.name+'</option>'; });
       html += '</select></div><div class="manager-grid">';
-
       managers.forEach((m,i) => {
         const slotsUsed = (m.players||[]).reduce((s,p) => s+(Number(p.slots)||0), 0);
-        const slotsMax  = (m.players||[]).reduce((s,p) => s+(Number(p.maxSlots)||0), 0);
-        html += '<div class="manager-card" data-manager="'+enc(m.name)+'">';
-        html += '<div class="manager-header"><div class="manager-rank">'+(m.rank||i+1)+'</div>';
-        html += '<div class="manager-name">'+m.name+'</div>';
-        html += '<div class="manager-total">'+m.totalPoints+' pts<span class="slots-info"> • slots '+slotsUsed+'/'+slotsMax+'</span></div></div>';
-        m.players.forEach(p => {
-          const flag = getFlag(p.name);
-          html += '<div class="player-row"><span class="player-name">'+(flag?'<span class="player-flag">'+flag+'</span>':'')+p.name+'</span>';
-          html += '<span class="player-pts">'+p.points+' pts</span>';
-          html += '<span class="slots-info">('+p.slots+'/'+p.maxSlots+')</span></div>';
-        });
+        const slotsMax = (m.players||[]).reduce((s,p) => s+(Number(p.maxSlots)||0), 0);
+        html += '<div class="manager-card" data-manager="'+enc(m.name)+'"><div class="manager-header"><div class="manager-rank">'+(m.rank||i+1)+'</div><div class="manager-name">'+m.name+'</div><div class="manager-total">'+m.totalPoints+' pts<span class="slots-info"> • slots '+slotsUsed+'/'+slotsMax+'</span></div></div>';
+        m.players.forEach(p => { const flag = getFlag(p.name); html += '<div class="player-row"><span class="player-name">'+(flag?'<span class="player-flag">'+flag+'</span>':'')+p.name+'</span><span class="player-pts">'+p.points+' pts</span><span class="slots-info">('+p.slots+'/'+p.maxSlots+')</span></div>'; });
         html += '</div>';
       });
       html += '</div>';
       document.getElementById('content').innerHTML = html;
-
       const sel = document.getElementById('managerFilter');
-      function applyFilter() {
-        if(!sel) return;
-        const v = sel.value;
-        document.querySelectorAll('.manager-card').forEach(card => {
-          card.style.display = (v==='__all__' || v===card.getAttribute('data-manager')) ? '' : 'none';
-        });
-      }
+      function applyFilter() { if(!sel) return; const v=sel.value; document.querySelectorAll('.manager-card').forEach(card => { card.style.display = (v==='__all__'||v===card.getAttribute('data-manager')) ? '' : 'none'; }); }
       if(sel) { sel.onchange = applyFilter; applyFilter(); }
     }
 
-    // ═══════════════════════════════════════════════════
-    // COUNTDOWN (Final deadline)
-    // ═══════════════════════════════════════════════════
+    // COUNTDOWN — Final deadline (March 9, 7 PM IST)
     function tickCD() {
       const diff = DL_F - new Date(), el = document.getElementById('cdTimeF'), bar = document.getElementById('cdBarF');
       if (diff <= 0) { el.textContent = 'DEADLINE PASSED'; bar.classList.add('expired'); return; }
@@ -908,175 +465,92 @@
     }
     setInterval(tickCD, 1000); tickCD();
 
-    // ═══════════════════════════════════════════════════
     // VIEW 2: PLAYOFF ENTRIES
-    // ═══════════════════════════════════════════════════
-    let _entInit = false;
     async function initEntries() {
       try {
         const r = await jp(SF_API + '?action=managers');
         if (r.ok) {
           const sel = document.getElementById('mgrSel');
           sel.innerHTML = '<option value="">— Select your name —</option>';
-          r.managers.forEach(m => {
-            _mgrHasCode[m.name] = !!m.hasCode;
-            const o = document.createElement('option'); o.value=m.name;
-            o.textContent = m.name + (m.hasCode ? '' : ' (new)');
-            sel.appendChild(o);
-          });
-          sel.onchange = refreshAuthUI;
-          refreshAuthUI();
-          if (_mgr) sel.value = _mgr;
-          refreshAuthUI();
+          r.managers.forEach(m => { _mgrHasCode[m.name] = !!m.hasCode; const o = document.createElement('option'); o.value=m.name; o.textContent = m.name + (m.hasCode ? '' : ' (new)'); sel.appendChild(o); });
+          sel.onchange = refreshAuthUI; refreshAuthUI();
+          if (_mgr) sel.value = _mgr; refreshAuthUI();
         }
       } catch(e) { console.error(e); }
-
       try {
         const r = await jp(SF_API + '?action=teams');
-        if (r.ok) {
-          _teams = r.teams;
-        }
+        if (r.ok) _teams = r.teams;
       } catch(e) { console.error(e); }
-
-      _entInit = true;
-      if (_mgr) {
-        document.getElementById('mgrSel').value=_mgr;
-        showPickPanels();
-        loadHist();
-      }
+      if (_mgr) { document.getElementById('mgrSel').value=_mgr; showPickPanels(); loadHist(); }
     }
 
     function populateFinalPlayerSel(prefix) {
-      const teamSel = document.getElementById(prefix + '-team');
+      const team = document.getElementById(prefix + '-team').value;
       const playerSel = document.getElementById(prefix + '-player');
-      const team = teamSel.value;
       playerSel.innerHTML = '<option value="">Select player</option>';
       if (!team || !_teams[team]) return;
-      _teams[team].forEach(p => {
-        const o = document.createElement('option');
-        o.value = p; o.textContent = (getFlag(p) ? getFlag(p) + ' ' : '') + p;
-        playerSel.appendChild(o);
-      });
+      _teams[team].forEach(p => { const o = document.createElement('option'); o.value = p; o.textContent = (getFlag(p) ? getFlag(p)+' ' : '') + p; playerSel.appendChild(o); });
     }
 
     function showPickPanels() {
-      // Show the correct panel based on current round
-      if (_currentRound === 'sf') {
-        document.getElementById('sfRoundPanel').style.display = '';
-        document.getElementById('finalRoundPanel').style.display = 'none';
-      } else {
-        document.getElementById('sfRoundPanel').style.display = 'none';
-        document.getElementById('finalRoundPanel').style.display = '';
-      }
+      document.getElementById('sfRoundPanel').style.display = (_currentRound === 'sf') ? '' : 'none';
+      document.getElementById('finalRoundPanel').style.display = (_currentRound === 'final') ? '' : 'none';
       loadManagerSfPicks();
     }
 
-    // Load SF picks to show as frozen
     async function loadManagerSfPicks() {
       if (!_mgr || !_code) return;
       try {
         const r = await jp(SF_API+'?action=entries&manager='+enc(_mgr)+'&code='+enc(_code));
         if (!r.ok) return;
-
-        // Find latest SF entry
         const sfEntries = r.entries.filter(e => e.week === 'SF');
         const latestSF = sfEntries.length ? sfEntries[sfEntries.length - 1] : null;
-
-        // Find latest F entry
         const fEntries = r.entries.filter(e => e.week === 'F');
         const latestF = fEntries.length ? fEntries[fEntries.length - 1] : null;
 
-        _sfPicks = latestSF;
-        _fPicks = latestF;
-
-        // Render frozen SF picks in both panels
         const picks = latestSF ? {ENG: latestSF.eng, IND: latestSF.ind, SA: latestSF.sa, NZ: latestSF.nz} : null;
-        ['sfFrozenPicks', 'sfFrozenPicksInFinal'].forEach(containerId => {
-          const container = document.getElementById(containerId);
-          if (!container) return;
-          const teams = ['ENG','IND','SA','NZ'];
-          container.innerHTML = teams.map(t => {
-            const player = picks ? picks[t] : '—';
-            const flag = getFlag(player);
-            return '<div class="sf-frozen-pick"><div class="team-label '+t+'">'+t+'</div><div class="player-label">'+(flag?flag+' ':'')+esc(player||'—')+'</div></div>';
+        ['sfFrozenPicks', 'sfFrozenPicksInFinal'].forEach(id => {
+          const c = document.getElementById(id); if (!c) return;
+          c.innerHTML = ['ENG','IND','SA','NZ'].map(t => {
+            const p = picks ? picks[t] : '—'; const f = getFlag(p);
+            return '<div class="sf-frozen-pick"><div class="team-label '+t+'">'+t+'</div><div class="player-label">'+(f?f+' ':'')+esc(p||'—')+'</div></div>';
           }).join('');
         });
 
-        // Pre-fill Final picks if they exist
         if (latestF && latestF.f_pick1) {
           document.getElementById('fp1-team').value = latestF.f_pick1team || '';
           populateFinalPlayerSel('fp1');
           setTimeout(() => { document.getElementById('fp1-player').value = latestF.f_pick1 || ''; }, 50);
-
           document.getElementById('fp2-team').value = latestF.f_pick2team || '';
           populateFinalPlayerSel('fp2');
           setTimeout(() => { document.getElementById('fp2-player').value = latestF.f_pick2 || ''; }, 50);
         }
-
       } catch(e) { console.error(e); }
     }
 
-
-    function refreshAuthUI(){
-      const mgr = document.getElementById('mgrSel').value;
-      const has = _mgrHasCode[mgr];
-      const codeGroup = document.getElementById('codeGroup');
-      const authBtn = document.getElementById('authBtn');
-      const msg = document.getElementById('authMsg');
-      msg.className = 'sf-msg'; msg.style.display='none';
-      if(!mgr){
-        codeGroup.style.display='';
-        authBtn.textContent='Verify & Continue';
-        authBtn.disabled=false;
-        return;
-      }
-      if(has){
-        codeGroup.style.display='';
-        authBtn.textContent='Verify & Continue';
-        authBtn.disabled=false;
-      }else{
-        codeGroup.style.display='none';
-        authBtn.textContent='Set Passcode';
-        authBtn.disabled=false;
-        sfMsg(msg,'inf','First time here — set a passcode to continue.');
-      }
+    function refreshAuthUI() {
+      const mgr = document.getElementById('mgrSel').value, has = _mgrHasCode[mgr];
+      const codeGroup = document.getElementById('codeGroup'), authBtn = document.getElementById('authBtn');
+      const msg = document.getElementById('authMsg'); msg.className = 'sf-msg'; msg.style.display='none';
+      if (!mgr) { codeGroup.style.display=''; authBtn.textContent='Verify & Continue'; authBtn.disabled=false; return; }
+      if (has) { codeGroup.style.display=''; authBtn.textContent='Verify & Continue'; authBtn.disabled=false; }
+      else { codeGroup.style.display='none'; authBtn.textContent='Set Passcode'; authBtn.disabled=false; sfMsg(msg,'inf','First time here — set a passcode to continue.'); }
     }
 
     async function doAuth() {
-      const mgr = document.getElementById('mgrSel').value;
-      const has = _mgrHasCode[mgr];
-      const codeInEl = document.getElementById('codeIn');
-      const code = (codeInEl ? codeInEl.value.trim() : '');
-      const m = document.getElementById('authMsg');
-      const btn = document.getElementById('authBtn');
+      const mgr = document.getElementById('mgrSel').value, has = _mgrHasCode[mgr];
+      const code = (document.getElementById('codeIn').value||'').trim();
+      const m = document.getElementById('authMsg'), btn = document.getElementById('authBtn');
       m.className='sf-msg'; m.style.display='none';
-
       if (!mgr) { sfMsg(m,'err','Select your name.'); return; }
-
-      if (has === false) {
-        document.getElementById('regOverlay').classList.remove('hide');
-        document.getElementById('regOverlay').dataset.mgr = mgr;
-        return;
-      }
-
+      if (has === false) { document.getElementById('regOverlay').classList.remove('hide'); document.getElementById('regOverlay').dataset.mgr = mgr; return; }
       if (code.length<4) { sfMsg(m,'err','Passcode must be at least 4 characters.'); return; }
-
-      btn.disabled = true;
-      btn.textContent = 'Verifying…';
-      sfMsg(m,'inf','Verifying… Please wait.');
+      btn.disabled = true; btn.textContent = 'Verifying…'; sfMsg(m,'inf','Verifying… Please wait.');
       try {
         const r = await jp(SF_API+'?action=verify&manager='+enc(mgr)+'&code='+enc(code));
-        if (r.ok) {
-          _mgr=mgr; _code=code;
-          sfMsg(m,'ok','✅ Verified! Pick your Final players below.');
-          showPickPanels();
-          loadHist();
-        } else if (r.needsRegister) {
-          document.getElementById('regOverlay').classList.remove('hide');
-          document.getElementById('regOverlay').dataset.mgr = mgr;
-        } else {
-          sfMsg(m,'err','Incorrect passcode.');
-        }
+        if (r.ok) { _mgr=mgr; _code=code; sfMsg(m,'ok','✅ Verified! Pick your Final players below.'); showPickPanels(); loadHist(); }
+        else if (r.needsRegister) { document.getElementById('regOverlay').classList.remove('hide'); document.getElementById('regOverlay').dataset.mgr = mgr; }
+        else { sfMsg(m,'err','Incorrect passcode.'); }
       } catch(e) { sfMsg(m,'err','Network error. Try again.'); }
       finally { refreshAuthUI(); }
     }
@@ -1084,46 +558,27 @@
     async function regCode() {
       const mgr = document.getElementById('regOverlay').dataset.mgr || document.getElementById('mgrSel').value;
       const code = document.getElementById('regCodeIn').value.trim();
-      const m = document.getElementById('regMsg');
-      m.className='sf-msg'; m.style.display='none';
+      const m = document.getElementById('regMsg'); m.className='sf-msg'; m.style.display='none';
       if (code.length<4) { sfMsg(m,'err','Min 4 characters.'); return; }
       try {
         const r = await jp(SF_API+'?action=register&manager='+enc(mgr)+'&code='+enc(code));
-        if (r.ok) {
-          _mgr=mgr; _code=code;
-          _mgrHasCode[mgr] = true;
-          document.getElementById('regOverlay').classList.add('hide');
-          document.getElementById('codeIn').value=code;
-          sfMsg(document.getElementById('authMsg'),'ok','🔒 Passcode set! Pick your Final players below.');
-          showPickPanels();
-          loadHist();
-        } else { sfMsg(m,'err',r.message||'Failed.'); }
+        if (r.ok) { _mgr=mgr; _code=code; _mgrHasCode[mgr]=true; document.getElementById('regOverlay').classList.add('hide'); document.getElementById('codeIn').value=code; sfMsg(document.getElementById('authMsg'),'ok','🔒 Passcode set! Pick your Final players below.'); showPickPanels(); loadHist(); }
+        else { sfMsg(m,'err',r.message||'Failed.'); }
       } catch(e) { sfMsg(m,'err','Network error.'); }
     }
 
-    // ── Submit Final Picks (2 from IND/NZ) ──
     async function submitFinalPicks() {
       if (!_mgr||!_code) { alert('Verify first.'); return; }
-      const t1 = document.getElementById('fp1-team').value;
-      const p1 = document.getElementById('fp1-player').value;
-      const t2 = document.getElementById('fp2-team').value;
-      const p2 = document.getElementById('fp2-player').value;
-      const m = document.getElementById('subFinalMsg');
-      m.className='sf-msg'; m.style.display='none';
-
-      if (!t1 || !p1) { sfMsg(m,'err','Select team & player for Pick 1.'); return; }
-      if (!t2 || !p2) { sfMsg(m,'err','Select team & player for Pick 2.'); return; }
-      if (p1 === p2)  { sfMsg(m,'err','Cannot pick the same player twice!'); return; }
-
-      const btn = document.getElementById('subFinalBtn');
-      btn.disabled=true; btn.textContent='Submitting…';
+      const t1=document.getElementById('fp1-team').value, p1=document.getElementById('fp1-player').value;
+      const t2=document.getElementById('fp2-team').value, p2=document.getElementById('fp2-player').value;
+      const m=document.getElementById('subFinalMsg'); m.className='sf-msg'; m.style.display='none';
+      if (!t1||!p1) { sfMsg(m,'err','Select team & player for Pick 1.'); return; }
+      if (!t2||!p2) { sfMsg(m,'err','Select team & player for Pick 2.'); return; }
+      if (p1===p2)  { sfMsg(m,'err','Cannot pick the same player twice!'); return; }
+      const btn=document.getElementById('subFinalBtn'); btn.disabled=true; btn.textContent='Submitting…';
       try {
-        const url = SF_API+'?action=submitfinal&manager='+enc(_mgr)+'&code='+enc(_code)
-          +'&pick1='+enc(p1)+'&pick1team='+enc(t1)
-          +'&pick2='+enc(p2)+'&pick2team='+enc(t2);
-        const r = await jp(url);
-        if (r.ok) { sfMsg(m,'ok','✅ Final picks saved!'); loadHist(); }
-        else { sfMsg(m,'err',r.message||'Failed.'); }
+        const r = await jp(SF_API+'?action=submitfinal&manager='+enc(_mgr)+'&code='+enc(_code)+'&pick1='+enc(p1)+'&pick1team='+enc(t1)+'&pick2='+enc(p2)+'&pick2team='+enc(t2));
+        if (r.ok) { sfMsg(m,'ok','✅ Final picks saved!'); loadHist(); } else { sfMsg(m,'err',r.message||'Failed.'); }
       } catch(e) { sfMsg(m,'err','Network error.'); }
       btn.disabled=false; btn.textContent='✅ Submit Final Picks';
     }
@@ -1134,101 +589,60 @@
       try {
         const r = await jp(SF_API+'?action=entries&manager='+enc(_mgr)+'&code='+enc(_code));
         if (!r.ok||!r.entries.length) { sec.innerHTML=''; return; }
-
-        // Show Final entries
         const fEntries = r.entries.filter(e => e.week === 'F').reverse().slice(0,5);
         if (!fEntries.length) { sec.innerHTML=''; return; }
-
         let h = '<div class="sf-section" style="padding:16px"><h3 style="font-size:0.75rem;margin-bottom:8px">Your Final Entries</h3>';
         fEntries.forEach((e,i) => {
-          const dt = new Date(e.timestamp);
-          const lat = i===0;
-          const flag1 = getFlag(e.f_pick1);
-          const flag2 = getFlag(e.f_pick2);
+          const dt = new Date(e.timestamp), lat = i===0;
+          const f1 = getFlag(e.f_pick1), f2 = getFlag(e.f_pick2);
           h += '<div class="sf-hist" style="'+(lat?'border-color:var(--copper-light)':'')+'">';
           h += '<div class="ts">'+(lat?'✅ LATEST — ':'')+dt.toLocaleString('en-IN',{timeZone:'Asia/Kolkata'})+'</div>';
-          h += '<div class="pk">';
-          h += '<span style="color:'+(e.f_pick1team==='IND'?'#fb923c':'#e2e8f0')+'">'+esc(e.f_pick1team)+':</span> '+(flag1?'<span class="player-flag">'+flag1+'</span> ':'')+esc(e.f_pick1)+' · ';
-          h += '<span style="color:'+(e.f_pick2team==='IND'?'#fb923c':'#e2e8f0')+'">'+esc(e.f_pick2team)+':</span> '+(flag2?'<span class="player-flag">'+flag2+'</span> ':'')+esc(e.f_pick2);
-          h += '</div></div>';
+          h += '<div class="pk"><span style="color:'+(e.f_pick1team==='IND'?'#fb923c':'#e2e8f0')+'">'+esc(e.f_pick1team)+':</span> '+(f1?'<span class="player-flag">'+f1+'</span> ':'')+esc(e.f_pick1)+' · ';
+          h += '<span style="color:'+(e.f_pick2team==='IND'?'#fb923c':'#e2e8f0')+'">'+esc(e.f_pick2team)+':</span> '+(f2?'<span class="player-flag">'+f2+'</span> ':'')+esc(e.f_pick2)+'</div></div>';
         });
-        h += '</div>';
-        sec.innerHTML = h;
+        h += '</div>'; sec.innerHTML = h;
       } catch(e) { console.error(e); }
     }
 
-    // ═══════════════════════════════════════════════════
     // VIEW 3: PLAYOFF LEADERBOARD
-    // ═══════════════════════════════════════════════════
     async function loadSfLb() {
       const c = document.getElementById('sfLbContent');
       c.innerHTML = '<div class="loading">Loading…</div>';
       try {
         const r = await jp(SF_API+'?action=leaderboard');
         if (r.locked) {
-          c.innerHTML = '<div class="sf-locked"><div class="ico">🔒</div><h3>Leaderboard Locked</h3><p>'+esc(r.message)+'</p><p style="margin-top:10px;color:var(--sand);font-weight:700;font-size:0.95rem">Entries are open — submit your picks!</p></div>';
+          c.innerHTML = '<div class="sf-locked"><div class="ico">🔒</div><h3>Leaderboard Locked</h3><p>'+esc(r.message)+'</p><p style="margin-top:10px;color:var(--sand);font-weight:700;font-size:0.95rem">Submit your Final picks before kickoff!</p></div>';
           return;
         }
-        if (!r.leaderboard||!r.leaderboard.length) {
-          c.innerHTML = '<div class="loading">No entries yet.</div>';
-          return;
-        }
+        if (!r.leaderboard||!r.leaderboard.length) { c.innerHTML = '<div class="loading">No entries yet.</div>'; return; }
 
-        // Podium for top 3
         let html = '<div class="leaderboard-title">🏆 Playoff Leaderboard</div>';
         const medals = ['🥇','🥈','🥉'];
         html += '<div class="podium">';
-        r.leaderboard.slice(0,3).forEach((e,i) => {
-          html += '<div class="podium-card"><div class="rank-badge">'+(medals[i]||(i+1))+'</div>';
-          html += '<div class="podium-name">'+esc(e.manager)+'</div>';
-          html += '<div class="podium-points">'+e.totalPoints+'</div></div>';
-        });
+        r.leaderboard.slice(0,3).forEach((e,i) => { html += '<div class="podium-card"><div class="rank-badge">'+(medals[i]||(i+1))+'</div><div class="podium-name">'+esc(e.manager)+'</div><div class="podium-points">'+e.totalPoints+'</div></div>'; });
         html += '</div>';
 
-        // Detailed cards
         r.leaderboard.forEach(entry => {
-          // SF picks row
-          let sfPicksHtml = (entry.sfPicks||[]).map(p =>
-            '<div class="sf-lb-pick"><div class="tl '+esc(p.team)+'">'+esc(p.team)+'</div><div class="pl">'+esc(p.player)+'</div><div class="pp">'+p.points+' pts</div></div>'
+          let sfHtml = (entry.sfPicks||[]).map(p =>
+            '<div class="sf-lb-pick"><div class="tl '+esc(p.team)+'">'+esc(p.team)+'</div><div class="pl">'+esc(p.player)+'</div><div class="pp">'+p.points+' pts</div><span class="score-src">SF+F matches</span></div>'
+          ).join('');
+          let fHtml = (entry.fPicks||[]).map(p =>
+            '<div class="sf-lb-fpick"><div class="tl '+esc(p.team)+'">'+esc(p.team)+'</div><div class="pl">'+esc(p.player)+'</div><div class="pp">'+p.points+' pts</div><span class="score-src">Final only</span></div>'
           ).join('');
 
-          // Final picks row
-          let fPicksHtml = (entry.fPicks||[]).map(p =>
-            '<div class="sf-lb-fpick"><div class="tl '+esc(p.team)+'">'+esc(p.team)+'</div><div class="pl">'+esc(p.player)+'</div><div class="pp">'+p.points+' pts</div></div>'
-          ).join('');
-
-          html += '<div class="sf-lb-card"><div class="sf-lb-header">';
-          html += '<div class="manager-rank">'+entry.rank+'</div>';
-          html += '<div class="manager-name">'+esc(entry.manager)+'</div>';
-          html += '<div class="manager-total">'+entry.totalPoints+' pts</div>';
-          html += '</div>';
-
-          // SF section
-          if (sfPicksHtml) {
-            html += '<div class="lb-section-label">Semi-Final Picks</div>';
-            html += '<div class="sf-lb-picks">'+sfPicksHtml+'</div>';
-          }
-
-          // Final section
-          if (fPicksHtml) {
-            html += '<div class="lb-section-label" style="background:rgba(195,86,39,0.1)">🏆 Final Picks</div>';
-            html += '<div class="sf-lb-fpicks">'+fPicksHtml+'</div>';
-          }
-
+          html += '<div class="sf-lb-card"><div class="sf-lb-header"><div class="manager-rank">'+entry.rank+'</div><div class="manager-name">'+esc(entry.manager)+'</div><div class="manager-total">'+entry.totalPoints+' pts</div></div>';
+          if (sfHtml) { html += '<div class="lb-section-label">Semi-Final Picks</div><div class="sf-lb-picks">'+sfHtml+'</div>'; }
+          if (fHtml) { html += '<div class="lb-section-label" style="background:rgba(195,86,39,0.1)">🏆 Final Picks</div><div class="sf-lb-fpicks">'+fHtml+'</div>'; }
           html += '</div>';
         });
         c.innerHTML = html;
-      } catch(e) {
-        c.innerHTML = '<div class="loading" style="color:#f47373">Failed to load leaderboard.</div>';
-      }
+      } catch(e) { c.innerHTML = '<div class="loading" style="color:#f47373">Failed to load leaderboard.</div>'; }
     }
 
-    // ═══════════════════════════════════════════════════
     // INIT
-    // ═══════════════════════════════════════════════════
     fetchData();
     initEntries();
-    switchRound('final'); // default to Final round
+    switchRound('final');
   </script>
 </body>
 </html>
